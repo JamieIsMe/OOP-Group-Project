@@ -1,8 +1,4 @@
 class Location:
-    """defines a CrimeScene class that represents a crime scene. It has
-    attributes for location, clues, and investigation status. It provides
-    methods to add clues, review the clues, and modify the investigation
-    status"""
     def __init__(self, location, sublocation):
         self.location = location
         self.sublocation = []
