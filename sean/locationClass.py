@@ -1,9 +1,9 @@
 class Location:
-    def __init__(self, location, sublocation):
+    def __init__(self, location, sublocation, location_npcs, clues):
         self.location = location
-        self.sublocation = []
-        self.location_NPCs = []
-        self.__clues = []
+        self.sublocation = sublocation
+        self.location_NPCs = location_npcs
+        self.__clues = clues
 
     def add_clue(self, clue):
         self.__clues.append(clue)
