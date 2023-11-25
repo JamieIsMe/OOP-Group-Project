@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import ABC,abstractmethod
 
 class Character(ABC):
-    def __init__(self, name, dialogue, clue, item):
+    def __init__(self, name, dialogue , clue, item ):
         self._name = name
-        self._dialogue = [dialogue]
+        self._dialogue = dialogue
         self._interacted = False
         self.clues = clue
         self.items = item
