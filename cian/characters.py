@@ -38,9 +38,11 @@ class Character(ABC):
         return interaction
 
     def items(self):
+        pass
             # add item to player from NPC
 
     def clue(self):
+        pass
             # add clue to clue list from NPC
 
 
