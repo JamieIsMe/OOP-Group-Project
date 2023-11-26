@@ -65,6 +65,7 @@ class Cave(Location):
             print()
 
     def walkway(self):
+        levers = ["up"]*5
         self.current_location = "walkway"
         if self.current_location not in self.visited_sublocations:
             print("You find yourself in a new room. You can see that there are 5 cells along the wall and a door at "
@@ -108,7 +109,16 @@ class Cave(Location):
                         elif action == "2":
                             pass
                     elif action == "2":
-                        print()
+                        lever_interaction = True
+                        print("You look at the levers and see that all five are flipped up")
+                        while lever_interaction:
+                            action = input(f"What will you do?\n1) Flip lever 1 {levers[0]}\n2) Flip lever 2 {levers[1]}\n"
+                                           f"3) Flip lever 3 {levers[2]}\n4) Flip lever 4 {levers[3]}\n"
+                                           f"5) Flip lever 5 {levers[4]}\n6) Go back\n")
+                            if action == "1":
+                                # USE levers[0] ^= 1 and change array to 0
+                                levers[0] = "down"
+                                print(f"You flipped lever 1 {levers[0]}")
                     elif action == "3":
                         door_interaction = False
             elif action == "3":
