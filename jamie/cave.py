@@ -8,8 +8,8 @@ class Cave(Location):
                          ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"])
         self.current_location = "entrance"
         self.visited_sublocations = []
-        self.location_states = [False] * 2
-        # 1st Is CAVE IN, 2nd Is Spoken With Man In Cell
+        self.location_states = [False] * 3
+        # 1st Is CAVE IN, 2nd Is Spoken With Man In Cell, 3rd is if the levers are finished
         self.score = score
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
 
@@ -109,29 +109,40 @@ class Cave(Location):
                         elif action == "2":
                             pass
                     elif action == "2":
-                        lever_interaction = True
-                        print("You look at the levers and see that all five are flipped up")
-                        while lever_interaction:
-                            action = input(f"What will you do?\n1) Flip lever 1 {state[0]}\n2) Flip lever 2 {state[1]}\n"
-                                           f"3) Flip lever 3 {state[2]}\n4) Flip lever 4 {state[3]}\n"
-                                           f"5) Flip lever 5 {state[4]}\n6) Go back\n")
-                            if action == "1":
-                                state[0] = "up" if state[0] == "down" else "down"
-                                print(f"You flipped lever 1")
-                            elif action == "2":
-                                state[1] = "up" if state[1] == "down" else "down"
-                                print(f"You flipped lever 2")
-                            elif action == "3":
-                                state[2] = "up" if state[2] == "down" else "down"
-                                print(f"You flipped lever 3")
-                            elif action == "4":
-                                state[3] = "up" if state[3] == "down" else "down"
-                                print(f"You flipped lever 4")
-                            elif action == "5":
-                                state[4] = "up" if state[4] == "down" else "down"
-                                print(f"You flipped lever 5")
-                            elif action == "6":
-                                lever_interaction = False
+                        if not self.location_states[2]:
+                            lever_interaction = True
+                            print("You look at the levers and see that all five are flipped up")
+                            while lever_interaction:
+                                action = input(f"What will you do?\n1) Flip lever 1 {state[0]}\n2) Flip lever 2 {state[1]}\n"
+                                               f"3) Flip lever 3 {state[2]}\n4) Flip lever 4 {state[3]}\n"
+                                               f"5) Flip lever 5 {state[4]}\n6) Go back\n")
+                                if action == "1":
+                                    state[0] = "up" if state[0] == "down" else "down"
+                                    print(f"You flipped lever 1")
+                                elif action == "2":
+                                    state[1] = "up" if state[1] == "down" else "down"
+                                    print(f"You flipped lever 2")
+                                elif action == "3":
+                                    state[2] = "up" if state[2] == "down" else "down"
+                                    print(f"You flipped lever 3")
+                                elif action == "4":
+                                    state[3] = "up" if state[3] == "down" else "down"
+                                    print(f"You flipped lever 4")
+                                elif action == "5":
+                                    state[4] = "up" if state[4] == "down" else "down"
+                                    print(f"You flipped lever 5")
+                                elif action == "6":
+                                    lever_interaction = False
+                                if state[0] and state[2] and state[4] == "down":
+                                    if state[1] and state[3] == "up":
+                                        lever_interaction = False
+                                        self.location_states[2] = True
+                                        print("You hear a click and a door open behind "
+                                              "you. The levers are now stiff and you cant "
+                                              "move them")
+                        else:
+                            print("The levers are stuck in place, you cant move them "
+                                  "anymore")
                     elif action == "3":
                         door_interaction = False
             elif action == "3":
