@@ -2,6 +2,7 @@ class Player:
     def __init__(self,name):
         self.name = name
         self.inventory = []
+        self.clues = []
         self.coins = 0
         print(f"Welcome {name}!\n")
 
@@ -9,6 +10,14 @@ class Player:
         print("The items in your inventory are:\n")
         for item in self.inventory:
             print(item + '\n')
+
+    def show_inventory(self):
+        print("Your clues are:\n")
+        for clue in self.clues:
+            print(clue + '\n')
     
     def add_item(self,item):
         self.inventory.append(item)
+
+    def add_clue(self,clue):
+        self.inventory.append(clue)
