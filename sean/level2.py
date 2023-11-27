@@ -1,25 +1,14 @@
-from cian.characters import Character, NPC
+from cian.characters import NPC
 from sean.locationClass import Location
-
-
-# Change the explore_surroundings to include options for examining back walls and other options
-
-
-class PlayerCharacter(Character):
-    def __init__(self, name, dialogue, clue, item):
-        super().__init__(name, dialogue, clue, item)
-
-    def perform_action(self, action):
-        # Implement the desired behavior for the player's character
-        pass
+from denis.Player import Player
 
 
 class Level2(Location):
-    def __init__(self, score, coins):
+    def __init__(self, score):
         super().__init__("City", "Outside City Walls", [], [])
         self.current_location = "entrance to the city"
+        self.player = player
         self.score = score
-        self.coins = coins
         self.visited_locations = []
         self.city_guard = NPC("City Guard",
                               "Halt! What business do you have here, stranger?",
@@ -39,7 +28,7 @@ class Level2(Location):
             action = input("\nWhat will you do?\n"
                            "1) Approach the city gates\n"
                            "2) Explore the surroundings\n"
-                           "3) Wait for something to happen\n")
+                           "3) Check the immediate area\n")
 
             if action == "1":
                 if not self.__guard_interacted:
@@ -54,7 +43,7 @@ class Level2(Location):
                             print("City Guard: Kidnapping you say? Haven't heard anything about that. ")
                             # ADD CLUE ABOUT OBSERVATION
                         elif interaction == 2:
-                            if "City Pass" in player.items:
+                            if "City Pass" in player.inventory:
                                 print("City Guard: Oh, you have a city pass. You may proceed. Stay safe!")
                                 self.__guard_interacted = True
                             else:
@@ -67,8 +56,41 @@ class Level2(Location):
             elif action == "2":
                 self.explore_surroundings()
             elif action == "3":
-                print("You decide to wait for something to happen.")
-                # Add waiting logic here
+                print("You look around to see if there is a way to get into the city.")
+
+                distraction_option = input("1) Look for a distraction\n"
+                                           "2) Return to the previous options\n")
+
+                if distraction_option == "1":
+                    print("While scanning the surroundings, you notice a group of barbarians nearby.")
+
+                    bribe_option = input("The barbarians seem rowdy but open to negotiation.\n"
+                                         "Perhaps they are willing to do something for a little bit of coin\n"
+                                         "Do you want to approach them?\n"
+                                         "1) Yes, approach the barbarians\n"
+                                         "2) No, return to the previous options\n")
+
+                    if bribe_option == "1":
+                        if self.player.coins >= 25:
+                            print("You approach the barbarians and offer them 25 coins to create a distraction.")
+                            print("They gladly accept the offer and create a commotion, distracting the guards.")
+                            print("With the distraction in place, you slip past the guards and enter the city.")
+                            self.__guard_interacted = True
+                            self.current_location = "City Streets"
+                            self.player.coins -= 25
+                        else:
+                            print("You don't have enough coins to bribe the barbarians.")
+                            print("You decide to explore other options.")
+                    elif bribe_option == "2":
+                        print("You decide not to approach the barbarians and look for alternative options.")
+                    else:
+                        print("Invalid option.")
+                elif distraction_option == "2":
+                    print("You decide to return to the previous options.")
+
+        if self.current_location == "City Streets":
+            print(f"You have entered the city! You are now in the {self.current_location}.")
+            print("The hustle and bustle of the city's inhabitants surrounds you.")
 
     def explore_surroundings(self):
         print("You notice a dark alley at the back of the city walls")
@@ -87,7 +109,7 @@ class Level2(Location):
 
                 if event_result == "1":
                     print("You follow the sound and discover a hidden door.")
-                    print("Behind the door, you find a group of people planning a secret meeting.")
+                    print("Behind the door, you find a group of hooded figures planning a secret meeting.")
                     print("They almost notice you, but you were able to slip away before they caught you.")
 
                     self.add_clue("secret meeting under city")
@@ -122,11 +144,12 @@ class Level2(Location):
 
         if self.current_location == "City Streets":
             print(f"You have entered the city! You are now in the {self.current_location}.")
-            print("The hustle and bustle of the city's inhabitants surround you.")
+            print("The hustle and bustle of the city's inhabitants surrounds you.")
 
 
 if __name__ == "__main__":
-    level2 = Level2(1, 50)
-    player = PlayerCharacter("Player Name", "Greetings, adventurer!", [], [])
+    player = Player("Player Name")
+    player.coins = 25
+    level2 = Level2(player)
 
     level2.outside_city()
