@@ -20,4 +20,4 @@ class Player:
         self.inventory.append(item)
 
     def add_clue(self,clue):
-        self.inventory.append(clue)
+        self.clues.append(clue)
