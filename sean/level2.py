@@ -2,6 +2,8 @@ from cian.characters import NPC
 from sean.locationClass import Location
 from denis.Player import Player
 
+# Get city pass from puzzle when you examine back city walls
+
 
 class Level2(Location):
     def __init__(self, score):
