@@ -1,4 +1,4 @@
-from abc import ABC,abstractmethod
+from abc import ABC, abstractmethod
 
 class Character(ABC):
     def __init__(self, name, dialogue , clue, item ):
@@ -23,6 +23,11 @@ class Character(ABC):
 
     @abstractmethod  # Declares an abstract method using a decorator.
     def perform_action(self, action):
+        pass  # Abstract methods never contain any actual logic. The
+        # transfer statement "pass" allows for this.
+
+    @abstractmethod
+    def say_dialogue(self, dialogue):
         pass  # Abstract methods never contain any actual logic. The
         # transfer statement "pass" allows for this.
 
@@ -58,6 +63,9 @@ class NPC(Character):
     def perform_action(self, action):
         return f"{self._name} {action}."
 
+    def say_dialogue(self, dialogue):
+        return f"{self._name} {dialogue}."
     def interact(self):
-        super().interact()
+        interact = super().interact()
+        return interact
 
