@@ -10,6 +10,7 @@ class Cave(Location):
         self.visited_sublocations = []
         self.location_states = [False] * 3
         # 1st Is CAVE IN, 2nd Is Spoken With Man In Cell, 3rd is if the levers are finished
+        # TEMP SCORE VARIABLE UNTIL PLAYER CLASS FINISHED
         self.score = score
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
 
@@ -82,6 +83,8 @@ class Cave(Location):
                           "Before you can say anything, they speak.")
                     print(self.cell_man.interact())
                     # NPC SPEAKS "If you open my cell, I will help you get through that door"
+                elif self.location_states[2]:
+                    print("You return to the cell to see that the man has disappeared")
                 else:
                     print("You return back to the person in the cell")
                 while Talking:
