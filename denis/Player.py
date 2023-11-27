@@ -11,7 +11,7 @@ class Player:
         for item in self.inventory:
             print(item + '\n')
 
-    def show_inventory(self):
+    def show_clues(self):
         print("Your clues are:\n")
         for clue in self.clues:
             print(clue + '\n')
