@@ -1,6 +1,6 @@
 from sean.locationClass import Location
 from cian.characters import NPC
-
+from denis.Player import Player
 
 class Cave(Location):
     def __init__(self, score):
@@ -9,7 +9,7 @@ class Cave(Location):
         self.current_location = "entrance"
         self.visited_sublocations = []
         self.location_states = [False] * 3
-        # 1st Is CAVE IN, 2nd Is Spoken With Man In Cell, 3rd is if the levers are finished
+        self.user = Player("Jamie")
         # TEMP SCORE VARIABLE UNTIL PLAYER CLASS FINISHED
         self.score = score
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
@@ -33,15 +33,15 @@ class Cave(Location):
                     print("As you attempt to make your way back out of the cave, you trip on a rock, somehow "
                           "causing the entrance to cave in\nUnder the rock you tripped on, you find a key and pick it "
                           "up")
-                    # ADD KEY TO PLAYERS INVENTORY
+                    self.user.add_item("key")
                     self.location_states[0] = True
                 elif action == "2":
-                    # IF PLAYER HAS NO KEY
-                    print("You approach the door and see that it's locked, however you don't have a key to unlock it")
-                    # IF PLAYER HAS KEY
-                    print("You approach the door and see that it's locked. You use your key and manage to unlock the "
-                          "door and pass through")
-                    self.walkway()
+                    if "key" not in self.user.inventory:
+                        print("You approach the door and see that it's locked, however you don't have a key to unlock it")
+                    elif "key" in self.user.inventory:
+                        print("You approach the door and see that it's locked. You use your key and manage to unlock the "
+                              "door and pass through")
+                        self.walkway()
                 elif action == "3":
                     # [][X][][X][]
                     # ADD A PLAYER CLUE HERE "5 people in robes surrounding a statue. The second "
@@ -51,12 +51,12 @@ class Cave(Location):
             else:
                 action = input("What will you do?\n1) Go to the iron door\n2) Check the walls\n")
                 if action == "1":
-                    # IF PLAYER HAS NO KEY
-                    print("You approach the door and see that it's locked, however you don't have a key to unlock it")
-                    # IF PLAYER HAS KEY
-                    print("You approach the door and see that it's locked. You use your key and manage to unlock the "
-                          "door and pass through")
-                    self.walkway()
+                    if "key" not in self.user.inventory:
+                        print("You approach the door and see that it's locked, however you don't have a key to unlock it")
+                    elif "key" in self.user.inventory:
+                        print("You approach the door and see that it's locked. You use your key and manage to unlock the "
+                              "door and pass through")
+                        self.walkway()
                 elif action == "2":
                     # [][X][][X][]
                     # ADD A PLAYER CLUE HERE "5 people in robes surrounding a statue. The second "
@@ -75,7 +75,7 @@ class Cave(Location):
         else:
             print("")
         while self.current_location == "walkway":
-            action = input("What Will You Do?\n1) Look at the calls\n2) Go to the door\n3) Turn back around\n")
+            action = input("What Will You Do?\n1) Look at the cells\n2) Go to the door\n3) Turn back around\n")
             if action == "1":
                 Talking = True
                 if not self.location_states[1]:
@@ -84,7 +84,8 @@ class Cave(Location):
                     print(self.cell_man.interact())
                     # NPC SPEAKS "If you open my cell, I will help you get through that door"
                 elif self.location_states[2]:
-                    print("You return to the cell to see that the man has disappeared")
+                    print("You return to the cell to see that the man has disappeared but he left a note on the floor\nYou pick it up and see that its says 5481")
+                    # self.user.add_clue("note ")
                 else:
                     print("You return back to the person in the cell")
                 while Talking:
@@ -118,7 +119,7 @@ class Cave(Location):
                             while lever_interaction:
                                 action = input(f"What will you do?\n1) Flip lever 1 {state[0]}\n2) Flip lever 2 {state[1]}\n"
                                                f"3) Flip lever 3 {state[2]}\n4) Flip lever 4 {state[3]}\n"
-                                               f"5) Flip lever 5 {state[4]}\n6) Go back\n")
+                                               f"5) Flip lever 5 {state[4]}\n6) View Clues\n7) Go back\n")
                                 if action == "1":
                                     state[0] = "up" if state[0] == "down" else "down"
                                     print(f"You flipped lever 1")
@@ -135,6 +136,9 @@ class Cave(Location):
                                     state[4] = "up" if state[4] == "down" else "down"
                                     print(f"You flipped lever 5")
                                 elif action == "6":
+                                    print("You take a look at your clues: ", end="")
+                                   # print(*self.user.clues)
+                                elif action == "7":
                                     lever_interaction = False
                                 if state[0] and state[2] and state[4] == "down":
                                     if state[1] and state[3] == "up":
