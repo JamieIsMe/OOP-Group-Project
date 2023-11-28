@@ -1,6 +1,7 @@
 from cian.characters import NPC
 from sean.locationClass import Location
 from denis.Player import Player
+from sean.fight import fight, User, RedCloakEnemy
 
 
 # Get city pass from puzzle when you examine back city walls
@@ -88,9 +89,10 @@ class Level2(Location):
                     self.__guard_interacted = True
                 else:
                     print(self.city_guard.say_dialogue("Hold! You can't enter "
-                                                       "without a city pass."))
+                                                       "without a city pass"))
             elif interaction == 3:
-                print(self.city_guard.say_dialogue("Safe travels, stranger."))
+                print(self.city_guard.say_dialogue("Safe travels, stranger"))
+                break
 
     def explore_surroundings(self):
         self.current_location = self.sublocation[3]
@@ -110,9 +112,9 @@ class Level2(Location):
         elif exploration_result == "2":
             self.visited("Back City Walls")
             print("You examine the back of the city walls.")
-            self.player.add_item("Prized Dagger")
-            # Add puzzle logic or other events related to examining the
-            # city walls (to be implemented later)
+            user = User(player.name)
+            red_cloak = RedCloakEnemy()
+            fight(user, red_cloak)
 
         elif exploration_result == "3":
             print("You decide to return to the city gates.")
