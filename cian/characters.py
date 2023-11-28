@@ -5,8 +5,8 @@ class Character(ABC):
         self._name = name
         self._dialogue = dialogue
         self._interacted = False
-        self.clues = clue
-        self.items = item
+        self._clues = clue
+        self._items = item
 
     def __str__(self):
         return f"{self.__class__.__name__}: {self._name}"
@@ -23,16 +23,13 @@ class Character(ABC):
 
     @abstractmethod  # Declares an abstract method using a decorator.
     def perform_action(self, action):
-        pass  # Abstract methods never contain any actual logic. The
-        # transfer statement "pass" allows for this.
+        pass
 
     @abstractmethod
     def say_dialogue(self, dialogue):
-        pass  # Abstract methods never contain any actual logic. The
-        # transfer statement "pass" allows for this.
+        pass
 
-    # An abstract class must contain at least one abstract method.
-    # However, "normal" methods may also be contained.
+
     def interact(self):
         if not self._interacted:
             interaction = f"{self._name}: {self._dialogue}"

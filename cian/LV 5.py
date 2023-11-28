@@ -1,32 +1,49 @@
 from sean.locationClass import Location
 from cian.characters import NPC
 from cian.Dice_minigame import dice_game
-
+from cian.RPS_minigame import Rock_Paper_Scissors_Game
+from denis.Player import Player
 
 class Camp(Location):
     def __init__(self, score, coins):
-        super().__init__("camp", ["outer_camp", "main_camp", "hut_1", "big_hut", "side_main_camp"],
+        super().__init__("camp",
+                         ["outer_camp", "main_camp", "hut_1", "big_hut", "side_main_camp"],
                          ["Goblin trio", "Dice Goblin", "Goblin Elder"],
-                         ["Goblin elder is in the big hut", "Dicy's clue"])
+                         [],
+                         [""])
         self.current_location = "outer_camp"
         self.visited_sublocations = []
-        self.location_states = [False] * 3
         self.score = score
         self.coins = coins
-        self.goblin_trio = NPC("Goblin trio", "", "", "")
-        self.dice_goblin = NPC("Dicy", "", "", "")
+        self.goblin_trio = NPC("Goblin trio",
+                               ["\nYou here voices in unison say:\n'What do you want'?\n",
+                                "You here a high pitched voice from the other side\n\n'Nobody is home'!\n",
+                                "First Goblin: 'We heard the elder talk about that\nSecond Goblin: 'We dont know nothing'\n"
+                               "Third Goblin: 'The elder should be in the big hut'\n"],
+                               ["Goblin elder is in the big hut"],
+                               "")
 
-    def visited(self):
-        self.visited_sublocations.append(self.current_location)
+        self.dice_goblin = NPC("Dicy",
+                               ["\nShady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy\n",
+                                "\nRecon you fancy a game of dice friend?\n",
+                                "\nHow about the ol' rock paper scissors then?\n",
+                                "\nHow about another round?\n",
+                                "\nWell friend you seem mighty well off "
+                                "how abouts i give you some information as a fellow benefactor of life\n",
+                                "\nNow dont go spreading this info around\n",
+                                "\n\n"],
+                               ["Dicy's clue"],
+                               "")
+        self.max_coins = 100
 
     def outer_camp(self):
         self.current_location = "outer_camp"
-        if self.current_location not in self.visited_sublocations:
-            print("Emerging from the dense forest, you spot a small goblin camp at the foot of towering cliffs."
-                  "Ramshackle huts, constructed from salvaged materials, form a chaotic maze in the shadows."
+        if self.current_location not in self.visited_sublocations :
+            print("\nEmerging from the dense forest, you spot a small goblin camp at the foot of towering cliffs. "
+                  "Ramshackle huts, constructed from salvaged materials, form a chaotic maze in the shadows. "
                   "Flickering bonfires illuminate the primitive dwellings. "
-                  "You spot 3 shadows dart into the nearest hut")
-            self.visited()
+                  "You spot 3 shadows dart into the nearest hut.\n")
+            self.visited("outer_camp")
         else:
             print("You walk back out of the camp and look back at it, Not much has changed\n")
 
@@ -52,7 +69,7 @@ class Camp(Location):
         self.current_location = "hut_1"
         if self.current_location not in self.visited_sublocations:
             print("You come up to the door of the first hut where you saw the 3 shadows enter\n")
-            self.visited()
+            self.visited("hut_1")
         else:
             print("As you approach the hut you see that the door is open and nobody is inside. "
                   "The goblin trio has left\n"
@@ -64,7 +81,9 @@ class Camp(Location):
                            "3) Walk deeper into the camp\n")
             interacting = True
             if choice == "1":
-                print("You here a high pitched voice from the other side\n'Nobody is home'!\n")
+                print("")
+                print(self.goblin_trio._dialogue[1])
+
                 interacting = True
             elif choice == "2":
                 print("You try to open the door by force with little success")
@@ -80,17 +99,16 @@ class Camp(Location):
 
                 if choice == "1":
                     print("The door opens slightly and you see 3 Goblins peer through the crack nervously\n")
-                    print(self.goblin_trio.say_dialogue(":You here voices in unison say:\n'What do you want'?"))
+                    print(self.goblin_trio._dialogue[0])
 
                     choice = input("How do you respond?\n1) 'I just wanted to see if you have any information on"
                                    "some missing people'\n2)'Wrong hut sorry'. Leave and go further into the town\n")
                     if choice == "1":
                         print("The Goblin trio open the door further and you see 3 identical goblins."
                               "The only difference is their eye colour\n")
-
-                        print(("First Goblin: 'We heard the elder talk about that\n"
-                               "Second Goblin: 'We dont know nothing'\n"
-                               "Third Goblin: 'The elder should be in the big hut'\n"))
+                        print(self.goblin_trio._dialogue[2])
+                        self.add_clue(self.goblin_trio._clues[0])
+                        self.review_clues()
 
                         choice = input("Where will you go next?\n1) Go back to the outside of the camp.\n"
                                        "2) Go deeper into the village to find the elder.\n")
@@ -123,7 +141,7 @@ class Camp(Location):
                   "1. The First Hut\n2. The Big Hut with 2 angry looking goblins guarding the entrance.\n"
                   "3. A Goblin in a long trench coat and large hat "
                   "sitting on the ground with a set of dice in front of him.\n")
-            self.visited()
+            self.visited("main_camp")
 
         choice = input("\nWhere will you go?\n"
                        "1) Back to the First Hut\n"
@@ -145,35 +163,44 @@ class Camp(Location):
         self.main_camp()
 
     def side_main_camp(self, coins=100):
-        self.current_location = "sus_goblin"
+        self.current_location = "side_main_camp"
         if self.current_location not in self.visited_sublocations:
             print("You walk over to the Shady Goblin\n")
-            print("Shady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy")
-            self.visited()
-        if coins == 100:
-            print(self.dice_goblin.say_dialogue("Well friend you seem mighty well off "
-                                                "how abouts i give you some information "
-                                                "as a fellow benefactor of life"))
-            # add clue
-            print("Now dont go spreading this info around")
+            print(self.dice_goblin._dialogue[0])
+            print("He says as he tips his hat")
+            self.visited("side_main_camp")
 
-        print(self.dice_goblin.say_dialogue("Fancy a game of dice friend"))
-        minigame_played = False
-        if not minigame_played:
+        if coins == self.max_coins:
+            print(self.dice_goblin._dialogue[4])
+            self.add_clue(self.dice_goblin._clues[0])
+            self.review_clues()
+            print(self.dice_goblin._dialogue[5])
+
+        print(self.dice_goblin._dialogue[1])
+        play_minigame = True
+        while play_minigame:
+            choice = input("1) Yes\n2) No\n")
+            if choice == "1":
+                dice_game()
+            elif choice == "2":
+                print(self.dice_goblin._dialogue[2])
+                choice = input("1) Yes\n2) No\n")
+                if choice == "1":
+                    Rock_Paper_Scissors_Game()
+                    play_minigame = True
+                else:
+                    break
+
+            print(self.dice_goblin._dialogue[3])
             choice = input("1) Yes\n2) No\n")
             if choice == "1":
                 dice_game()
             elif choice == "2":
                 print("You decline and return to the center of camp")
-                self.main_camp()
-        else:
-            print(self.dice_goblin.say_dialogue("How about another round"))
-            choice = input("1) Yes\n2) No\n")
-            if choice == "1":
-                dice_game()
-            elif choice == "2":
-                print("You decline and return to the center of camp")
-                self.main_camp()
+                break
+        self.main_camp()
+
+
 
 
 if __name__ == "__main__":
