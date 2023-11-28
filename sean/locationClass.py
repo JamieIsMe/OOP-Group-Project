@@ -3,14 +3,14 @@ class Location:
         self.location = location
         self.sublocation = sublocation
         self.location_NPCs = location_npcs
-        self.__clues = clues
+        self.clues = clues
         self.visited_sublocations = []
 
     def add_clue(self, clue):
-        self.__clues.append(clue)
+        self.clues.append(clue)
 
     def review_clues(self):
-        return self.__clues
+        return self.clues
 
     def location_npcs(self, npc):
         self.location_NPCs.append(npc)
