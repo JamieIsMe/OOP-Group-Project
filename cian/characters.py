@@ -61,7 +61,7 @@ class NPC(Character):
         return f"{self._name} {action}."
 
     def say_dialogue(self, dialogue):
-        return f"{self._name} {dialogue}."
+        return f"{self._name}: {dialogue}."
 
     def interact(self):
         interact = super().interact()
