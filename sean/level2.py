@@ -155,8 +155,7 @@ class Level2(Location):
             if self.current_location not in self.visited_sublocations:
                 self.dark_alley(self.current_location)
             else:
-                print("You don't want to go back in there as the group of "
-                      "people might see you")
+                print("You have already visited the dark alley.")
 
         elif exploration_result == "2":
             self.visited("Back City Walls")
@@ -201,7 +200,9 @@ class Level2(Location):
 
             elif event_result == "3":
                 print("You decide to leave the dark alley.")
+                self.visited(self.sublocation[2])
                 self.current_location = self.sublocation[4]
+                break
 
             else:
                 print("Invalid option.")
