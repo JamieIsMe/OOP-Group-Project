@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
+
 class Character(ABC):
-    def __init__(self, name, dialogue , clue, item ):
+    def __init__(self, name, dialogue, clue, item):
         self._name = name
         self._dialogue = dialogue
         self._interacted = False
@@ -29,7 +30,6 @@ class Character(ABC):
     def say_dialogue(self, dialogue):
         pass
 
-
     def interact(self):
         if not self._interacted:
             interaction = f"{self._name}: {self._dialogue}"
@@ -41,12 +41,11 @@ class Character(ABC):
 
     def items(self):
         pass
-            # add item to player from NPC
+        # add item to player from NPC
 
     def clue(self):
         pass
-            # add clue to clue list from NPC
-
+        # add clue to clue list from NPC
 
 
 # This class has not changed in this lab
@@ -57,12 +56,16 @@ class NPC(Character):
     The purpose of this class is to provide characters that are not
     essential for the mystery.
     """
+
     def perform_action(self, action):
         return f"{self._name} {action}."
 
     def say_dialogue(self, dialogue):
         return f"{self._name} {dialogue}."
+
     def interact(self):
         interact = super().interact()
         return interact
 
+    def clue(self):
+        return self._clues

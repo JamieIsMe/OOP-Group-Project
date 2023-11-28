@@ -17,15 +17,21 @@ class Level2(Location):
         self.current_location = self.sublocation[0]
         self.player = player
         self.score = score
-        self.city_guard = NPC("City Guard",
-                              "Halt! What business do you have here, "
+        self.city_guard = NPC("City Guard:",
+                              "Halt! What business do you have here "
                               "stranger?",
                               "Overheard some shady characters talking near "
                               "the city gates.",
-                              "City Map")
+                              "")
+        self.barbarian = NPC("Barbarian Leader:",
+                             "Looky here boys! Some fresh meat",
+                             "The barbarian's prized dagger was stolen by a thief",
+                             "")
 
         # Boolean variable set for no double interaction with the city guard
         self.__guard_interacted = False
+        self.__guard_asked = False
+        self.__barbarians_asked = False
         self.__dark_alley_investigated = False
 
     def outside_city(self):
@@ -51,35 +57,34 @@ class Level2(Location):
                                                 "3) Leave the city gates\n"))
 
                         if interaction == 1:
-                            print(self.city_guard)
-                            print(self.city_guard.say_dialogue(f"City Guard: "
-                                                               f"Kidnapping "
-                                                               f"you say? "
-                                                               f"Haven't "
-                                                               f"heard "
-                                                               f"anything "
-                                                               f"about that. "
-                                                               f"Although I "
-                                                               f"did oversee "
-                                                               f"some shady "
-                                                               f"figures "
-                                                               f"talking "
-                                                               f"nearby"))
-                            self.add_clue("City Guard saw some shady "
-                                          "characters talking near the city "
-                                          "gates.")
-                            # ADD CLUE ABOUT OBSERVATION
+                            if not self.__guard_asked:
+                                print(self.city_guard)
+                                print(self.city_guard.say_dialogue(f"Kidnapping "
+                                                                   f"you say? "
+                                                                   f"Haven't "
+                                                                   f"heard "
+                                                                   f"anything "
+                                                                   f"about that. "
+                                                                   f"Although I "
+                                                                   f"did oversee "
+                                                                   f"some shady "
+                                                                   f"figures "
+                                                                   f"talking "
+                                                                   f"nearby"))
+                                self.add_clue(self.city_guard.clue())
+                                self.__guard_asked = True
+                            else:
+                                print(self.city_guard.say_dialogue("You already asked me about the kidnappings"))
                         elif interaction == 2:
                             if "City Pass" in self.player.inventory:
-                                print("City Guard: Oh, you have a city pass. "
-                                      "You may proceed. Stay safe!")
+                                print(self.city_guard.say_dialogue("Oh, you have a city pass. "
+                                      "You may proceed. Stay safe!"))
                                 self.__guard_interacted = True
                             else:
-                                print("City Guard: Hold! You can't enter "
-                                      "without a city pass.")
+                                print(self.city_guard.say_dialogue("Hold! You can't enter "
+                                      "without a city pass."))
                         elif interaction == 3:
-                            print("City Guard: Safe travels, stranger.")
-                            self.__guard_interacted = True
+                            print(self.city_guard.say_dialogue("Safe travels, stranger."))
                 else:
                     print("You already interacted with the city guard.")
             elif action == "2":
@@ -87,52 +92,7 @@ class Level2(Location):
             elif action == "3":
                 print("You look around to see if there is a way to get into "
                       "the city.")
-
-                distraction_option = input("1) Look for a distraction\n"
-                                           "2) Return to the previous "
-                                           "options\n")
-
-                if distraction_option == "1":
-                    print("While scanning the surroundings, you notice a "
-                          "group of barbarians nearby.")
-
-                    self.current_location = self.sublocation[1]
-
-                    bribe_option = input("The barbarians seem rowdy but open "
-                                         "to negotiation.\n"
-                                         "Perhaps they are willing to do "
-                                         "something for a little bit of coin\n"
-                                         "Do you want to approach them?\n"
-                                         "1) Yes, approach the barbarians\n"
-                                         "2) No, return to the previous "
-                                         "options\n")
-
-                    if bribe_option == "1":
-
-                        if self.player.coins >= 25:
-                            print("You approach the barbarians and offer "
-                                  "them 25 coins to create a distraction.")
-                            print("They gladly accept the offer and create a "
-                                  "commotion, distracting the guards.")
-                            print("With the distraction in place, you slip "
-                                  "past the guards and enter the city.")
-                            self.__guard_interacted = True
-                            self.current_location = self.sublocation[5]
-                            self.visited("Barbarian Group")
-                            self.player.coins -= 25
-                        else:
-                            print("You don't have enough coins to bribe the "
-                                  "barbarians.")
-                            print("You decide to explore other options.")
-                    elif bribe_option == "2":
-                        print("You decide not to approach the barbarians and "
-                              "look for alternative options.")
-                    else:
-                        print("Invalid option.")
-                elif distraction_option == "2":
-                    print("You decide to return to the previous options.")
-                else:
-                    print("Invalid option.")
+                self.barbarian_camp()
 
             if self.current_location == self.sublocation[5]:
                 print(f"You have entered the city! You are now in the "
@@ -160,11 +120,70 @@ class Level2(Location):
         elif exploration_result == "2":
             self.visited("Back City Walls")
             print("You examine the back of the city walls.")
+            self.player.add_item("Prized Dagger")
             # Add puzzle logic or other events related to examining the
             # city walls (to be implemented later)
 
         elif exploration_result == "3":
             print("You decide to return to the city gates.")
+
+        else:
+            print("Invalid option.")
+
+    def barbarian_camp(self):
+
+        distraction_option = input("1) Look for a distraction\n"
+                                   "2) Return to the previous "
+                                   "options\n")
+
+        if distraction_option == "1":
+            print("While scanning the surroundings, you notice a "
+                  "group of barbarians nearby.")
+
+            self.current_location = self.sublocation[1]
+
+            bribe_option = input("The barbarians seem rowdy but open "
+                                 "to negotiation.\n"
+                                 "Do you want to approach them?\n"
+                                 "1) Yes, approach the barbarians\n"
+                                 "2) No, return to the previous "
+                                 "options\n")
+
+            if bribe_option == "1":
+                print("You approach the barbarians cautiously")
+                if not self.__barbarians_asked:
+                    print(self.barbarian.interact())
+                    print(f"{player.name}: I need a distraction to get into the city, it's very important.")
+                    print(self.barbarian.say_dialogue("I am in need of something as well.\n"
+                                                      "Perhaps we can strike a deal.."))
+                    print(self.barbarian.say_dialogue("You retrieve my prized dagger\n"
+                                                      "and I offer you our services. What say you?"))
+                    self.add_clue(self.barbarian.clue())
+                    self.__barbarians_asked = True
+                else:
+                    print(self.barbarian.say_dialogue("You have returned. With my prized dagger I hope?"))
+                    if "Prized Dagger" in self.player.inventory:
+                        print("Yes")
+                        if self.player.coins >= 25:
+                            print("With the distraction in place, you slip "
+                                  "past the guards and enter the city.")
+                            self.visited("Barbarian Group")
+                            self.__guard_interacted = True
+                            self.current_location = self.sublocation[5]
+                            self.player.coins -= 25
+                        else:
+                            print("You don't have enough coins to bribe the "
+                                  "barbarians.")
+                            print("You decide to explore other options.")
+                    else:
+                        print(self.barbarian.say_dialogue("Return with the dagger or not at all!"))
+            elif bribe_option == "2":
+                print("You decide not to approach the barbarians and "
+                      "look for alternative options.")
+            else:
+                print("Invalid option.")
+        elif distraction_option == "2":
+            print("You decide to return to the previous options.")
 
         else:
             print("Invalid option.")
