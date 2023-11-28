@@ -4,10 +4,10 @@ class Location:
         self.sublocation = sublocation
         self.location_NPCs = location_npcs
         self.clues = clues
+        self.visited_sublocations = []
         
     def add_clue(self, clue):
         self.clues.append(clue)
-        self.__visited_sublocations = []
         print("Current clues:\n",self.clues)
         
     def review_clues(self):
