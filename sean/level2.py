@@ -12,7 +12,6 @@ class Level2(Location):
                           "Dark Alley", "Back City Walls",
                           "Around City Walls", "City Streets"],
                          ["City Guard", "Barbarian"],
-                         [],
                          [])
         self.current_location = self.sublocation[0]
         self.player = player
@@ -30,8 +29,6 @@ class Level2(Location):
 
     def outside_city(self):
         self.current_location = self.sublocation[0]
-        if self.current_location not in self.visited_sublocations:
-            print("Hello")
         print(f"{self.current_location} - "
               f"The coldness of the night creeps into your soul.\n"
               f"You see the silhouette of the towering city gates ahead of "
