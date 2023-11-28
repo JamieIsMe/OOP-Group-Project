@@ -7,11 +7,15 @@ from denis.Player import Player
 
 class Level2(Location):
     def __init__(self, score):
-        super().__init__("City", "Outside City Walls", [], [])
-        self.current_location = self.sublocation
+        super().__init__("City",
+                         ["Outside City Walls", "Barbarian Group", "Dark Alley", "Back City Walls",
+                          "Around City Walls", "City Streets"],
+                         ["City Guard", "Barbarian"],
+                         [],
+                         [])
+        self.current_location = self.sublocation[0]
         self.player = player
         self.score = score
-        self.visited_locations = []
         self.city_guard = NPC("City Guard",
                               "Halt! What business do you have here, stranger?",
                               "Overheard some shady characters talking near the city gates.",
@@ -19,17 +23,17 @@ class Level2(Location):
 
         # Boolean variable set for no double interaction with the city guard
         self.__guard_interacted = False
-
         self.__dark_alley_investigated = False
 
     def outside_city(self):
-        print(f"{self.current_location.capitalize()} - The coldness of the night creeps into your soul.\n"
+        self.current_location = self.sublocation[0]
+        print(f"{self.current_location} - The coldness of the night creeps into your soul.\n"
               f"You see the silhouette of the towering city gates ahead of you, guarded by vigilant city guards.")
 
-        while self.current_location == self.sublocation:
+        while True:
             action = input("\nWhat will you do?\n"
                            "1) Approach the city gates\n"
-                           "2) Explore the surroundings\n"
+                           "2) Explore Around the City Walls\n"
                            "3) Check the immediate area\n")
 
             if action == "1":
@@ -42,10 +46,12 @@ class Level2(Location):
                                                 "3) Leave the city gates\n"))
 
                         if interaction == 1:
-                            print("City Guard: Kidnapping you say? Haven't heard anything about that. ")
+                            print("City Guard: Kidnapping you say? Haven't heard anything about that."
+                                  "Although I did oversee some shady figures talking nearby")
+                            self.add_clue("City Guard saw some shady characters talking near the city gates.")
                             # ADD CLUE ABOUT OBSERVATION
                         elif interaction == 2:
-                            if "City Pass" in player.inventory:
+                            if "City Pass" in self.player.inventory:
                                 print("City Guard: Oh, you have a city pass. You may proceed. Stay safe!")
                                 self.__guard_interacted = True
                             else:
@@ -66,6 +72,8 @@ class Level2(Location):
                 if distraction_option == "1":
                     print("While scanning the surroundings, you notice a group of barbarians nearby.")
 
+                    self.current_location = self.sublocation[1]
+
                     bribe_option = input("The barbarians seem rowdy but open to negotiation.\n"
                                          "Perhaps they are willing to do something for a little bit of coin\n"
                                          "Do you want to approach them?\n"
@@ -78,7 +86,8 @@ class Level2(Location):
                             print("They gladly accept the offer and create a commotion, distracting the guards.")
                             print("With the distraction in place, you slip past the guards and enter the city.")
                             self.__guard_interacted = True
-                            self.current_location = "City Streets"
+                            self.current_location = self.sublocation[5]
+                            self.visited("Barbarian Group")
                             self.player.coins -= 25
                         else:
                             print("You don't have enough coins to bribe the barbarians.")
@@ -89,12 +98,17 @@ class Level2(Location):
                         print("Invalid option.")
                 elif distraction_option == "2":
                     print("You decide to return to the previous options.")
+                else:
+                    print("Invalid option.")
 
-        if self.current_location == "City Streets":
-            print(f"You have entered the city! You are now in the {self.current_location}.")
-            print("The hustle and bustle of the city's inhabitants surrounds you.")
+            if self.current_location == self.sublocation[5]:
+                print(f"You have entered the city! You are now in the {self.current_location}.")
+                print("The hustle and bustle of the city's inhabitants surrounds you.")
+                print(self.view_visited_locations())
+                break  # Exit the loop once the player enters the city
 
     def explore_surroundings(self):
+        self.current_location = self.sublocation[3]
         print("You notice a dark alley at the back of the city walls")
         while True:
             exploration_result = input("1) Investigate the dark alley\n"
@@ -104,6 +118,8 @@ class Level2(Location):
             if exploration_result == "1" and not self.__dark_alley_investigated:
                 print("You decide to investigate the dark alley.")
                 print("As you enter the narrow alley, you hear a faint sound.")
+
+                self.current_location = self.sublocation[2]
 
                 event_result = input("1) Follow the sound\n"
                                      "2) Go deeper into the alley\n"
@@ -116,13 +132,14 @@ class Level2(Location):
 
                     self.add_clue("secret meeting under city")
                     self.__dark_alley_investigated = True
-                    self.visited_locations.append("Dark Alley")
+                    self.visited("Dark Alley")
 
                 elif event_result == "2":
                     print("You decide to go deeper into the alley.")
                     print("After navigating through the narrow passages, you find yourself at the bottom of a well.")
                     print("You climb up and find yourself inside the city walls.")
-                    self.current_location = "City Streets"
+                    self.visited("Dark Alley")
+                    self.current_location = self.sublocation[5]
                     break
 
                 elif event_result == "3":
@@ -135,6 +152,7 @@ class Level2(Location):
                 print("You don't want to go back in there as the group of people might see you")
 
             elif exploration_result == "2":
+                self.visited("Back City Walls")
                 print("You examine the back of the city walls.")
                 # Add puzzle logic or other events related to examining the city walls (to be implemented later)
 
@@ -144,10 +162,6 @@ class Level2(Location):
 
             else:
                 print("Invalid option.")
-
-        if self.current_location == "City Streets":
-            print(f"You have entered the city! You are now in the {self.current_location}.")
-            print("The hustle and bustle of the city's inhabitants surrounds you.")
 
 
 if __name__ == "__main__":
