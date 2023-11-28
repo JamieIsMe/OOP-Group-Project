@@ -5,24 +5,20 @@ from denis.Player import Player
 class Cave(Location):
     def __init__(self, score):
         super().__init__("cave", ["entrance", "walkway"],
-                         ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"])
+                         ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"], [])
         self.current_location = "entrance"
-        self.visited_sublocations = []
         self.location_states = [False] * 3
         self.user = Player("Jamie")
         # TEMP SCORE VARIABLE UNTIL PLAYER CLASS FINISHED
         self.score = score
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
 
-    def visited(self):
-        self.visited_sublocations.append(self.current_location)
-
     def entrance(self):
         self.current_location = "entrance"
-        if self.current_location not in self.visited_sublocations:
+        if self.current_location not in self.__visited_sublocations:
             print("As you cautiously step into the dimly lit cave, two things stand out to you, iron bars with a door"
                   "blocking further access into the cave and drawings on the cave walls")
-            self.visited()
+            self.visited(self.current_location)
         else:
             print("As you enter back in to the cave entrance, you take another look at the iron bars "
                   "with a door and the drawings")
@@ -68,10 +64,10 @@ class Cave(Location):
     def walkway(self):
         state = ["down"]*5
         self.current_location = "walkway"
-        if self.current_location not in self.visited_sublocations:
+        if self.current_location not in self.__visited_sublocations:
             print("You find yourself in a new room. You can see that there are 5 cells along the wall and a door at "
                   "the end of the room")
-            self.visited()
+            self.visited(self.current_location)
         else:
             print("")
         while self.current_location == "walkway":
