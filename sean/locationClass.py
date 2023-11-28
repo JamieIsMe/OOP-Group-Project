@@ -4,7 +4,7 @@ class Location:
         self.sublocation = sublocation
         self.location_NPCs = location_npcs
         self.__clues = clues
-        self.__visited_sublocations = visited
+        self.visited_sublocations = []
 
     def add_clue(self, clue):
         self.__clues.append(clue)
@@ -22,10 +22,10 @@ class Location:
         return self.sublocation
 
     def visited(self, location):
-        self.__visited_sublocations.append(location)
+        self.visited_sublocations.append(location)
 
     def view_visited_locations(self):
-        return f"You have visited {self.__visited_sublocations}"
+        return f"You have visited {self.visited_sublocations}"
 
     def whoishere(self):
         return self.location_NPCs

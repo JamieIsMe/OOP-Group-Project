@@ -30,6 +30,8 @@ class Level2(Location):
 
     def outside_city(self):
         self.current_location = self.sublocation[0]
+        if self.current_location not in self.visited_sublocations:
+            print("Hello")
         print(f"{self.current_location} - "
               f"The coldness of the night creeps into your soul.\n"
               f"You see the silhouette of the towering city gates ahead of "
@@ -51,10 +53,20 @@ class Level2(Location):
                                                 "3) Leave the city gates\n"))
 
                         if interaction == 1:
-                            print("City Guard: Kidnapping you say? Haven't "
-                                  "heard anything about that."
-                                  "Although I did oversee some shady figures "
-                                  "talking nearby")
+                            print(self.city_guard)
+                            print(self.city_guard.say_dialogue(f"City Guard: "
+                                                               f"Kidnapping "
+                                                               f"you say? "
+                                                               f"Haven't "
+                                                               f"heard "
+                                                               f"anything "
+                                                               f"about that. "
+                                                               f"Although I "
+                                                               f"did oversee "
+                                                               f"some shady "
+                                                               f"figures "
+                                                               f"talking "
+                                                               f"nearby"))
                             self.add_clue("City Guard saw some shady "
                                           "characters talking near the city "
                                           "gates.")
