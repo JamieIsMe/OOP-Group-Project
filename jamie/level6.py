@@ -4,8 +4,8 @@ from denis.Player import Player
 
 class Cave(Location):
     def __init__(self, score):
-        super().__init__("cave", ["entrance", "walkway"],
-                         ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"], [])
+        super().__init__("cave", ["entrance", "walkway", "hallway"],
+                         ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"])
         self.current_location = "entrance"
         self.location_states = [False] * 3
         self.user = Player("Jamie")
@@ -14,8 +14,8 @@ class Cave(Location):
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
 
     def entrance(self):
-        self.current_location = "entrance"
-        if self.current_location not in self.__visited_sublocations:
+        self.current_location = self.sublocation[0]
+        if self.current_location not in self.visited_sublocations:
             print("As you cautiously step into the dimly lit cave, two things stand out to you, iron bars with a door"
                   "blocking further access into the cave and drawings on the cave walls")
             self.visited(self.current_location)
@@ -39,9 +39,8 @@ class Cave(Location):
                               "door and pass through")
                         self.walkway()
                 elif action == "3":
-                    # [][X][][X][]
-                    # ADD A PLAYER CLUE HERE "5 people in robes surrounding a statue. The second "
-                    #                        "and fourth are kneeling down"
+                    if " - 5 people, The 2nd and 4th are kneeling down" not in self.user.clues:
+                        self.user.add_clue(" - 5 people, The 2nd and 4th are kneeling down")
                     print("Looking closer at the drawing, you see 5 people in robes surrounding a statue. The second "
                           "and fourth are kneeling down")
             else:
@@ -54,17 +53,16 @@ class Cave(Location):
                               "door and pass through")
                         self.walkway()
                 elif action == "2":
-                    # [][X][][X][]
-                    # ADD A PLAYER CLUE HERE "5 people in robes surrounding a statue. The second "
-                    #                        "and fourth are kneeling down"
+                    if " - 5 people, The 2nd and 4th are kneeling down" not in self.user.clues:
+                        self.user.add_clue(" - 5 people, The 2nd and 4th are kneeling down")
                     print("Looking closer at the drawing, you see 5 people in robes surrounding a statue. The second "
                           "and fourth are kneeling down")
             print()
 
     def walkway(self):
         state = ["down"]*5
-        self.current_location = "walkway"
-        if self.current_location not in self.__visited_sublocations:
+        self.current_location = self.sublocation[1]
+        if self.current_location not in self.visited_sublocations:
             print("You find yourself in a new room. You can see that there are 5 cells along the wall and a door at "
                   "the end of the room")
             self.visited(self.current_location)
@@ -78,22 +76,25 @@ class Cave(Location):
                     print("when you look at the cells you notice that someone is sitting inside one of the cells. "
                           "Before you can say anything, they speak.")
                     print(self.cell_man.interact())
-                    # NPC SPEAKS "If you open my cell, I will help you get through that door"
-                elif self.location_states[2]:
+                elif self.location_states[1]:
                     print("You return to the cell to see that the man has disappeared but he left a note on the floor\nYou pick it up and see that its says 5481")
-                    # self.user.add_clue("note ")
+                    if " - Note that says 5481" not in self.user.clues:
+                        self.user.add_clue(" - Note that says 5481")
                 else:
                     print("You return back to the person in the cell")
                 while Talking:
-                    action = input("What will you do?\n1) Ask who they are\n2) Ask how to open their cell\n3) Go back\n")
-                    if action == "1":
-                        print(self.cell_man.perform_action(": I am a member of the cult, I had doubts about what we "
-                                                           "were doing so the rest of them locked me in here"))
-                    elif action == "2":
-                        print(self.cell_man.perform_action(": There are levers that you will have to flip, i don't "
-                                                           "know which ones you have to flip"))
-                    elif action == "3":
-                        print("You go back to the centre of the room")
+                    if not self.location_states[1]:
+                        action = input("What will you do?\n1) Ask who they are\n2) Ask how to open their cell\n3) Go back\n")
+                        if action == "1":
+                            print(self.cell_man.perform_action(": I am a member of the cult, I had doubts about what we "
+                                                               "were doing so the rest of them locked me in here"))
+                        elif action == "2":
+                            print(self.cell_man.perform_action(": There are levers that you will have to flip, i don't "
+                                                               "know which ones you have to flip"))
+                        elif action == "3":
+                            print("You go back to the centre of the room")
+                            Talking = False
+                    else:
                         Talking = False
             elif action == "2":
                 print("You walk up to the door and attempt to open it but it wont budge, beside the door door you "
@@ -102,14 +103,22 @@ class Cave(Location):
                 while door_interaction:
                     action = input("What will you do?\n1) Look at the keypad\n2) Look at the levers\n3) Go back\n")
                     if action == "1":
-                        # IF CODE IS IN CLUES
-                        action = input("The keypad needs a 4 digit code.\n1) Try code you found earlier\n2) Go Back")
-                        if action == "1":
-                            pass
-                        elif action == "2":
-                            pass
+                        keypad = True
+                        while keypad:
+                            action = input("The keypad needs a 4 digit code.\n1) Try enter a code\n2) View Clues\n3) Go Back")
+                            if action == "1":
+                                code = input("Please enter a code: ")
+                                if code == "5481":
+                                    print("You hear a click as the door swings open")
+                                    self.hallway()
+                            elif action == "2":
+                                print("You take a look at your clues: ", end="")
+                                print(*self.user.clues)
+                            elif action == "3":
+                                keypad = False
+
                     elif action == "2":
-                        if not self.location_states[2]:
+                        if not self.location_states[1]:
                             lever_interaction = True
                             print("You look at the levers and see that all five are flipped up")
                             while lever_interaction:
@@ -133,13 +142,13 @@ class Cave(Location):
                                     print(f"You flipped lever 5")
                                 elif action == "6":
                                     print("You take a look at your clues: ", end="")
-                                   # print(*self.user.clues)
+                                    print(*self.user.clues)
                                 elif action == "7":
                                     lever_interaction = False
                                 if state[0] and state[2] and state[4] == "down":
                                     if state[1] and state[3] == "up":
                                         lever_interaction = False
-                                        self.location_states[2] = True
+                                        self.location_states[1] = True
                                         print("You hear a click and a door open behind "
                                               "you. The levers are now stiff and you cant "
                                               "move them")
@@ -152,6 +161,10 @@ class Cave(Location):
                 print("You turn around and head back through the door you came from")
                 self.entrance()
 
+    def hallway(self):
+        self.current_location = self.sublocation[2]
+        while self.current_location == "hallway":
+            print("a")
 
 if __name__ == "__main__":
     cave = Cave(1)
