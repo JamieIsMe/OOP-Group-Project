@@ -2,6 +2,7 @@ from cian.characters import NPC
 from sean.locationClass import Location
 from denis.Player import Player
 
+
 # Get city pass from puzzle when you examine back city walls
 
 
@@ -144,64 +145,63 @@ class Level2(Location):
     def explore_surroundings(self):
         self.current_location = self.sublocation[3]
         print("You notice a dark alley at the back of the city walls")
-        while True:
-            exploration_result = input("1) Investigate the dark alley\n"
-                                       "2) Examine the back of the city "
-                                       "walls\n"
-                                       "3) Return to the city gates\n")
+        exploration_result = input("1) Investigate the dark alley\n"
+                                   "2) Examine the back of the city "
+                                   "walls\n"
+                                   "3) Return to the city gates\n")
 
-            if (exploration_result == "1" and
-                    not self.__dark_alley_investigated):
-                print("You decide to investigate the dark alley.")
-                print("As you enter the narrow alley, you hear a faint sound.")
-
-                self.current_location = self.sublocation[2]
-
-                event_result = input("1) Follow the sound\n"
-                                     "2) Go deeper into the alley\n"
-                                     "3) Leave the alley\n")
-
-                if event_result == "1":
-                    print("You follow the sound and discover a hidden door.")
-                    print("Behind the door, you find a group of hooded "
-                          "figures planning a secret meeting.")
-                    print("They almost notice you, but you were able to slip "
-                          "away before they caught you.")
-
-                    self.add_clue("secret meeting under city")
-                    self.__dark_alley_investigated = True
-                    self.visited("Dark Alley")
-
-                elif event_result == "2":
-                    print("You decide to go deeper into the alley.")
-                    print("After navigating through the narrow passages, "
-                          "you find yourself at the bottom of a well.")
-                    print("You climb up and find yourself inside the city "
-                          "walls.")
-                    self.visited("Dark Alley")
-                    self.current_location = self.sublocation[5]
-                    break
-
-                elif event_result == "3":
-                    print("You decide to leave the dark alley.")
-
-                else:
-                    print("Invalid option.")
-
-            elif exploration_result == "1" and self.__dark_alley_investigated:
+        if exploration_result == "1":
+            self.current_location = self.sublocation[2]
+            if self.current_location not in self.visited_sublocations:
+                self.dark_alley(self.current_location)
+            else:
                 print("You don't want to go back in there as the group of "
                       "people might see you")
 
-            elif exploration_result == "2":
-                self.visited("Back City Walls")
-                print("You examine the back of the city walls.")
-                # Add puzzle logic or other events related to examining the
-                # city walls (to be implemented later)
+        elif exploration_result == "2":
+            self.visited("Back City Walls")
+            print("You examine the back of the city walls.")
+            # Add puzzle logic or other events related to examining the
+            # city walls (to be implemented later)
 
-            elif exploration_result == "3":
-                print("You decide to return to the city gates.")
-                break  # Exit the loop to go back to the initial exploration
-                # menu
+        elif exploration_result == "3":
+            print("You decide to return to the city gates.")
+
+        else:
+            print("Invalid option.")
+
+    def dark_alley(self, location):
+        print("You decide to investigate the dark alley.")
+        print("As you enter the narrow alley, you hear a faint sound.")
+
+        while location == self.sublocation[2]:
+            event_result = input("1) Follow the sound\n"
+                                 "2) Go deeper into the alley\n"
+                                 "3) Leave the alley\n")
+
+            if event_result == "1":
+                print("You follow the sound and discover a hidden door.")
+                print("Behind the door, you find a group of hooded "
+                      "figures planning a secret meeting.")
+                print("They almost notice you, but you were able to slip "
+                      "away before they caught you.")
+
+                self.add_clue("secret meeting under city")
+                self.__dark_alley_investigated = True
+                self.visited(self.sublocation[2])
+
+            elif event_result == "2":
+                print("You decide to go deeper into the alley.")
+                print("After navigating through the narrow passages, "
+                      "you find yourself at the bottom of a well.")
+                print("You climb up and find yourself inside the city "
+                      "walls.")
+                self.visited(self.sublocation[2])
+                self.current_location = self.sublocation[5]
+
+            elif event_result == "3":
+                print("You decide to leave the dark alley.")
+                self.current_location = self.sublocation[4]
 
             else:
                 print("Invalid option.")
