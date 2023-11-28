@@ -8,7 +8,7 @@ from denis.Player import Player
 class Level2(Location):
     def __init__(self, score):
         super().__init__("City", "Outside City Walls", [], [])
-        self.current_location = "entrance to the city"
+        self.current_location = self.sublocation
         self.player = player
         self.score = score
         self.visited_locations = []
@@ -23,10 +23,10 @@ class Level2(Location):
         self.__dark_alley_investigated = False
 
     def outside_city(self):
-        print(f"{self.current_location.capitalize()} - A cold night outside the city walls.\n"
+        print(f"{self.current_location.capitalize()} - The coldness of the night creeps into your soul.\n"
               f"You see the silhouette of the towering city gates ahead of you, guarded by vigilant city guards.")
 
-        while self.current_location == "entrance to the city":
+        while self.current_location == self.sublocation:
             action = input("\nWhat will you do?\n"
                            "1) Approach the city gates\n"
                            "2) Explore the surroundings\n"
@@ -116,6 +116,7 @@ class Level2(Location):
 
                     self.add_clue("secret meeting under city")
                     self.__dark_alley_investigated = True
+                    self.visited_locations.append("Dark Alley")
 
                 elif event_result == "2":
                     print("You decide to go deeper into the alley.")
