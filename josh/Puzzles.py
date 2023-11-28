@@ -1,3 +1,4 @@
+
 import time
 def MedievalPuzzle():
     print("The Druid presents you with a medieval puzzle:")
