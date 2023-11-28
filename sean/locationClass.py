@@ -1,5 +1,5 @@
 class Location:
-    def __init__(self, location, sublocation, location_npcs, clues, visited):
+    def __init__(self, location, sublocation, location_npcs, clues):
         self.location = location
         self.sublocation = sublocation
         self.location_NPCs = location_npcs
