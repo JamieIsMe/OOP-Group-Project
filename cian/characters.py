@@ -3,23 +3,23 @@ from abc import ABC, abstractmethod
 
 class Character(ABC):
     def __init__(self, name, dialogue, clue, item):
-        self._name = name
+        self.name = name
         self._dialogue = dialogue
         self._interacted = False
-        self._clues = clue
+        self.clues = clue
         self._items = item
 
     def __str__(self):
-        return f"{self.__class__.__name__}: {self._name}"
+        return f"{self.__class__.__name__}: {self.name}"
 
     def __eq__(self, other):
         if isinstance(other, Character):
-            return self._name == other._name
+            return self.name == other.name
         return False
 
     def __lt__(self, other):
         if isinstance(other, Character):
-            return self._name < other._name
+            return self.name < other.name
         return False
 
     @abstractmethod  # Declares an abstract method using a decorator.
@@ -32,10 +32,10 @@ class Character(ABC):
 
     def interact(self):
         if not self._interacted:
-            interaction = f"{self._name}: {self._dialogue}"
+            interaction = f"{self.name}: {self._dialogue}"
             self._interacted = True
         else:
-            interaction = f"You have already talked to {self._name}"
+            interaction = f"You have already talked to {self.name}"
 
         return interaction
 
@@ -58,14 +58,14 @@ class NPC(Character):
     """
 
     def perform_action(self, action):
-        return f"{self._name} {action}."
+        return f"{self.name} {action}."
 
     def say_dialogue(self, dialogue):
-        return f"{self._name}: {dialogue}."
+        return f"{self.name}: {dialogue}."
 
     def interact(self):
         interact = super().interact()
         return interact
 
     def clue(self):
-        return self._clues
+        return self.clues

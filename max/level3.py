@@ -15,7 +15,7 @@ Potential secret achievement? (Discuss it with the boys for that one.)
 
 Date: 25/11/2023
 """
-from denis.player import Player
+from denis.Player import Player
 from sean.locationClass import Location
 from cian.characters import NPC
 from minigame import cipher_decryption_game
@@ -27,15 +27,14 @@ class Level3(Location):
     """
 
     def __init__(self, score, coins):
-        super().__init__("Town Center", ["Market", "Port", "Tavern"],
+        super().__init__("Town Center", ["Market", "Crown and Chalice Inn", "Haven's Port"],
                          ["Textile Merchant", "BlackSmith", "Potion Mixer", "Street Performers",
                           "Tavern keeper"], ["Find someone in the tavern"])
 
         self.user = Player("Max")
-        self.current_location = "Market"
+        self.current_location = self.sublocation[0]
         self.score = score  # Points depending on the player action in previous level
         self.coins = coins  # Coins collected throughout the game to aid the player in future quests
-        self.visited_locations = []
 
         self.blacksmith = NPC("Astrid Steelheart",
                               "Welcome to the Iron-heart Forge. What brings you here today adventurer? "
@@ -67,9 +66,6 @@ class Level3(Location):
               f"\nwith mesmerising street performances happening at the minute with camaraderie underneath the cold "
               f"snowy night.")
 
-    def visited(self):
-        self.visited_locations.append(self.current_location)
-
     def market(self):
         while self.current_location == "Market":
             action = input("\nWhat will you do?,\n"
@@ -77,7 +73,7 @@ class Level3(Location):
                            "2) Go to the tavern\n"
                            "3) Go to the Port\n")
             if action == "1":
-                if self.current_location not in self.visited_locations:
+                if self.current_location not in self.visited_sublocations:
                     print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
                           "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
                     print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
@@ -127,8 +123,8 @@ class Level3(Location):
                 print("\n")
                 Level3.interact_with_street_performers(self)
             case 5:
+                Level3.visited(self, self.current_location)
                 Level3.market(self)
-                Level3.visited()
             case _:
                 print("Invalid choice")
 
@@ -165,7 +161,7 @@ class Level3(Location):
                                 print(f"New balance: {self.coins}")
                                 print(self.blacksmith.say_dialogue(f"The sword suits you traveler, this "
                                                                    f"will help you for sure"))
-                                self.user.add_item("Sword")
+                                self.user.add_item(self.blacksmith._items)
                             else:
                                 print(self.blacksmith.say_dialogue("You don't have enough coins for the sword."))
                                 # IF YOUR SCORE IS GOOD, SHE WILL GIVE IT FOR A DISCOUNT OR FREE
@@ -212,7 +208,7 @@ class Level3(Location):
                                                                          f"yours now wanderer it might help in the "
                                                                          f"extreme weather conditions ahead of your "
                                                                          f"journey."))
-                                self.user.add_item(self.textile_merchant.items)
+                                self.user.add_item(self.textile_merchant._items)
                             else:
                                 print(self.textile_merchant.say_dialogue("You do not have another coins for the fur "
                                                                          "coat,\nadventurer perhaps maybe you can find "
@@ -231,7 +227,7 @@ class Level3(Location):
                                                              "ago tried to influence me to join the cult and left me"
                                                              " this.\n"))
                     print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
-                    Level3.add_clue(self, "Paper with the cult logo")
+                    Level3.add_clue(self, self.textile_merchant.clues)
                 elif interaction == 3:
                     print(self.textile_merchant.perform_action("Waves nervously as I leave the stores maybe its just \n"
                                                                "his chicken is missing"))
@@ -264,8 +260,8 @@ class Level3(Location):
                         print("Let's decipher what she said:\n")
                         cipher_decryption_game()
                         Level3.add_clue(self, "The Legendary Witch Slayer will save us all message")
-                        print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
-                        self.user.add_item("Spellbook")
+                        print(f"You pick up some {self.potion_mixer._items} and decide to keep it.")
+                        self.user.add_item(self.potion_mixer._items)
                         self.__potion_mixer_interacted = True
                     else:
                         print(f"{self.potion_mixer.name} is gone")

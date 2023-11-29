@@ -107,7 +107,7 @@ class Camp(Location):
                         print("The Goblin trio open the door further and you see 3 identical goblins."
                               "The only difference is their eye colour\n")
                         print(self.goblin_trio._dialogue[2])
-                        self.add_clue(self.goblin_trio._clues[0])
+                        self.add_clue(self.goblin_trio.clues[0])
                         self.review_clues()
 
                         choice = input("Where will you go next?\n1) Go back to the outside of the camp.\n"
@@ -172,7 +172,7 @@ class Camp(Location):
 
         if coins == self.max_coins:
             print(self.dice_goblin._dialogue[4])
-            self.add_clue(self.dice_goblin._clues[0])
+            self.add_clue(self.dice_goblin.clues[0])
             self.review_clues()
             print(self.dice_goblin._dialogue[5])
 

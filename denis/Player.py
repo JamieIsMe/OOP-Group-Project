@@ -1,6 +1,6 @@
 class Player:
 
-    def __init__(self,name):
+    def __init__(self, name):
         self.name = name
         self.inventory = []
         self.clues = []
@@ -16,9 +16,9 @@ class Player:
         print("Your clues are:\n")
         for clue in self.clues:
             print(clue + '\n')
-    
-    def add_item(self,item):
+
+    def add_item(self, item):
         self.inventory.append(item)
 
-    def add_clue(self,clue):
+    def add_clue(self, clue):
         self.clues.append(clue)
