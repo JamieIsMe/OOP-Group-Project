@@ -3,14 +3,13 @@ from cian.characters import NPC
 from denis.Player import Player
 import time
 class Cave(Location):
-    def __init__(self, score):
-        super().__init__("cave", ["entrance", "walkway", "hallway"],
+    def __init__(self):
+        super().__init__("cave", ["entrance", "walkway", "cursed_hallway"],
                          ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"])
         self.current_location = "entrance"
         self.location_states = [False] * 3
         self.user = Player("Jamie")
         # TEMP SCORE VARIABLE UNTIL PLAYER CLASS FINISHED
-        self.score = score
         self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
 
     def entrance(self):
@@ -36,7 +35,7 @@ class Cave(Location):
                         print("You approach the door and see that it's locked, however you don't have a key to unlock it")
                     elif "key" in self.user.inventory:
                         print("You approach the door and see that it's locked. You use your key and manage to unlock the "
-                              "door and pass through")
+                              "door and pass through\n")
                         self.walkway()
                 elif action == "3":
                     if " - 5 people, The 2nd and 4th are kneeling down" not in self.user.clues:
@@ -50,7 +49,7 @@ class Cave(Location):
                         print("You approach the door and see that it's locked, however you don't have a key to unlock it")
                     elif "key" in self.user.inventory:
                         print("You approach the door and see that it's locked. You use your key and manage to unlock the "
-                              "door and pass through")
+                              "door and pass through\n")
                         self.walkway()
                 elif action == "2":
                     if " - 5 people, The 2nd and 4th are kneeling down" not in self.user.clues:
@@ -75,7 +74,7 @@ class Cave(Location):
                 if not self.location_states[1]:
                     print("when you look at the cells you notice that someone is sitting inside one of the cells. "
                           "Before you can say anything, they speak.")
-                    print(self.cell_man.interact())
+                    print(self.cell_man.say_dialogue(self.cell_man.dialogue))
                 elif self.location_states[1]:
                     print("You return to the cell to see that the man has disappeared but he left a note on the "
                           "floor\nYou pick it up and see that its says 5481")
@@ -111,12 +110,13 @@ class Cave(Location):
                                 code = input("Please enter a code: ")
                                 if code == "5481":
                                     print("You hear a click as the door swings open.\nYou feel an eerie chill that "
-                                          "envelops you and pulls you in\nThe door slams shut behind you")
-                                    self.hallway()
+                                          "envelops you and pulls you in\nThe door slams shut behind you\n")
+                                    self.cursed_hallway()
                             elif action == "2":
                                 print("You take a look at your clues: ", end="")
                                 print(*self.user.clues)
                             elif action == "3":
+                                print("You move back to the center of the room\n")
                                 keypad = False
 
                     elif action == "2":
@@ -163,8 +163,9 @@ class Cave(Location):
                 print("You turn around and head back through the door you came from")
                 self.entrance()
 
-    def hallway(self):
+    def cursed_hallway(self):
         self.current_location = self.sublocation[2]
+        time.sleep(1)
         print("As you take a look ahead, you notice that the passage stretchs endlessly before "
               "you, the vanishing point obscured by an otherworldly haze\n")
         time.sleep(3)
@@ -179,7 +180,7 @@ class Cave(Location):
             print('\033[91m' + i + '\033[0m', end="")
             time.sleep(0.5)
         time.sleep(1)
-        while self.current_location == "hallway":
+        while self.current_location == "cursed_hallway":
             choice = input("\nWhat will you do?\n1) Continue on forward\n2) Run away\n")
             if choice == "1":
                 pass
@@ -187,7 +188,6 @@ class Cave(Location):
                 pass
 
 
-
 if __name__ == "__main__":
-    cave = Cave(1)
+    cave = Cave()
     cave.entrance()
