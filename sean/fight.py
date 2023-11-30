@@ -135,4 +135,6 @@ if __name__ == "__main__":
     player_name = input("Enter your name: ")
     player = User(player_name)
     red_cloak = RedCloakEnemy()
+    cult_member = CultMember()
     fight(player, red_cloak)
+    fight(player, cult_member)

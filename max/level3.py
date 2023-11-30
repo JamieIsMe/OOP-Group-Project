@@ -17,7 +17,7 @@ Date: 25/11/2023
 """
 from denis.Player import Player
 from sean.locationClass import Location
-from sean.fight import fight, User, CultElder
+from sean.fight import fight, User, CultMember
 from cian.characters import NPC
 from minigame import cipher_decryption_game
 from riddle import riddle_game
@@ -420,8 +420,8 @@ class Level3(Location):
             print("Cult at port")
 
             user = User(self.user.name)
-            cult_elder = CultElder
-            fight(user, cult_elder)
+            cult_member = CultMember()
+            fight(user, cult_member)
 
 
 if __name__ == "__main__":
