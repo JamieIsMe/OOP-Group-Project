@@ -138,7 +138,7 @@ class Cave(Location):
                                     self.cursed_hallway()
                             elif action == "2":
                                 print("You take a look at your clues: ", end="")
-                                print(*self.user.clues)
+                                print(*self.clues)
                             elif action == "3":
                                 print("You move back to the center of the room\n")
                                 keypad = False
@@ -169,7 +169,7 @@ class Cave(Location):
                                     print(f"You flipped lever 5")
                                 elif action == "6":
                                     print("You take a look at your clues: ", end="")
-                                    print(*self.user.clues)
+                                    print(*self.clues)
                                 elif action == "7":
                                     lever_interaction = False
                                 if state[0] and state[2] and state[4] == "down":
@@ -198,10 +198,12 @@ class Cave(Location):
               "comprehend.\nYou take your first steps down the passage\n")
         time.sleep(3)
         print(
-            "You keep walking the end still seems to be nowhere in sight.The air grows heavier with each passing step.\n")
+            "You keep walking the end still seems to be nowhere in sight.The air grows "
+            "heavier with each passing step.\n")
         time.sleep(3)
         print(
-            "Suddenly you feel a strong pulsating wave from ahead of you. You stop dead in your tracks, and thats when you notice it.\n")
+            "Suddenly you feel a strong pulsating wave from ahead of you. You stop "
+            "dead in your tracks, and thats when you notice it.\n")
         time.sleep(2)
         for i in "YOU ARE BEING WATCHED":
             print('\033[91m' + i + '\033[0m', end="")
@@ -261,22 +263,51 @@ class Cave(Location):
                     print(self.cult_member.say_dialogue(self.cult_member.dialogue[1]))
                     time.sleep(2)
                     print(self.witch_slayer.say_dialogue(self.witch_slayer.dialogue[1]))
-                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[
-                                                               0]))
+                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[0]))
                     time.sleep(2)
                     print(self.witch_slayer.perform_action(self.witch_slayer.actions[1]))
 
-
     def ran_away(self):
         # Finish this ending
-        # ADD FREDRICK
         print("You can hear a booming laughter coming from behind you as you run "
               "away\nYou turn around and see Fredrick The Bear running towards "
               "you.\nYou sprint through the door you came through and slam it shut "
               "behind you\nYou hear a faint \"Hur Hur Hur Hur\"")
+        time.sleep(2)
+        print("\nYou turn around and realise you have found yourself in the room with "
+              "the 6 missing people you were searching for\nThey all have their names "
+              "on name tags.\nJamie, Cian, Sean, Josh, Denis, Max\nThey are all "
+              "transcribing gibberish into books.")
+        viewing = True
+        while viewing:
+            action = input("What will you do?\n1) Look at Josh's book\n2) Look at "
+                           "Sean's book\n3) Look at Max's book\n4) Look at Denis' "
+                           "book\n5) Look at Cian's book\n6) Look at Jamie's book\n7) "
+                           "Free them")
+            if action == "1":
+                print("You take a look over Josh's book and read what it says")
+                print("Snippet Of Josh's Code")
+            elif action == "2":
+                print("You take a look over Sean's book and read what it says")
+                print("Snippet of Seans Code")
+            elif action == "3":
+                print("You take a look over Max's book and read what it says")
+                print("Snippet of Maxs code")
+            elif action == "4":
+                print("You take a look over Denis' book and read what it says")
+                print("Snippet of Denis' code")
+            elif action == "5":
+                print("You take a look over Cian's book and read what it says")
+                print("Snippet of Cian's code")
+            elif action == "6":
+                print("You take a look over Jamie's book and read what it says")
+                print("Snippet of Jamie's code")
+            elif action == "7":
+                print("You free the missing people and they are able to return to "
+                      "their families")
 
 
 if __name__ == "__main__":
     cave = Cave()
-    #cave.entrance()
-    cave.cursed_hallway()
+    cave.entrance()
+
