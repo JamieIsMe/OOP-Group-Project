@@ -2,6 +2,7 @@ from cian.characters import NPC
 from sean.locationClass import Location
 from denis.Player import Player
 from sean.fight import fight, User, RedCloakEnemy
+from sean.dice_game import roll_dice
 
 
 # Get city pass from puzzle when you examine back city walls
@@ -26,12 +27,18 @@ class Level2(Location):
                              "Looky here boys! Some fresh meat",
                              "The barbarian's prized dagger was stolen by a man in a red cloak",
                              "")
+        self.red_cloak_man = NPC("Red Cloaked Figure",
+                                 "What do we have here?",
+                                 "",
+                                 "Prized Dagger")
 
         # Boolean variable set for no double interaction with the city guard
         self.__guard_interacted = False
         self.__guard_asked = False
         self.__barbarians_asked = False
         self.__deal_made = False
+        self.__cloak_figure_interact = False
+        self.__cloak_figure_fin = False
         self.__dark_alley_investigated = False
 
     def outside_city(self):
@@ -110,11 +117,78 @@ class Level2(Location):
                 print("You have already visited the dark alley.")
 
         elif exploration_result == "2":
-            self.visited("Back City Walls")
-            print("You examine the back of the city walls.")
-            user = User(player.name)
-            red_cloak = RedCloakEnemy()
-            fight(user, red_cloak)
+            if not self.__cloak_figure_fin:
+                self.visited("Back City Walls")
+                print("You examine the back of the city walls.")
+                if self.__deal_made:
+                    print("You see a figure hiding at the back of the city walls.\n"
+                          "They are dressed in a red cloak and look to be trying to hide something")
+                    print("You notice that this is the man the barbarian was talking about.")
+                    self.red_cloak_man.interact()
+                    print("You see the prized dagger in his hand")
+                    print(f"{player.name} I'll be needing that dagger")
+                    self.red_cloak_man.say_dialogue("You'll have to win it fair and square")
+                    if "Sword" in player.inventory:
+                        self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it")
+                        cloaked_figure_option = input("Do you want to fight him for it or play his little game? "
+                                                      "1) Fight him!"
+                                                      "2) Game time!")
+                        if cloaked_figure_option == "1":
+                            print(f"{player.name} Give it to me")
+                            user = User(player.name)
+                            red_cloak = RedCloakEnemy()
+                            fight(user, red_cloak)
+                            self.__cloak_figure_fin = True
+                        elif cloaked_figure_option == "2":
+                            print(f"{player.name} Let's play then")
+                            roll_dice()
+                            self.__cloak_figure_fin = True
+                    else:
+                        self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it")
+                        print(f"{player.name} Let's play then")
+                        roll_dice()
+                        self.__cloak_figure_fin = True
+
+                elif not self.__deal_made and not self.__cloak_figure_interact:
+                    print("You see a figure hiding at the back of the city walls.\n"
+                          "They are dressed in a red cloak and look to be trying to hide something")
+                    print("You approach the man to ask if there is a way in")
+                    self.red_cloak_man.interact()
+                    self.red_cloak_man.say_dialogue("Back off stranger! This is mine! I found it!")
+                    print("You back off slowly. You don't want to get into any unnecessary trouble")
+                    self.__cloak_figure_interact = True
+
+                elif self.__deal_made and self.__cloak_figure_interact:
+                    print("You come back to the cloaked man.")
+                    self.red_cloak_man.say_dialogue("I told you to back off! My precious!")
+                    print("You notice now that this is the man the barbarian was talking about.")
+                    print("You see the prized dagger in his hand")
+                    print(f"{player.name} I'll be needing that dagger")
+                    self.red_cloak_man.say_dialogue("You'll have to win it off me in dice then\n"
+                                                    "and i never lose in dice!")
+                    if "Sword" in player.inventory:
+                        cloaked_figure_option = input("Play his little dice game or rip it from his cold dead hands?"
+                                                      "1) Fight him!"
+                                                      "2) Game time!")
+                        if cloaked_figure_option == "1":
+                            print(f"{player.name} I'll be taking that dagger")
+                            self.red_cloak_man.say_dialogue("So this is how it'll be")
+                            user = User(player.name)
+                            red_cloak = RedCloakEnemy()
+                            fight(user, red_cloak)
+                            self.__cloak_figure_fin = True
+                        elif cloaked_figure_option == "2":
+                            print(f"{player.name} Let's play then")
+                            roll_dice()
+                            self.__cloak_figure_fin = True
+                    else:
+                        print(f"{player.name} Let's play then")
+                        roll_dice()
+                        self.__cloak_figure_fin = True
+                else:
+                    print("You dont want to cause any trouble so you stay away from the cloaked figure.")
+            else:
+                print("There is nothing here for you now.")
 
         elif exploration_result == "3":
             print("You decide to return to the city gates.")
