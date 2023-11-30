@@ -1,7 +1,6 @@
 import random
 import math
 import time
-from denis.Player import Player
 
 
 class User:
@@ -47,7 +46,7 @@ class RedCloakEnemy:
 
 
 def fight(user, enemy):
-    print(f"A mysterious figure in a red cloak appears!")
+    print(f"The mysterious figure in the red cloak readys himself!")
     time.sleep(1)
     print("Prepare for battle!")
 
@@ -108,10 +107,10 @@ def fight(user, enemy):
 
     if user.health <= 0:
         print("You were defeated by the Red Cloak. Game over.")
+        return None
     else:
         print("You defeated the Red Cloak! You gain a dagger and 25 coins.")
-        Player.add_item("Prize Dagger")
-        user.coins += 25
+        return "Prized Dagger"
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from sean.locationClass import Location
 from denis.Player import Player
 from sean.fight import fight, User, RedCloakEnemy
 from sean.dice_game import roll_dice
+from sean.colour_puzzle import ColoredSlabPuzzle
 
 
 # change dark alley to
@@ -156,7 +157,10 @@ class Level2(Location):
                             print(f"{player.name}: Give it to me")
                             user = User(player.name)
                             red_cloak = RedCloakEnemy()
-                            fight(user, red_cloak)
+                            prize = fight(user, red_cloak)
+                            if prize:
+                                player.add_item(prize)
+                                player.show_inventory()
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
                             print(f"{player.name}: Let's play then")
@@ -220,7 +224,10 @@ class Level2(Location):
                                                                   "it'll be"))
                             user = User(player.name)
                             red_cloak = RedCloakEnemy()
-                            fight(user, red_cloak)
+                            prize = fight(user, red_cloak)
+                            if prize:
+                                player.add_item(prize)
+                                player.show_inventory()
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
                             print(f"{player.name} Let's play then")
@@ -231,7 +238,10 @@ class Level2(Location):
                             self.__cloak_figure_fin = True
                     else:
                         print(f"{player.name} Let's play then")
-                        roll_dice()
+                        prize = roll_dice()
+                        if prize:
+                            player.add_item(prize)
+                            player.show_inventory()
                         self.__cloak_figure_fin = True
                 else:
                     print("You dont want to cause any trouble so you stay "
@@ -360,8 +370,8 @@ class Level2(Location):
                                                       "the back of the city"))
                     print(self.barbarian.say_dialogue("Off ya hop now fresh "
                                                       "meat and don't come "
-                                                      "back"
-                                                      "without my dagger!"))
+                                                      "back without my "
+                                                      "dagger!"))
                     self.__deal_made = True
                     self.add_clue(self.barbarian.clue())
                 elif deal_option == "2":
@@ -372,7 +382,7 @@ class Level2(Location):
         print("You decide to investigate the dark alley.")
         if self.current_location not in self.visited_sublocations:
             print("As you enter the narrow alley, you hear a faint sound.")
-        self.visited(self.sublocation[2])
+            self.visited(self.sublocation[2])
 
         while self.current_location == self.sublocation[2]:
             event_result = input("1) Follow the sound\n"
@@ -396,8 +406,13 @@ class Level2(Location):
                           "you")
 
             elif event_result == "2":
-                # puzzle about red blue yellow robes
-                print("")
+                print("You find a pile of coloured slabs and 3 slots that "
+                      "they seem to fit into")
+                colored_slab_puzzle = ColoredSlabPuzzle()
+                city_pass = colored_slab_puzzle.play_puzzle()
+                if city_pass:
+                    player.add_item(city_pass)
+                    player.show_inventory()
 
             elif event_result == "3":
                 print("You decide to leave the dark alley.")
@@ -411,7 +426,6 @@ class Level2(Location):
 
 if __name__ == "__main__":
     player = Player("Player Name")
-    player.coins = 25
     level2 = Level2(player)
 
     level2.outside_city()
