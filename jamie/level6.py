@@ -21,8 +21,8 @@ class Cave(Location):
                                                                    "Witch Slayer, "
                                                                    "save us all!"], "",
                                "","")
-        self.witch_slayer = NPC("The Witch Slayer",["The Legendary Witch Slayer has "
-                                                    "returned, and those who sought to "
+        self.witch_slayer = NPC("The Witch Slayer",["The Legendary Witch... Slayer has "
+                                                    "returned\nThose who sought to "
                                                     "extinguish my flame shall now "
                                                     "face the inferno of my rekindled "
                                                     "wrath.", "I have no use for "
@@ -267,10 +267,11 @@ class Cave(Location):
 
     def ran_away(self):
         # Finish this ending
+        # ADD FREDRICK
         print("You can hear a booming laughter coming from behind you as you run away")
 
 
 if __name__ == "__main__":
     cave = Cave()
-    # cave.entrance()
-    cave.cursed_hallway()
+    cave.entrance()
+    #cave.cursed_hallway()
