@@ -44,27 +44,17 @@ class Character(ABC):
         pass
         # add clue to clue list from NPC
 
-
     def dialogue(self):
-        return self._dialogue
-
+        return self.dialogue
 
     def items(self):
         return self.items
-
 
     def actions(self):
         return self.actions
 
 
-
 class NPC(Character):
-    """
-    A class that implements the abstract class Character.
-    The perform_action method must provide logic.
-    The purpose of this class is to provide characters that are not
-    essential for the mystery.
-    """
 
     def perform_action(self, action):
         return f"{self.name} {action}."
