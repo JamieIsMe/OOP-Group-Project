@@ -8,7 +8,7 @@ class Character(ABC):
         self._interacted = False
         self.clues = clue
         self._items = item
-        self._actions = action
+        self.actions = action
 
     def __str__(self):
         return f"{self.__class__.__name__}: {self.name}"
