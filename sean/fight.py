@@ -1,6 +1,7 @@
 import random
 import math
 import time
+from denis.Player import Player
 
 
 class User:
@@ -35,7 +36,8 @@ class User:
             self.dodge_counter = 0
             return special_damage
         else:
-            print("You can't use your special ability yet. Dodge successfully three times first.")
+            print("You can't use your special ability yet. Dodge "
+                  "successfully three times first.")
             return 0
 
 
@@ -50,8 +52,10 @@ def fight(user, enemy):
     print("Prepare for battle!")
 
     while user.health > 0 and enemy.health > 0:
-        print(f"\n{user.name}'s Health: {user.health} | Red Cloak's Health: {enemy.health}\n")
-        action = input("What will you do? (1. Attack, 2. Special Ability, 3. Attempt to flee): ")
+        print(f"\n{user.name}'s Health: {user.health} | "
+              f"Red Cloak's Health: {enemy.health}\n")
+        action = input("What will you do? (1. Attack, 2. Special Ability, "
+                       "3. Attempt to flee): ")
 
         if action == "1":
             user_damage = user.attack()
@@ -59,12 +63,14 @@ def fight(user, enemy):
             print(f"You attack the Red Cloak and deal {user_damage} damage!")
 
             if user.dodge():
-                print("The Red Cloak attacks, but you dodge the incoming attack!")
+                print("The Red Cloak attacks, but you dodge the incoming "
+                      "attack!")
             else:
                 if enemy.health >= 0:
                     enemy_damage = random.randint(5, 15)
                     user.health -= enemy_damage
-                    print(f"The Red Cloak counterattacks and deals {enemy_damage} damage to you!")
+                    print(f"The Red Cloak counterattacks and deals "
+                          f"{enemy_damage} damage to you!")
                 else:
                     print("You have defeated the enemy")
 
@@ -72,15 +78,18 @@ def fight(user, enemy):
             special_damage = user.special_ability()
             if special_damage > 0:
                 enemy.health -= special_damage
-                print(f"You deal {special_damage} damage with your special ability.")
+                print(f"You deal {special_damage} damage with your special "
+                      f"ability.")
 
             if user.dodge():
-                print("The Red Cloak attacks, but you dodge the incoming attack!")
+                print("The Red Cloak attacks, but you dodge the incoming "
+                      "attack!")
             else:
                 if enemy.health >= 0:
                     enemy_damage = random.randint(5, 15)
                     user.health -= enemy_damage
-                    print(f"The Red Cloak counterattacks and deals {enemy_damage} damage to you!")
+                    print(f"The Red Cloak counterattacks and deals "
+                          f"{enemy_damage} damage to you!")
                 else:
                     print("You have defeated the enemy")
 
@@ -101,7 +110,7 @@ def fight(user, enemy):
         print("You were defeated by the Red Cloak. Game over.")
     else:
         print("You defeated the Red Cloak! You gain a dagger and 25 coins.")
-        user.inventory.append("Prize Dagger")
+        Player.add_item("Prize Dagger")
         user.coins += 25
 
 
