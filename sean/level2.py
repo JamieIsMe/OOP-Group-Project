@@ -91,7 +91,7 @@ class Level2(Location):
                 break  # Exit the loop once the player enters the city
 
     def guard_interaction(self):
-        print(self.city_guard.say_dialogue(self.city_guard._dialogue[0]))
+        print(self.city_guard.say_dialogue(self.city_guard.dialogue[0]))
 
         while not self.__guard_interacted:
             interaction = int(input("1) Ask about the kidnapping\n"
@@ -101,20 +101,20 @@ class Level2(Location):
             if interaction == 1:
                 if not self.__guard_asked:
                     print(self.city_guard)
-                    print(self.city_guard._dialogue[1])
+                    print(self.city_guard.dialogue[1])
                     self.add_clue(self.city_guard.clue())
                     self.__guard_asked = True
                 else:
-                    print(self.city_guard._dialogue[2])
+                    print(self.city_guard.dialogue[2])
             elif interaction == 2:
                 if "City Pass" in self.player.inventory:
-                    print(self.city_guard._dialogue[3])
+                    print(self.city_guard.dialogue[3])
                     self.current_location = self.sublocation[5]
                     self.__guard_interacted = True
                 else:
-                    print(self.city_guard._dialogue[4])
+                    print(self.city_guard.dialogue[4])
             elif interaction == 3:
-                print(self.city_guard._dialogue[5])
+                print(self.city_guard.dialogue[5])
                 break
 
     def explore_surroundings(self):
