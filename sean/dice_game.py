@@ -1,6 +1,8 @@
 import random
 from denis.Player import Player
 
+player = Player("Steve")
+
 
 def roll_dice():
     print("Welcome to Roll the Dice!")
@@ -45,9 +47,10 @@ def roll_dice():
     if player_wins == 3:
         print("Congratulations! You win! The man in the red cloak concedes "
               "defeat.")
-        Player.add_item("Prized Dagger")
+        return "Prized Dagger"
     else:
         print("Game over! The man in the red cloak has defeated you.")
+        return None
 
 
 if __name__ == "__main__":

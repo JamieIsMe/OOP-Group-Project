@@ -21,8 +21,20 @@ class Level2(Location):
         self.player = player
         self.score = score
         self.city_guard = NPC("City Guard",
-                              "Halt! What business do you have here stranger?",
-                              "Saw some shady characters talking near the "
+                              ["City Guard: Halt! What business do "
+                               "you have here stranger?",
+                               "City Guard: Kidnapping you say? Haven't "
+                               "heard anything about that. Although I did "
+                               "oversee some sketchy figures talking nearby",
+                               "City Guard: You already asked me about the "
+                               "kidnappings",
+                               "City Guard: You may proceed stranger",
+                               "City Guard: Hold! You can't enter without a "
+                               "city pass",
+                               "City Guard: Safe travels, stranger"
+                               ],
+                              "City guard saw some shady characters talking "
+                              "near the "
                               "city gates.",
                               "",
                               "")
@@ -78,7 +90,7 @@ class Level2(Location):
                 break  # Exit the loop once the player enters the city
 
     def guard_interaction(self):
-        print(self.city_guard.interact())
+        print(self.city_guard._dialogue[0])
 
         while not self.__guard_interacted:
             interaction = int(input("1) Ask about the kidnapping\n"
@@ -88,32 +100,20 @@ class Level2(Location):
             if interaction == 1:
                 if not self.__guard_asked:
                     print(self.city_guard)
-                    print(self.city_guard.say_dialogue("Kidnapping you say? "
-                                                       "Haven't heard "
-                                                       "anything about that."
-                                                       "Although I did "
-                                                       "oversee some sketchy "
-                                                       "figures talking "
-                                                       "nearby"))
+                    print(self.city_guard._dialogue[1])
                     self.add_clue(self.city_guard.clue())
                     self.__guard_asked = True
                 else:
-                    print(self.city_guard.say_dialogue("You already asked me "
-                                                       "about the "
-                                                       "kidnappings"))
+                    print(self.city_guard._dialogue[2])
             elif interaction == 2:
                 if "City Pass" in self.player.inventory:
-                    print(self.city_guard.say_dialogue("Oh, you have a city "
-                                                       "pass. You may "
-                                                       "proceed. "
-                                                       "Stay safe!"))
+                    print(self.city_guard._dialogue[3])
                     self.current_location = self.sublocation[5]
                     self.__guard_interacted = True
                 else:
-                    print(self.city_guard.say_dialogue("Hold! You can't enter "
-                                                       "without a city pass"))
+                    print(self.city_guard._dialogue[4])
             elif interaction == 3:
-                print(self.city_guard.say_dialogue("Safe travels, stranger"))
+                print(self.city_guard._dialogue[5])
                 break
 
     def explore_surroundings(self):
@@ -135,14 +135,13 @@ class Level2(Location):
             if not self.__cloak_figure_fin:
                 self.visited("Back City Walls")
                 print("You examine the back of the city walls.")
-                if self.__deal_made:
+                if self.__deal_made and not self.__cloak_figure_interact:
                     print("You see a figure hiding at the back of the city "
                           "walls.\n"
                           "They are dressed in a red cloak and look to be "
                           "trying to hide something")
                     print("You notice that this is the man the barbarian was "
                           "talking about.")
-                    print(self.red_cloak_man.interact())
                     print("You see the prized dagger in his hand")
                     print(f"{player.name} I'll be needing that dagger")
                     print(self.red_cloak_man.say_dialogue("You'll have to "
@@ -172,7 +171,10 @@ class Level2(Location):
                                                               "in a game of "
                                                               "dice for it"))
                         print(f"{player.name} Let's play then")
-                        roll_dice()
+                        prize = roll_dice()
+                        if prize:
+                            player.add_item(prize)
+                            player.show_inventory()
                         self.__cloak_figure_fin = True
 
                 elif not self.__deal_made and not self.__cloak_figure_interact:
@@ -244,7 +246,8 @@ class Level2(Location):
     def barbarian_camp(self):
 
         self.current_location = self.sublocation[1]
-        self.visited("Barbarian Group")
+        if "Barbarian Group" not in self.visited_sublocations:
+            self.visited("Barbarian Group")
 
         if not self.__barbarians_asked:
             barbarian_option = input("1) Look for a distraction\n"
