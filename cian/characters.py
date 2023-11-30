@@ -40,10 +40,6 @@ class Character(ABC):
 
         return interaction
 
-    # def items(self):
-    # pass
-    # add item to player from NPC
-
     def clue(self):
         pass
         # add clue to clue list from NPC
@@ -58,15 +54,10 @@ class Character(ABC):
 
 
     def actions(self):
-<<<<<<< Updated upstream
-        return self._actions
-=======
         return self.actions
 
->>>>>>> Stashed changes
 
 
-# This class has not changed in this lab
 class NPC(Character):
     """
     A class that implements the abstract class Character.
