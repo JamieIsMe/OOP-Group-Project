@@ -47,6 +47,10 @@ class Character(ABC):
         pass
         # add clue to clue list from NPC
 
+    @property
+    def dialogue(self):
+        return self._dialogue
+
 
 # This class has not changed in this lab
 class NPC(Character):
