@@ -5,7 +5,8 @@ from sean.fight import fight, User, RedCloakEnemy
 from sean.dice_game import roll_dice
 
 
-# Get city pass from puzzle when you examine back city walls
+# if both self.__deal_made and self.__cloak_figure_interact are both true it should go into the elif but it doesn't.
+# Need to fix this. Line 163
 
 
 class Level2(Location):
@@ -124,12 +125,12 @@ class Level2(Location):
                     print("You see a figure hiding at the back of the city walls.\n"
                           "They are dressed in a red cloak and look to be trying to hide something")
                     print("You notice that this is the man the barbarian was talking about.")
-                    self.red_cloak_man.interact()
+                    print(self.red_cloak_man.interact())
                     print("You see the prized dagger in his hand")
                     print(f"{player.name} I'll be needing that dagger")
-                    self.red_cloak_man.say_dialogue("You'll have to win it fair and square")
+                    print(self.red_cloak_man.say_dialogue("You'll have to win it fair and square"))
                     if "Sword" in player.inventory:
-                        self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it")
+                        print(self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it"))
                         cloaked_figure_option = input("Do you want to fight him for it or play his little game? "
                                                       "1) Fight him!"
                                                       "2) Game time!")
@@ -144,7 +145,7 @@ class Level2(Location):
                             roll_dice()
                             self.__cloak_figure_fin = True
                     else:
-                        self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it")
+                        print(self.red_cloak_man.say_dialogue("I'll play you in a game of dice for it"))
                         print(f"{player.name} Let's play then")
                         roll_dice()
                         self.__cloak_figure_fin = True
@@ -153,26 +154,27 @@ class Level2(Location):
                     print("You see a figure hiding at the back of the city walls.\n"
                           "They are dressed in a red cloak and look to be trying to hide something")
                     print("You approach the man to ask if there is a way in")
-                    self.red_cloak_man.interact()
-                    self.red_cloak_man.say_dialogue("Back off stranger! This is mine! I found it!")
+                    print(self.red_cloak_man.interact())
+                    print("He seems deep in admiration to what he is holding but notices you when you get closer")
+                    print(self.red_cloak_man.say_dialogue("Back off stranger! This is mine! I found it!"))
                     print("You back off slowly. You don't want to get into any unnecessary trouble")
                     self.__cloak_figure_interact = True
 
                 elif self.__deal_made and self.__cloak_figure_interact:
                     print("You come back to the cloaked man.")
-                    self.red_cloak_man.say_dialogue("I told you to back off! My precious!")
+                    print(self.red_cloak_man.say_dialogue("I told you to back off! My precious!"))
                     print("You notice now that this is the man the barbarian was talking about.")
                     print("You see the prized dagger in his hand")
                     print(f"{player.name} I'll be needing that dagger")
-                    self.red_cloak_man.say_dialogue("You'll have to win it off me in dice then\n"
-                                                    "and i never lose in dice!")
+                    print(self.red_cloak_man.say_dialogue("You'll have to win it off me in dice then\n"
+                                                          "and i never lose in dice!"))
                     if "Sword" in player.inventory:
                         cloaked_figure_option = input("Play his little dice game or rip it from his cold dead hands?"
                                                       "1) Fight him!"
                                                       "2) Game time!")
                         if cloaked_figure_option == "1":
                             print(f"{player.name} I'll be taking that dagger")
-                            self.red_cloak_man.say_dialogue("So this is how it'll be")
+                            print(self.red_cloak_man.say_dialogue("So this is how it'll be"))
                             user = User(player.name)
                             red_cloak = RedCloakEnemy()
                             fight(user, red_cloak)
