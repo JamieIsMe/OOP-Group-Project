@@ -140,7 +140,7 @@ class Cave(Location):
                                 print("You take a look at your clues: ", end="")
                                 print(*self.clues)
                             elif action == "3":
-                                print("You move back to the center of the room\n")
+                                print("You move back to the door\n")
                                 keypad = False
 
                     elif action == "2":
@@ -172,8 +172,8 @@ class Cave(Location):
                                     print(*self.clues)
                                 elif action == "7":
                                     lever_interaction = False
-                                if state[0] and state[2] and state[4] == "down":
-                                    if state[1] and state[3] == "up":
+                                if state[0] == "down" and state[2] == "down" and state[4] == "down":
+                                    if state[1] == "up" and state[3] == "up":
                                         lever_interaction = False
                                         self.location_states[1] = True
                                         print("You hear a click and a door open behind "
@@ -183,6 +183,7 @@ class Cave(Location):
                             print("The levers are stuck in place, you cant move them "
                                   "anymore")
                     elif action == "3":
+                        print("You move back to the center of the room\n")
                         door_interaction = False
             elif action == "3":
                 print("You turn around and head back through the door you came from")
@@ -239,7 +240,7 @@ class Cave(Location):
             talking = True
             while talking:
                 action = input("\nWhat will you do?\n1) Ask what their plan is\n2) Attempt to stop them\n3) Let them "
-                               "preform their plan")
+                               "preform their plan\n")
                 if action == "1":
                     print(self.cult_leader.say_dialogue(self.cult_leader.dialogue[1]))
                 elif action == "2":
@@ -283,7 +284,7 @@ class Cave(Location):
             action = input("What will you do?\n1) Look at Josh's book\n2) Look at "
                            "Sean's book\n3) Look at Max's book\n4) Look at Denis' "
                            "book\n5) Look at Cian's book\n6) Look at Jamie's book\n7) "
-                           "Free them")
+                           "Free them\n")
             if action == "1":
                 print("You take a look over Josh's book and read what it says")
                 print("Snippet Of Josh's Code")
