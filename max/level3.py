@@ -19,6 +19,7 @@ from denis.Player import Player
 from sean.locationClass import Location
 from cian.characters import NPC
 from minigame import cipher_decryption_game
+from riddle import riddle_game
 
 
 class Level3(Location):
@@ -29,7 +30,7 @@ class Level3(Location):
     def __init__(self, score, coins):
         super().__init__("Town Center", ["Market", "Crown and Chalice Inn", "Haven's Port"],
                          ["Textile Merchant", "BlackSmith", "Potion Mixer", "Street Performers",
-                          "Tavern keeper"], ["Find someone in the tavern"])
+                          "Tavern keeper"], [])
 
         self.user = Player("Max")
         self.current_location = self.sublocation[0]
@@ -59,35 +60,21 @@ class Level3(Location):
         self.drunken_elf1 = NPC("Aricen Emberheart",
                                 ["You know what's the best part about being an elf? We're like, "
                                  "timeless, man. I've got all the time in the world to enjoy "
-                                 "this tavern!",
-                                 "Tomorrow is just a distant future. I'm living in the present, "
-                                 "and the present says, 'Another round!'",
-                                 "I challenged a dwarf to an arm-wrestling match. Turns out, dwarves are surprisingly "
-                                 "strong. Who knew?", "Gnomorin? That's a new elven name right there. Maybe he'll join "
-                                                      "us on our timeless quest for more drinks!"], "", "",
-                                ["Swaying on the stool"])
+                                 "this tavern!"], "", "",
+                                ["swaying on the stool"])
 
         self.drunken_elf2 = NPC("Clarista Starfall", ["Timeless? I think you've had too much elven wine, friend. "
-                                                      "You've got tomorrow morning catching up with you.",
-                                                      "Speaking of company, did you guys see the human bard trying to "
-                                                      "serenade the barmaid? Hilarious!",
-                                                      "You challenged a dwarf? "
-                                                      "That's like challenging a mountain to a staring contest. "
-                                                      "You're brave, or maybe just tipsy.",
-                                                      "I'm in! To Gnomorin and the quest for another round!"], "", "",
-                                ["Raising an eyebrow"])
+                                                      "You've got tomorrow morning catching up with you."],
+                                "", "", ["raising an eyebrow"])
 
         self.drunken_elf3 = NPC("Thandor Dawnwhisper",
                                 ["Present, future, who cares? I'm just here for the company and the questionable "
-                                 "decisions!",
-                                 "Yeah, he sounded like a cat being strangled by a bagpipe. "
-                                 "No offense to cats or bagpipes.",
-                                 "I tried to teach a gnome some elven dance moves. "
-                                 "Now he's convinced he's an honorary elf. Keeps "
-                                 "calling himself 'Gnomorin.'", "To questionable decisions and unforgettable nights!"],
-                                "", "", ["Joining the conversation", "laughing"])
+                                 "decisions!"], "", "", ["joining the conversation"])
 
         self.drunken_elves = [self.drunken_elf1, self.drunken_elf2, self.drunken_elf3]
+
+        self.tavern_keeper = NPC("Finnegan McCathy", "Ceád míle fáilte to all ye weary wanderers!:shamrock",
+                                 "", "", "")
 
         # Boolean Variables set for no double interaction between any npcs
         self.__blacksmith_interacted = False
@@ -195,7 +182,6 @@ class Level3(Location):
                                 self.user.add_item(self.blacksmith.items)
                             else:
                                 print(self.blacksmith.say_dialogue("You don't have enough coins for the sword."))
-                                # IF YOUR SCORE IS GOOD, SHE WILL GIVE IT FOR A DISCOUNT OR FREE
                         elif action.lower() == "n":
                             pass
                         else:
@@ -327,18 +313,87 @@ class Level3(Location):
               f"stomping their feet in unison")
 
         while self.current_location == "Crown and Chalice Inn":
-            action = input("\nWhat will you do?,\n"
-                           "1) Interact with the drunken elves\n"
-                           "2) Head to the bar\n"
-                           "3) Leave the tavern\n")
+            action = int(input("\nWhat will you do?,\n"
+                               "1) Interact with the drunken elves\n"
+                               "2) Head to the bar\n"
+                               "3) Leave the tavern\n"))
 
-            if action == "1":
-                Level3.interact_with_elves(self)
+            match action:
+                case 1:
+                    Level3.interact_with_elves(self)
+                case 2:
+                    Level3.bar(self)
+                case 3:
+                    Level3.market()
 
     def interact_with_elves(self):
         for elf in self.drunken_elves:
             print(elf.interact())
             print(elf.perform_action(elf.actions))
+
+        while self.current_location == self.sublocation[1]:
+            interaction = int(input(f"1.) Ask about the tavern's history\n"
+                                    f"2.) Question the elves\n"
+                                    f"3.) Leave the elves alone\n"))
+
+            if interaction == 1:
+                print(
+                    self.drunken_elf1.say_dialogue("Established in 1685, The Crown and Chalice Inn in Eldenhaven is a "
+                                                   "historic hub, \n once a haven for travelers and now a charming "
+                                                   "space for"
+                                                   "locals and visitors. The inn's name, 'The Crown and Chalice,"
+                                                   "' \n nods to the town's noble heritage. With its exposed beams and "
+                                                   "faded"
+                                                   "tapestries, the inn invites patrons to step into Eldenhaven's rich "
+                                                   "history"))
+                print(self.drunken_elf2.say_dialogue("Hey adventurer Why did the ghost refuse to haunt The Crown and "
+                                                     "Chalice Inn?"))
+
+                print(self.drunken_elf3.say_dialogue("Because the spirits were too high, and he couldn't find a "
+                                                     "'boo'-th to himself"))
+
+                print("(They clink mugs and burst into laughter, to the bemusement of other tavern patrons.)")
+            elif interaction == 2:
+                if "Elves' observation on the tavern keeper" not in self.clues:
+                    print(self.drunken_elf2.say_dialogue("Hark, ye noble celebrant! Prepare thy wit for a riddle from "
+                                                         "days of yore!\nWhat be the thing with a golden head, "
+                                                         "silver tail, and no body, yet it dances through the air "
+                                                         "with a"
+                                                         "fiery trail? \nEngage thy mind in this medieval mystery and "
+                                                         "let"
+                                                         "the revelry continue! "))
+
+                    print(self.drunken_elf2.perform_action("leaning against my face."))
+
+                    action = input("Want to try and solve it? 'y' or 'n':\n")
+
+                    if action.lower() == "y" or action.capitalize() == "Y":
+                        riddle_game()
+                        print(self.drunken_elf1.say_dialogue("🕯️ Congrats, Riddle Master! You've cracked the "
+                                                             "medieval mysteries like a goofy genius!\n🎉 May your "
+                                                             "candles always burn bright,\nhorses gallop swift, "
+                                                             "and dragons... well,\nstay mythical and mysterious! "
+                                                             "Keep rocking those riddles with a touch of "
+                                                             "goofiness!\n🤩👑"
+                                                             "#RiddleChampion 🕵️‍♂️🏰 "))
+                        print(self.drunken_elf2.say_dialogue("We heard a cult member's discuss with the tavern "
+                                                             "keeper"
+                                                             "on booking the venue soon speak with the keeper"))
+                        Level3.add_clue(self, "Elves' observation on the tavern keeper")
+                    elif action.lower() == "n" or action.capitalize() == "N":
+                        pass
+                else:
+                    print("You solved the riddle already!")
+            elif interaction == 3:
+                break
+            else:
+                print("Invalid option")
+
+    def bar(self):
+        if "Elves' observation on the tavern keeper" not in self.clues:
+            print(f"{self.user.name}: I feel like there's something I need to know before I do this")
+        else:
+            print("You have the observation from the elves in which you go to the Tavern Keeper")
 
 
 if __name__ == "__main__":
