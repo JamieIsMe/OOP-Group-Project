@@ -53,13 +53,15 @@ class Camp(Location):
                                [],)
 
         self.rough_goblin = NPC("Grizzle \"Knuckles\" O'Connor",
-                                ["Oi, wagwan? You new 'round 'ere or somethin'? This hut's off-limits, ya get me?"
-                                "We're keeping it 100, guardin' for the elder and all that. No funny business, ya feel?"],
+                                ["Oi, wagwan? You new 'round 'ere or somethin'? State your ends bruv!",
+                                 "\nYeah, bruv, never clocked that spot, but it don't sound like we got beef with them, "
+                                 "ya get me? Anyhows fam, but we can't let you roll up on the elder like that. "
+                                 "It's a no-go, ya get me?\n"],
                                [],
                                "",
                                ["His speech is laced with even more street slang, and there's a casual confidence"
                                 " in his demeanor that suggests he's not one to be messed with. Despite the laid-back"
-                                " approach",],)
+                                " approach\n",],)
         self.max_coins = 100
 
     def outer_camp(self):
@@ -184,7 +186,7 @@ class Camp(Location):
     def big_hut(self):
         self.current_location = "big_hut"
         if self.current_location not in self.visited_sublocations:
-            print("You walk over to the large hut in the center"
+            print("You walk over to the large hut in the center of the camp. "
             "From a distance, you see the curious pair of goblin guards stationed outside a large hut."
             "One, a pint-sized figure, catches your eye with stolen finery and an air of aristocratic pride."
             "His hooked nose supports a tiny monocle."
@@ -193,6 +195,8 @@ class Camp(Location):
             "forming a stark contrast to his posh companion.\n")
 
             print(self.rough_goblin._dialogue[0])
+            ends = input()
+            print(self.rough_goblin._dialogue[1])
             print(self.rough_goblin._actions[0])
             self.visited("side_main_camp")
 
