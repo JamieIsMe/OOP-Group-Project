@@ -9,8 +9,7 @@ class Camp(Location):
         super().__init__("camp",
                          ["outer_camp", "main_camp", "hut_1", "big_hut", "side_main_camp"],
                          ["Goblin trio", "Dice Goblin", "Goblin Elder"],
-                         [],
-                         [""])
+                         [])
         self.current_location = "outer_camp"
         self.visited_sublocations = []
         self.score = score
@@ -19,9 +18,11 @@ class Camp(Location):
                                ["\nYou here voices in unison say:\n'What do you want'?\n",
                                 "You here a high pitched voice from the other side\n\n'Nobody is home'!\n",
                                 "First Goblin: 'We heard the elder talk about that\nSecond Goblin: 'We dont know nothing'\n"
-                               "Third Goblin: 'The elder should be in the big hut'\n"],
+                               "Third Goblin: 'The elder should be in the big hut'\n",
+                                "\n'You are not getting we have the door barred'!The voices on the other side shout\n"],
                                ["Goblin elder is in the big hut"],
-                               "")
+                               "",
+                               ["\nThe door opens slightly and you see 3 Goblins peer through the crack nervously\n"])
 
         self.dice_goblin = NPC("Dicy",
                                ["\nShady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy\n",
@@ -33,6 +34,7 @@ class Camp(Location):
                                 "\nNow dont go spreading this info around\n",
                                 "\n\n"],
                                ["Dicy's clue"],
+                               "",
                                "")
         self.max_coins = 100
 
@@ -87,8 +89,9 @@ class Camp(Location):
                 interacting = True
             elif choice == "2":
                 print("You try to open the door by force with little success")
-                print(self.goblin_trio.say_dialogue(":'You are not getting we have the door barred'!"
-                                                    "The voices on the other side shout\n"))
+                print(self.goblin_trio._actions[0])
+                print(self.goblin_trio._dialogue[3])
+
                 interacting = True
             elif choice == "3":
                 self.main_camp()
@@ -99,6 +102,7 @@ class Camp(Location):
 
                 if choice == "1":
                     print("The door opens slightly and you see 3 Goblins peer through the crack nervously\n")
+                    print(self.goblin_trio.perform_action()[0])
                     print(self.goblin_trio._dialogue[0])
 
                     choice = input("How do you respond?\n1) 'I just wanted to see if you have any information on"
