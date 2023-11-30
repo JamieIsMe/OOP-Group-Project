@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class Character(ABC):
+    @property
+    def actions(self):
+        return self._actions
+
     def __init__(self, name, dialogue, clue, item, action):
         self.name = name
         self.dialogue = dialogue
@@ -49,9 +53,6 @@ class Character(ABC):
 
     def items(self):
         return self.items
-
-    def actions(self):
-        return self.actions
 
     @actions.setter
     def actions(self, value):
