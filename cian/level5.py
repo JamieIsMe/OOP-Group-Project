@@ -5,14 +5,13 @@ from cian.RPS_minigame import Rock_Paper_Scissors_Game
 from denis.Player import Player
 
 class Camp(Location):
-    def __init__(self, score, coins):
+    def __init__(self, coins):
         super().__init__("camp",
-                         ["outer_camp", "main_camp", "hut_1", "big_hut", "side_main_camp"],
+                         ["outer_camp", "main_camp", "hut_1", "hut_1_inside","big_hut_outside", "big_hut", "side_main_camp"],
                          ["Goblin trio", "Dice Goblin", "Goblin Elder"],
                          [])
         self.current_location = "outer_camp"
         self.visited_sublocations = []
-        self.score = score
         self.coins = coins
         self.goblin_trio = NPC("Goblin trio",
                                ["\nYou here voices in unison say:\n\"What do you want\"?\n",
@@ -40,28 +39,41 @@ class Camp(Location):
                                ["He says as he tips his hat"],)
 
         self.posh_goblin = NPC("Reginald Thornsworth the Refined",
-                               ["\nShady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy\n",
-                                "\nRecon you fancy a game of dice friend?\n",
-                                "\nHow about the ol' rock paper scissors then?\n",
-                                "\nHow about another round?\n",
-                                "\nWell friend you seem mighty well off "
-                                "how abouts i give you some information as a fellow benefactor of life\n",
-                                "\nNow dont go spreading this info around\n",
-                                "\n\n"],
-                               [],
+                               ["\n\"Now, now, Grizzle, we ought to listen to their inquiries. "
+                                "Pray, what is it that you seek from the elder, my good fellow?\"\n",
+                                "\"Pray, good sir, how may we be of service to you on this occasion?\"\n",
+                                "\"I say, old chap, one cannot simply waltz over to have a chat with the elder. "
+                                "Pray, enlighten us to what urgent matter compels you to seek an audience with "
+                                "such haste and gusto?\"\n",
+                                "\"Ah, so you've encountered Snatch, Scratch, and Milo. If they've sent you, my friend, "
+                                "it suggests that you are of good character on their part. One could surmise that you "
+                                "are not of ill intent, given their commendable judgment in such matters. You may enter\""],
+                               ["Goblins trios names are Snatch, Scratch, and Milo"],
                                "",
-                               [],)
+                               ["His words are adorned with a touch of sophistication, "
+                                "making it clear that he sees himself as a goblin of importance."],)
 
         self.rough_goblin = NPC("Grizzle \"Knuckles\" O'Connor",
-                                ["Oi, wagwan? You new 'round 'ere or somethin'? State your ends bruv!",
-                                 "\nYeah, bruv, never clocked that spot, but it don't sound like we got beef with them, "
+                                ["\"Oi, wagwan? You new 'round 'ere or somethin'? State your ends bruv!\"",
+                                 "\n\"Yeah, bruv, never clocked that spot, but it don't sound like we got beef with them, "
                                  "ya get me? Anyhows fam, but we can't let you roll up on the elder like that. "
-                                 "It's a no-go, ya get me?\n"],
+                                 "It's a no-go, ya get me?\"\n",
+                                 "\"Look, if you ain't spillin' any details, fam, we ain't just gonna let you slide in like that\"\n"],
                                [],
                                "",
                                ["His speech is laced with even more street slang, and there's a casual confidence"
                                 " in his demeanor that suggests he's not one to be messed with. Despite the laid-back"
                                 " approach\n",],)
+
+        self.elder_goblin = NPC("Goblin elder",
+                               ["\"Take a seat young one tell this old man your tubules\".\nDespite their stature, "
+                                "their raspy yet commanding voice exudes wisdom", "\"Tea?\"", "\"So what trubbles such a young soul\""],
+                               "",
+                               [],
+                                ["As you sit he finishes up what he was working on and takes a seat across form you",
+                                 "He hops down off of his chair and goes over to the cauldron. With one swift movement "
+                                 "he produces a hug and dips it into the bubbling liquid. "
+                                 "He returns to you with the tea? and returns to sitting across from you",],)
         self.max_coins = 100
 
     def outer_camp(self):
@@ -97,7 +109,7 @@ class Camp(Location):
         self.current_location = "hut_1"
         if self.current_location not in self.visited_sublocations:
             print("You come up to the door of the first hut where you saw the 3 shadows enter\n")
-            self.visited("hut_1")
+
         else:
             print("As you approach the hut you see that the door is open and nobody is inside. "
                   "The goblin trio has left\n"
@@ -110,12 +122,12 @@ class Camp(Location):
             interacting = True
             if choice == "1":
                 print("")
-                print(self.goblin_trio._dialogue[1])
-
+                print(self.goblin_trio.dialogue[1])
+                self.visited("hut_1")
                 interacting = True
             elif choice == "2":
                 print("You try to open the door by force with little success")
-                print(self.goblin_trio._dialogue[3])
+                print(self.goblin_trio.dialogue[3])
 
                 interacting = True
             elif choice == "3":
@@ -126,17 +138,16 @@ class Camp(Location):
                                "2) Try to open the door\n3) Leave and go further into the town\n")
 
                 if choice == "1":
-                    print(self.goblin_trio._actions[0])
-                    print(self.goblin_trio._dialogue[0])
+                    print(self.goblin_trio.actions[0])
+                    print(self.goblin_trio.dialogue[0])
 
                     choice = input("How do you respond?\n1) 'I just wanted to see if you have any information on"
                                    "some missing people'\n2)'Wrong hut sorry'. Leave and go further into the town\n")
                     if choice == "1":
-                        print(self.goblin_trio._actions[1])
-                        print(self.goblin_trio._dialogue[2])
+                        print(self.goblin_trio.actions[1])
+                        print(self.goblin_trio.dialogue[2])
                         self.add_clue(self.goblin_trio.clues[0])
-                        self.review_clues()
-
+                        self.visited("hut_1_inside")
                         choice = input("Where will you go next?\n1) Go back to the outside of the camp.\n"
                                        "2) Go deeper into the village to find the elder.\n")
 
@@ -153,7 +164,7 @@ class Camp(Location):
 
                 elif choice == "2":
                     print("You try to open the door by force with little success")
-                    print(self.goblin_trio._dialogue[3])
+                    print(self.goblin_trio.dialogue[3])
                 elif choice == "3":
                     interacting = False
                     self.main_camp()
@@ -177,14 +188,14 @@ class Camp(Location):
         if choice == "1":
             self.hut_1()
         elif choice == "2":
-            self.big_hut()
+            self.big_hut_outside()
         elif choice == "3":
             self.side_main_camp()
         elif choice == "4":
             self.outer_camp()
 
-    def big_hut(self):
-        self.current_location = "big_hut"
+    def big_hut_outside(self):
+        self.current_location = "big_hut_outside"
         if self.current_location not in self.visited_sublocations:
             print("You walk over to the large hut in the center of the camp. "
             "From a distance, you see the curious pair of goblin guards stationed outside a large hut."
@@ -194,11 +205,66 @@ class Camp(Location):
             "he wields a rusty blade with a menacing air. His body is adorned with crude tattoos depicting goblin mischief,"
             "forming a stark contrast to his posh companion.\n")
 
-            print(self.rough_goblin._dialogue[0])
-            ends = input()
-            print(self.rough_goblin._dialogue[1])
-            print(self.rough_goblin._actions[0])
+            print(self.rough_goblin.dialogue[0])
+            input()
+            print(self.rough_goblin.dialogue[1])
+            print(self.rough_goblin.actions[0])
+            print(self.posh_goblin.dialogue[0])
+            print(self.posh_goblin.actions[0])
+            self.visited("big_hut_outside")
+
+        else:
+            print("How can we help you")
+
+        if "hut_1_inside" in self.visited_sublocations:
+            choice = input("\nHow do you respond?\n"
+                           "1) Go back to camp"
+                           "2) Say that you need to talk to the elder\n"
+                           "3) Say that you were sent here by the trio of goblins you met earlier")
+        else:
+            choice = input("\nHow do you respond?\n"
+                           "1) Go back to camp\n"
+                           "2) Say that you need to talk to the elder\n")
+
+        if choice == "1":
+            print("You return to the center of camp\n")
+            self.main_camp()
+        elif choice == "2":
+            print(self.posh_goblin.dialogue[1])
+            choice = input("\nWhat do you do?\n"
+                           "1) Tell the Truth about what you have learnt?\n"
+                           "2) Insist that you cant tell them and you need to talk to the elder\n")
+            if choice == "1":
+                print("You relay all of the information you have learned so far and emphasis the urgency of your request")
+                self.big_hut()
+            elif choice == "2":
+                print(self.rough_goblin.dialogue[2])
+                print("You return to the center of camp\n")
+                self.main_camp()
+        elif choice == "3":
+            print(self.posh_goblin.dialogue[3])
+            self.add_clue(self.posh_goblin.clues[0])
+            print()
+
+    def big_hut(self):
+        self.current_location = "big_hut"
+        if self.current_location not in self.visited_sublocations:
             self.visited("side_main_camp")
+            print("The goblin elder's hut is a cozy chaos of logs, vines, and scattered belongings. A bubbling cauldron"
+                  " in one corner scents the air, while a central fire pit lights up a cluttered table with maps and"
+                  " trinkets. Mismatched furniture surrounds the fire, and tapestries tell the tribe's stories Despite "
+                  "the disorder, there's a communal atmosphere, reflecting the practical and resourceful nature of "
+                  "goblin living.\n In the corner of the room working on a fesh tapestrie is the goblin elder\n")
+            print("The goblin elder, hunched with age, wears a tattered hood and bears tribal markings on a "
+                  "weathered face. Sharp, intelligent eyes gleam from under strands of gray hair. "
+                  "Adorned in earth-toned garments, the elder carries a staff adorned with feathers and symbols.\n ")
+
+            print("without turning around the Elder addresses you")
+            print(self.elder_goblin.dialogue[0])
+            print(self.elder_goblin.actions[0])
+            print(self.elder_goblin.dialogue[1])
+            print(self.elder_goblin.actions[1])
+            print(self.elder_goblin.dialogue[2])
 
 
 
@@ -206,24 +272,24 @@ class Camp(Location):
         self.current_location = "side_main_camp"
         if self.current_location not in self.visited_sublocations:
             print("You walk over to the Shady Goblin\n")
-            print(self.dice_goblin._dialogue[0])
-            print(self.dice_goblin._actions[0])
+            print(self.dice_goblin.dialogue[0])
+            print(self.dice_goblin.actions[0])
             self.visited("side_main_camp")
 
         if coins == self.max_coins:
-            print(self.dice_goblin._dialogue[4])
+            print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[4]))
             self.add_clue(self.dice_goblin.clues[0])
             self.review_clues()
-            print(self.dice_goblin._dialogue[5])
+            print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[5]))
 
-        print(self.dice_goblin._dialogue[1])
+        print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[1]))
         play_minigame = True
         while play_minigame:
             choice = input("1) Yes\n2) No\n")
             if choice == "1":
                 dice_game()
             elif choice == "2":
-                print(self.dice_goblin._dialogue[2])
+                print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[2]))
                 choice = input("1) Yes\n2) No\n")
                 if choice == "1":
                     Rock_Paper_Scissors_Game()
@@ -231,7 +297,7 @@ class Camp(Location):
                 else:
                     break
 
-            print(self.dice_goblin._dialogue[3])
+            print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[3]))
             choice = input("1) Yes\n2) No\n")
             if choice == "1":
                 dice_game()
@@ -244,5 +310,5 @@ class Camp(Location):
 
 
 if __name__ == "__main__":
-    camp = Camp(0, 0)
+    camp = Camp(0)
     camp.outer_camp()
