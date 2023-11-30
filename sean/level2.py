@@ -5,8 +5,7 @@ from sean.fight import fight, User, RedCloakEnemy
 from sean.dice_game import roll_dice
 
 
-# if both self.__deal_made and self.__cloak_figure_interact are both true it
-# should go into the elif, but it doesn't. Need to fix this. Line 163
+# change dark alley to
 
 
 class Level2(Location):
@@ -126,10 +125,7 @@ class Level2(Location):
 
         if exploration_result == "1":
             self.current_location = self.sublocation[2]
-            if self.current_location not in self.visited_sublocations:
-                self.dark_alley(self.current_location)
-            else:
-                print("You have already visited the dark alley.")
+            self.dark_alley()
 
         elif exploration_result == "2":
             if not self.__cloak_figure_fin:
@@ -157,20 +153,23 @@ class Level2(Location):
                                                       "1) Fight him!"
                                                       "2) Game time!")
                         if cloaked_figure_option == "1":
-                            print(f"{player.name} Give it to me")
+                            print(f"{player.name}: Give it to me")
                             user = User(player.name)
                             red_cloak = RedCloakEnemy()
                             fight(user, red_cloak)
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
-                            print(f"{player.name} Let's play then")
-                            roll_dice()
+                            print(f"{player.name}: Let's play then")
+                            prize = roll_dice()
+                            if prize:
+                                player.add_item(prize)
+                                player.show_inventory()
                             self.__cloak_figure_fin = True
                     else:
                         print(self.red_cloak_man.say_dialogue("I'll play you "
                                                               "in a game of "
                                                               "dice for it"))
-                        print(f"{player.name} Let's play then")
+                        print(f"{player.name}: Let's play then")
                         prize = roll_dice()
                         if prize:
                             player.add_item(prize)
@@ -225,7 +224,10 @@ class Level2(Location):
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
                             print(f"{player.name} Let's play then")
-                            roll_dice()
+                            prize = roll_dice()
+                            if prize:
+                                player.add_item(prize)
+                                player.show_inventory()
                             self.__cloak_figure_fin = True
                     else:
                         print(f"{player.name} Let's play then")
@@ -235,7 +237,8 @@ class Level2(Location):
                     print("You dont want to cause any trouble so you stay "
                           "away from the cloaked figure.")
             else:
-                print("There is nothing here for you now.")
+                print("You lost and can't get the prized dagger now.\n"
+                      "You'll have to find another way into the city")
 
         elif exploration_result == "3":
             print("You decide to return to the city gates.")
@@ -365,34 +368,36 @@ class Level2(Location):
                     print(self.barbarian.say_dialogue("Why do you keep "
                                                       "approaching me then?!"))
 
-    def dark_alley(self, location):
+    def dark_alley(self):
         print("You decide to investigate the dark alley.")
-        print("As you enter the narrow alley, you hear a faint sound.")
+        if self.current_location not in self.visited_sublocations:
+            print("As you enter the narrow alley, you hear a faint sound.")
+        self.visited(self.sublocation[2])
 
-        while location == self.sublocation[2]:
+        while self.current_location == self.sublocation[2]:
             event_result = input("1) Follow the sound\n"
                                  "2) Go deeper into the alley\n"
                                  "3) Leave the alley\n")
 
             if event_result == "1":
-                print("You follow the sound and discover a hidden door.")
-                print("Behind the door, you find a group of hooded "
-                      "figures planning a secret meeting.")
-                print("They almost notice you, but you were able to slip "
-                      "away before they caught you.")
+                if not self.__dark_alley_investigated:
+                    print("You follow the sound and discover a hidden door.")
+                    print("Behind the door, you find a group of hooded "
+                          "figures planning a secret meeting.")
+                    print("They are dressed in blue, red and yellow robes")
+                    print("They almost notice you, but you were able to slip "
+                          "away before they caught you.")
 
-                self.add_clue("secret meeting under city")
-                self.__dark_alley_investigated = True
-                self.visited(self.sublocation[2])
+                    self.add_clue("secret meeting under city")
+                    self.add_clue("figures in blue, red and yellow robes")
+                    self.__dark_alley_investigated = True
+                else:
+                    print("You don't want to go back there, they might see "
+                          "you")
 
             elif event_result == "2":
-                print("You decide to go deeper into the alley.")
-                print("After navigating through the narrow passages, "
-                      "you find yourself at the bottom of a well.")
-                print("You climb up and find yourself inside the city "
-                      "walls.")
-                self.visited(self.sublocation[2])
-                self.current_location = self.sublocation[5]
+                # puzzle about red blue yellow robes
+                print("")
 
             elif event_result == "3":
                 print("You decide to leave the dark alley.")
