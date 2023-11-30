@@ -50,7 +50,7 @@ class Character(ABC):
 
     @property
     def dialogue(self):
-        return self._dialogue
+        return self.dialogue
 
     @property
     def items(self):
@@ -58,7 +58,11 @@ class Character(ABC):
 
     @property
     def actions(self):
-        return self._actions
+        return self.actions
+
+    @actions.setter
+    def actions(self, value):
+        self._actions = value
 
 
 # This class has not changed in this lab
