@@ -7,7 +7,7 @@ class ColoredSlabPuzzle:
             available_colors = ["Red", "Blue", "Yellow", "Green", "Purple",
                                 "Orange", "Black"]
         self.available_colors = available_colors
-        self.solution = ["Red", "Blue", "Yellow"]
+        self.solution = ["Blue", "Red", "Yellow"]
         self.slabs_order = self.shuffle_slabs()
         self.won = False
         self.player = my_location_class
@@ -31,7 +31,7 @@ class ColoredSlabPuzzle:
 
         while True:
             self.display_slabs_order()
-            print("1) Enter your guess"
+            print("1) Enter your guess\n"
                   "2) Review clues")
             user_choice = input("Choose an option (1 or 2): ")
 

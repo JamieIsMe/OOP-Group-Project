@@ -23,15 +23,15 @@ class Level2(Location):
         self.city_guard = NPC("City Guard",
                               ["Halt! What business do "
                                "you have here stranger?",
-                               "City Guard: Kidnapping you say? Haven't "
+                               "Kidnapping you say? Haven't "
                                "heard anything about that. Although I did "
                                "oversee some sketchy figures talking nearby",
-                               "City Guard: You already asked me about the "
+                               "You already asked me about the "
                                "kidnappings",
-                               "City Guard: You may proceed stranger",
-                               "City Guard: Hold! You can't enter without a "
+                               "You may proceed stranger",
+                               "Hold! You can't enter without a "
                                "city pass",
-                               "City Guard: Safe travels, stranger"
+                               "Safe travels, stranger"
                                ],
                               "City guard saw some shady characters talking "
                               "near the "
@@ -39,13 +39,36 @@ class Level2(Location):
                               "",
                               "")
         self.barbarian = NPC("Barbarian Leader",
-                             "Looky here boys! Some fresh meat",
+                             ["Looky here boys! Some fresh meat",
+                              "I am in need of something as well. Perhaps we can strike a deal..",
+                              "You retrieve my prized dagger and I offer you our services. What say you?",
+                              "Wonderful. My dagger was stolen by a man in a red cloak.\n"
+                              "I think I saw him head around the back of the city",
+                              "Off ya hop now fresh meat and don't come back without my dagger!",
+                              "Stop wasting my time then! Scram!",
+                              "You have returned. With my prized dagger I hope?",
+                              "Hold on now, I also want some gold from you. You look as though you have a bit to spare",
+                              "I don't remember no deal. Do you boys?",
+                              "That's what I like to hear, get 'em boys!",
+                              "Suit yourself. Thanks for the dagger",
+                              "Return with the dagger or not at all!",
+                              "Want to take me up on my offer now?",
+                              "See that wasn't so hard. My dagger was stolen by a man in a red cloak.\n"
+                              "I think I saw him head around the back of the city",
+                              "Why do you keep approaching me then?!"],
                              "The barbarian's prized dagger was stolen by a "
                              "man in a red cloak",
                              "",
                              "")
         self.red_cloak_man = NPC("Red Cloaked Figure",
-                                 "What do we have here?",
+                                 ["What do we have here?",
+                                  "You'll have to win it fair and square",
+                                  "I'll play you in a game of dice for it",
+                                  "Back off stranger! This is mine! I found it!",
+                                  "I told you to back off! My precious!",
+                                  "You'll have to win it off me in dice then\n"
+                                  "and i never lose in dice!",
+                                  "So this is how it'll be"],
                                  "",
                                  "Prized Dagger",
                                  "")
@@ -55,6 +78,7 @@ class Level2(Location):
         self.__guard_asked = False
         self.__barbarians_asked = False
         self.__deal_made = False
+        self.__deal_complete = False
         self.__cloak_figure_interact = False
         self.__cloak_figure_fin = False
         self.__dark_alley_investigated = False
@@ -100,21 +124,20 @@ class Level2(Location):
 
             if interaction == 1:
                 if not self.__guard_asked:
-                    print(self.city_guard)
-                    print(self.city_guard.dialogue[1])
+                    print(self.city_guard.say_dialogue(self.city_guard.dialogue[1]))
                     self.add_clue(self.city_guard.clue())
                     self.__guard_asked = True
                 else:
-                    print(self.city_guard.dialogue[2])
+                    print(self.city_guard.say_dialogue(self.city_guard.dialogue[2]))
             elif interaction == 2:
                 if "City Pass" in self.player.inventory:
-                    print(self.city_guard.dialogue[3])
+                    print(self.city_guard.say_dialogue(self.city_guard.dialogue[3]))
                     self.current_location = self.sublocation[5]
                     self.__guard_interacted = True
                 else:
-                    print(self.city_guard.dialogue[4])
+                    print(self.city_guard.say_dialogue(self.city_guard.dialogue[4]))
             elif interaction == 3:
-                print(self.city_guard.dialogue[5])
+                print(self.city_guard.say_dialogue(self.city_guard.dialogue[5]))
                 break
 
     def explore_surroundings(self):
@@ -141,14 +164,11 @@ class Level2(Location):
                     print("You notice that this is the man the barbarian was "
                           "talking about.")
                     print("You see the prized dagger in his hand")
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[0]))
                     print(f"{player.name} I'll be needing that dagger")
-                    print(self.red_cloak_man.say_dialogue("You'll have to "
-                                                          "win it fair and "
-                                                          "square"))
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[1]))
                     if "Sword" in player.inventory:
-                        print(self.red_cloak_man.say_dialogue("I'll play you "
-                                                              "in a game of "
-                                                              "dice for it"))
+                        print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[2]))
                         cloaked_figure_option = input("Do you want to fight "
                                                       "him for it or play "
                                                       "his little game?"
@@ -171,9 +191,7 @@ class Level2(Location):
                                 player.show_inventory()
                             self.__cloak_figure_fin = True
                     else:
-                        print(self.red_cloak_man.say_dialogue("I'll play you "
-                                                              "in a game of "
-                                                              "dice for it"))
+                        print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[2]))
                         print(f"{player.name}: Let's play then")
                         prize = roll_dice()
                         if prize:
@@ -187,31 +205,22 @@ class Level2(Location):
                           "They are dressed in a red cloak and look to be "
                           "trying to hide something")
                     print("You approach the man to ask if there is a way in")
-                    print(self.red_cloak_man.interact())
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[0]))
                     print("He seems deep in admiration to what he is holding "
                           "but notices you when you get closer")
-                    print(self.red_cloak_man.say_dialogue("Back off "
-                                                          "stranger! This is"
-                                                          " mine! I found "
-                                                          "it!"))
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[3]))
                     print("You back off slowly. You don't want to get into "
                           "any unnecessary trouble")
                     self.__cloak_figure_interact = True
 
                 elif self.__deal_made and self.__cloak_figure_interact:
                     print("You come back to the cloaked man.")
-                    print(self.red_cloak_man.say_dialogue("I told you to "
-                                                          "back off! My "
-                                                          "precious!"))
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[4]))
                     print("You notice now that this is the man the barbarian "
                           "was talking about.")
                     print("You see the prized dagger in his hand")
                     print(f"{player.name} I'll be needing that dagger")
-                    print(self.red_cloak_man.say_dialogue("You'll have to "
-                                                          "win it off me in "
-                                                          "dice then\n"
-                                                          "and i never lose "
-                                                          "in dice!"))
+                    print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[5]))
                     if "Sword" in player.inventory:
                         cloaked_figure_option = input("Play his little dice "
                                                       "game or rip it from "
@@ -220,9 +229,7 @@ class Level2(Location):
                                                       "2) Game time!")
                         if cloaked_figure_option == "1":
                             print(f"{player.name} I'll be taking that dagger")
-                            print(self.red_cloak_man.say_dialogue("So this "
-                                                                  "is how "
-                                                                  "it'll be"))
+                            print(self.red_cloak_man.say_dialogue(self.red_cloak_man.dialogue[6]))
                             user = User(player.name)
                             red_cloak = RedCloakEnemy()
                             prize = fight(user, red_cloak)
@@ -281,40 +288,22 @@ class Level2(Location):
 
                 if approach_barbarians == "1":
                     print("You approach the barbarians cautiously")
-                    print(self.barbarian.interact())
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[0]))
                     print(f"{player.name}: I need a distraction to get into "
                           f"the city, it's very important.")
-                    print(self.barbarian.say_dialogue("I am in need of "
-                                                      "something as well."
-                                                      "Perhaps we can strike "
-                                                      "a deal.."))
-                    print(self.barbarian.say_dialogue("You retrieve my "
-                                                      "prized dagger"
-                                                      "and I offer you our "
-                                                      "services. What say "
-                                                      "you?"))
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[1]))
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[2]))
                     deal_option = input("Do you want to strike a deal with "
                                         "the barbarian?\n"
                                         "1) Yes, what could go wrong?\n"
                                         "2) Hell no!\n")
                     if deal_option == "1":
-                        print(self.barbarian.say_dialogue("Wonderful. My "
-                                                          "dagger was stolen "
-                                                          "by a man in a red "
-                                                          "cloak."
-                                                          "I think I saw him "
-                                                          "head around the "
-                                                          "back of the city"))
-                        print(self.barbarian.say_dialogue("Off ya hop now "
-                                                          "fresh meat and "
-                                                          "don't come back"
-                                                          "without my "
-                                                          "dagger!"))
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[3]))
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[4]))
                         self.__deal_made = True
                         self.add_clue(self.barbarian.clue())
                     elif deal_option == "2":
-                        print(self.barbarian.say_dialogue("Stop wasting my "
-                                                          "time then! Scram!"))
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[5]))
                     self.__barbarians_asked = True
                 elif approach_barbarians == "2":
                     print("You decide not to approach the barbarians and "
@@ -331,26 +320,42 @@ class Level2(Location):
                                      "2) Return to the previous options\n")
 
             if self.__deal_made:
-                if barbarian_option == "1":
-                    print(self.barbarian.say_dialogue("You have returned. "
-                                                      "With my prized dagger"
-                                                      " I hope?"))
+                if barbarian_option == "1" and not self.__deal_complete:
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[6]))
                     if "Prized Dagger" in self.player.inventory:
-                        print("Yes")
+                        print(f"{player.name}: Yes I have, now can you create a distraction for me?")
+                        print("You give him his oh so special dagger.")
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[7]))
+                        print(f"{player.name}: That wasn't the deal")
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[8]))
+                        print("They all reply in unison: No!")
                         if self.player.coins >= 25:
-                            print("With the distraction in place, you slip "
-                                  "past the guards and enter the city.")
-                            self.__guard_interacted = True
-                            self.current_location = self.sublocation[5]
-                            self.player.coins -= 25
+                            distraction = input("Do you wish to give the barbarians some coin(20) to create the "
+                                                "distraction?")
+                            if distraction == "1":
+                                print(f"{player.name}: Fine, I do really need to get in there")
+                                print(self.barbarian.say_dialogue(self.barbarian.dialogue[9]))
+                                print("They all rush towards the city gates, charging the guards that block the "
+                                      "entrance")
+                                print("With the distraction in place, you slip "
+                                      "past the guards and enter the city.")
+                                self.__guard_interacted = True
+                                self.current_location = self.sublocation[5]
+                                self.player.coins -= 25
+                            elif distraction == "2":
+                                print(f"{player.name}: Forget it then. I'll find my own way in")
+                                print(self.barbarian.say_dialogue(self.barbarian.dialogue[10]))
+                                print("You hear them all cackling as you walk away.")
+                                self.__deal_complete = True
                         else:
                             print("You don't have enough coins to bribe the "
                                   "barbarians.")
                             print("You decide to explore other options.")
                     else:
-                        print(self.barbarian.say_dialogue("Return with the "
-                                                          "dagger or not at "
-                                                          "all!"))
+                        print(self.barbarian.say_dialogue(self.barbarian.dialogue[7]))
+
+                elif barbarian_option == "1" and self.__deal_complete:
+                    print("You got scammed by the barbarians and made a fool of. You decide not to go back to them")
 
                 elif barbarian_option == "2":
                     print("You decide to return to the previous options.")
@@ -358,17 +363,11 @@ class Level2(Location):
                 else:
                     print("Invalid option.")
             else:
-                print(self.barbarian.say_dialogue("Want to take me up on my "
-                                                  "offer now?"))
+                print(self.barbarian.say_dialogue(self.barbarian.dialogue[11]))
                 deal_option = input("1) Yes, what could go wrong?\n"
                                     "2) Hell no!\n")
                 if deal_option == "1":
-                    print(self.barbarian.say_dialogue("See that wasn't so "
-                                                      "hard. My dagger was "
-                                                      "stolen by a man in a"
-                                                      "red cloak.\nI think I "
-                                                      "saw him head around "
-                                                      "the back of the city"))
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[12]))
                     print(self.barbarian.say_dialogue("Off ya hop now fresh "
                                                       "meat and don't come "
                                                       "back without my "
@@ -376,8 +375,7 @@ class Level2(Location):
                     self.__deal_made = True
                     self.add_clue(self.barbarian.clue())
                 elif deal_option == "2":
-                    print(self.barbarian.say_dialogue("Why do you keep "
-                                                      "approaching me then?!"))
+                    print(self.barbarian.say_dialogue(self.barbarian.dialogue[13]))
 
     def dark_alley(self):
         print("You decide to investigate the dark alley.")
