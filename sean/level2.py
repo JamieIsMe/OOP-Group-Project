@@ -58,6 +58,7 @@ class Level2(Location):
         self.__cloak_figure_interact = False
         self.__cloak_figure_fin = False
         self.__dark_alley_investigated = False
+        self.puzzle_complete = False
 
     def outside_city(self):
         self.current_location = self.sublocation[0]
@@ -394,7 +395,7 @@ class Level2(Location):
                     print("You follow the sound and discover a hidden door.")
                     print("Behind the door, you find a group of hooded "
                           "figures planning a secret meeting.")
-                    print("They are dressed in blue, red and yellow robes")
+                    print("They are dressed in red, blue and yellow robes")
                     print("They almost notice you, but you were able to slip "
                           "away before they caught you.")
 
@@ -406,17 +407,20 @@ class Level2(Location):
                           "you")
 
             elif event_result == "2":
-                print("You find a pile of coloured slabs and 3 slots that "
-                      "they seem to fit into")
-                colored_slab_puzzle = ColoredSlabPuzzle()
-                city_pass = colored_slab_puzzle.play_puzzle()
-                if city_pass:
-                    player.add_item(city_pass)
-                    player.show_inventory()
+                if not self.puzzle_complete:
+                    print("You find a pile of coloured slabs and 3 slots that "
+                          "they seem to fit into")
+                    colored_slab_puzzle = ColoredSlabPuzzle(level2)
+                    city_pass = colored_slab_puzzle.play_puzzle()
+                    if city_pass:
+                        player.add_item(city_pass)
+                        player.show_inventory()
+                    self.puzzle_complete = True
+                else:
+                    print("You've already completed the puzzle in this area.")
 
             elif event_result == "3":
                 print("You decide to leave the dark alley.")
-                self.visited(self.sublocation[2])
                 self.current_location = self.sublocation[4]
                 break
 
