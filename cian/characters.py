@@ -4,10 +4,10 @@ from abc import ABC, abstractmethod
 class Character(ABC):
     def __init__(self, name, dialogue, clue, item, action):
         self.name = name
-        self._dialogue = dialogue
+        self.dialogue = dialogue
         self._interacted = False
         self.clues = clue
-        self._items = item
+        self.items = item
         self.actions = action
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Character(ABC):
 
     def interact(self):
         if not self._interacted:
-            interaction = f"{self.name}: {self._dialogue}"
+            interaction = f"{self.name}: {self.dialogue}"
             self._interacted = True
         else:
             interaction = f"You have already talked to {self.name}"
@@ -48,17 +48,22 @@ class Character(ABC):
         pass
         # add clue to clue list from NPC
 
-    @property
+
     def dialogue(self):
         return self._dialogue
 
-    @property
-    def items(self):
-        return self._items
 
-    @property
+    def items(self):
+        return self.items
+
+
     def actions(self):
+<<<<<<< Updated upstream
         return self._actions
+=======
+        return self.actions
+
+>>>>>>> Stashed changes
 
 
 # This class has not changed in this lab

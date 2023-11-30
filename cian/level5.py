@@ -122,13 +122,12 @@ class Camp(Location):
             interacting = True
             if choice == "1":
                 print("")
-                print(self.goblin_trio.dialogue[1])
+                print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[1]))
                 self.visited("hut_1")
                 interacting = True
             elif choice == "2":
                 print("You try to open the door by force with little success")
-                print(self.goblin_trio.dialogue[3])
-
+                print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[3]))
                 interacting = True
             elif choice == "3":
                 self.main_camp()
@@ -139,18 +138,17 @@ class Camp(Location):
 
                 if choice == "1":
                     print(self.goblin_trio.actions[0])
-                    print(self.goblin_trio.dialogue[0])
+                    print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[0]))
 
                     choice = input("How do you respond?\n1) 'I just wanted to see if you have any information on"
                                    "some missing people'\n2)'Wrong hut sorry'. Leave and go further into the town\n")
                     if choice == "1":
                         print(self.goblin_trio.actions[1])
-                        print(self.goblin_trio.dialogue[2])
+                        print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[2]))
                         self.add_clue(self.goblin_trio.clues[0])
                         self.visited("hut_1_inside")
                         choice = input("Where will you go next?\n1) Go back to the outside of the camp.\n"
                                        "2) Go deeper into the village to find the elder.\n")
-
                         if choice == "1":
                             interacting = False
                             self.outer_camp()
@@ -164,7 +162,8 @@ class Camp(Location):
 
                 elif choice == "2":
                     print("You try to open the door by force with little success")
-                    print(self.goblin_trio.dialogue[3])
+                    print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[3]))
+
                 elif choice == "3":
                     interacting = False
                     self.main_camp()
@@ -205,11 +204,11 @@ class Camp(Location):
             "he wields a rusty blade with a menacing air. His body is adorned with crude tattoos depicting goblin mischief,"
             "forming a stark contrast to his posh companion.\n")
 
-            print(self.rough_goblin.dialogue[0])
+            print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[0]))
             input()
-            print(self.rough_goblin.dialogue[1])
+            print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[1]))
             print(self.rough_goblin.actions[0])
-            print(self.posh_goblin.dialogue[0])
+            print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[0]))
             print(self.posh_goblin.actions[0])
             self.visited("big_hut_outside")
 
@@ -230,7 +229,8 @@ class Camp(Location):
             print("You return to the center of camp\n")
             self.main_camp()
         elif choice == "2":
-            print(self.posh_goblin.dialogue[1])
+            print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[1]))
+
             choice = input("\nWhat do you do?\n"
                            "1) Tell the Truth about what you have learnt?\n"
                            "2) Insist that you cant tell them and you need to talk to the elder\n")
@@ -239,10 +239,12 @@ class Camp(Location):
                 self.big_hut()
             elif choice == "2":
                 print(self.rough_goblin.dialogue[2])
+                print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[2]))
+
                 print("You return to the center of camp\n")
                 self.main_camp()
         elif choice == "3":
-            print(self.posh_goblin.dialogue[3])
+            print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[3]))
             self.add_clue(self.posh_goblin.clues[0])
             print()
 
@@ -260,11 +262,12 @@ class Camp(Location):
                   "Adorned in earth-toned garments, the elder carries a staff adorned with feathers and symbols.\n ")
 
             print("without turning around the Elder addresses you")
-            print(self.elder_goblin.dialogue[0])
+            print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[0]))
             print(self.elder_goblin.actions[0])
-            print(self.elder_goblin.dialogue[1])
+            print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[1]))
             print(self.elder_goblin.actions[1])
-            print(self.elder_goblin.dialogue[2])
+            print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[2]))
+
 
 
 
