@@ -17,6 +17,7 @@ Date: 25/11/2023
 """
 from denis.Player import Player
 from sean.locationClass import Location
+from sean.fight import fight, User, CultElder
 from cian.characters import NPC
 from minigame import cipher_decryption_game
 from riddle import riddle_game
@@ -27,14 +28,13 @@ class Level3(Location):
     This class is the main function of our level three class
     """
 
-    def __init__(self, score, coins):
+    def __init__(self, coins):
         super().__init__("Town Center", ["Market", "Crown and Chalice Inn", "Haven's Port"],
                          ["Textile Merchant", "BlackSmith", "Potion Mixer", "Street Performers",
                           "Tavern keeper"], [])
 
         self.user = Player("Max")
         self.current_location = self.sublocation[0]
-        self.score = score  # Points depending on the player action in previous level
         self.coins = coins  # Coins collected throughout the game to aid the player in future quests
 
         self.blacksmith = NPC("Astrid Steelheart",
@@ -73,8 +73,10 @@ class Level3(Location):
 
         self.drunken_elves = [self.drunken_elf1, self.drunken_elf2, self.drunken_elf3]
 
-        self.tavern_keeper = NPC("Finnegan McCathy", "Ceád míle fáilte to all ye weary wanderers!:shamrock",
-                                 "", "", "")
+        self.tavern_keeper = NPC("Finnegan McCathy", ["Ceád míle fáilte to all ye weary wanderer!."],
+                                 "Cult heading to the port", "", "Leaned me on me glaring to my soul")
+
+        self.cult_elder = NPC("Cult Elder", " ", "", "Map leading the player", "")
 
         # Boolean Variables set for no double interaction between any npcs
         self.__blacksmith_interacted = False
@@ -115,9 +117,7 @@ class Level3(Location):
                 Level3.tavern(self)
             elif action == "3":
                 self.current_location = "Haven's Harbor"
-                print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
-                      "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
-                      "items.")
+                Level3.port(self)
 
     def market_square(self):
         character = int(input("\nWho do you want to interact with:\n"
@@ -324,7 +324,11 @@ class Level3(Location):
                 case 2:
                     Level3.bar(self)
                 case 3:
-                    Level3.market()
+                    Level3.visited(self, self.current_location)
+                    self.current_location = self.sublocation[0]
+                    Level3.market(self)
+                case _:
+                    print("Invalid option")
 
     def interact_with_elves(self):
         for elf in self.drunken_elves:
@@ -394,8 +398,32 @@ class Level3(Location):
             print(f"{self.user.name}: I feel like there's something I need to know before I do this")
         else:
             print("You have the observation from the elves in which you go to the Tavern Keeper")
+            print(self.tavern_keeper.say_dialogue(self.tavern_keeper.dialogue[0]), "\u2618\ufe0f")
+            print(
+                f"{self.user.name}: I've been hearing around from the locals that the (CULT NAME) is terrorizing this "
+                f"Eldenhaven \nabducting people and committing satanic rituals to them,\nyou seem to know something "
+                f"\U0001F914")
+            print(self.tavern_keeper.say_dialogue("Aye, I've heard of the (CULT NAME) terrorizing Eldenhaven.\n"
+                                                  "Whispers speak of abductions and dark rituals.\nTread carefully, "
+                                                  "friend.\nThe cult operates in shadows at the port, "
+                                                  "and prying eyes may attract their malevolent gaze."))
+            Level3.add_clue(self, "Cult at the port")
+
+    def port(self):
+        print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
+              "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
+              "items.")
+
+        if "Cult at the port" not in self.clues:
+            print("Coming soon")
+        else:
+            print("Cult at port")
+
+            user = User(self.user.name)
+            cult_elder = CultElder
+            fight(user, cult_elder)
 
 
 if __name__ == "__main__":
-    level3 = Level3(1, 100)
+    level3 = Level3(100)
     level3.market()

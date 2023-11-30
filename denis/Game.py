@@ -1,3 +1,5 @@
+from denis import Player
+
 class Game:
     def __init__(self):
         self.game_run = True
@@ -12,7 +14,7 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level1,level2,level3,level4,level5,level6]
+        self.levels = [level1, level2, level3, level4, level5, level6]
 
     def game_running(self):
         if self.game_run:
@@ -22,6 +24,7 @@ class Game:
     def level_picker(self):
         self.levels[self.next_level].level_start()
         self.next_level += 1
+
 
 game = Game()
 

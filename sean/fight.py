@@ -43,11 +43,18 @@ class User:
 
 class RedCloakEnemy:
     def __init__(self):
+        self.name = "red cloak figure"
         self.health = 80
 
 
+class CultElder:
+    def __init__(self):
+        self.name = "cult elder"
+        self.health = 200
+
+
 def fight(user, enemy):
-    print(f"A mysterious figure in a red cloak appears!")
+    print(f"A mysterious figure in a {enemy.name} appears!")
     time.sleep(1)
     print("Prepare for battle!")
 
