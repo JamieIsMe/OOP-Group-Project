@@ -7,7 +7,8 @@ import time
 class Cave(Location):
     def __init__(self):
         super().__init__("cave", ["entrance", "walkway", "cursed_hallway", "deep_cursed_hallway"],
-                         ["Man In Cell", "Joe Bibiden", "Jo Mama"], ["Peter Did It"])
+                         ["Man In Cell", "Cult Leader", "Cult Member", "Witch Slayer"],
+                         [""])
         self.current_location = "entrance"
         self.location_states = [False] * 3
         self.user = Player("Jamie")
@@ -244,7 +245,7 @@ class Cave(Location):
                           "towards the cultists\nIt launches 5 bolts at them and it "
                           "hits each one, killing them\nYou explore the rest of the "
                           "cave and find all 6 of the missing people\n\nHurray!\n\nYou "
-                          "have saved the people and are now known throught the realm "
+                          "have saved the people and are now known through the realm "
                           "hero")
                 elif action == "3":
                     print("\nYou decided to let the cultists preform their plan")
@@ -260,7 +261,8 @@ class Cave(Location):
                     print(self.cult_member.say_dialogue(self.cult_member.dialogue[1]))
                     time.sleep(2)
                     print(self.witch_slayer.say_dialogue(self.witch_slayer.dialogue[1]))
-                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[0]))
+                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[
+                                                               0]))
                     time.sleep(2)
                     print(self.witch_slayer.perform_action(self.witch_slayer.actions[1]))
 
@@ -268,10 +270,13 @@ class Cave(Location):
     def ran_away(self):
         # Finish this ending
         # ADD FREDRICK
-        print("You can hear a booming laughter coming from behind you as you run away")
+        print("You can hear a booming laughter coming from behind you as you run "
+              "away\nYou turn around and see Fredrick The Bear running towards "
+              "you.\nYou sprint through the door you came through and slam it shut "
+              "behind you\nYou hear a faint \"Hur Hur Hur Hur\"")
 
 
 if __name__ == "__main__":
     cave = Cave()
-    cave.entrance()
-    #cave.cursed_hallway()
+    #cave.entrance()
+    cave.cursed_hallway()

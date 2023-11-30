@@ -56,6 +56,10 @@ class Character(ABC):
     def items(self):
         return self._items
 
+    @property
+    def actions(self):
+        return self._actions
+
 
 # This class has not changed in this lab
 class NPC(Character):
