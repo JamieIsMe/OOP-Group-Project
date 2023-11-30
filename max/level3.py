@@ -39,20 +39,55 @@ class Level3(Location):
         self.blacksmith = NPC("Astrid Steelheart",
                               "Welcome to the Iron-heart Forge. What brings you here today adventurer? "
                               "\nNew armor, maybe new tools or a legendary sword for you?",
-                              "Seen some cloaked folks gone to the potion mixer for some potions.", "Sword")
+                              "Seen some cloaked folks gone to the potion mixer for some potions.", "Sword", "")
+
         self.textile_merchant = NPC("Elara Looming",
                                     "Dear patrons, welcome to the world of wonder!\n"
                                     "Step into the world of Velvet Haven Textiles, where every thread tells a story "
                                     "and every fabric whispers its unique story.", "Paper with the cult logo",
-                                    "Fur coat")
+                                    "Fur coat", "")
+
         self.potion_mixer = NPC("Gwyneth Gerald",
                                 f"Ah, hello, adventurer! Enter the mystical embrace of Gwyneth's sorcery.\n"
                                 f"There, the air is filled with the enchanting essence of unknown possibilities.",
-                                "Deciphered Message", "Spellbook")
+                                "Deciphered Message", "Spellbook", "")
 
         self.street_performer = NPC("The juggler",
                                     "Yeah, saw someone briefly, but they vanished into the crowd. Might "
-                                    "be nothing", "Cloaked figure near fountain", " ")
+                                    "be nothing", "Cloaked figure near fountain", " ", "")
+
+        self.drunken_elf1 = NPC("Aricen Emberheart",
+                                ["You know what's the best part about being an elf? We're like, "
+                                 "timeless, man. I've got all the time in the world to enjoy "
+                                 "this tavern!",
+                                 "Tomorrow is just a distant future. I'm living in the present, "
+                                 "and the present says, 'Another round!'",
+                                 "I challenged a dwarf to an arm-wrestling match. Turns out, dwarves are surprisingly "
+                                 "strong. Who knew?", "Gnomorin? That's a new elven name right there. Maybe he'll join "
+                                                      "us on our timeless quest for more drinks!"], "", "",
+                                ["Swaying on the stool"])
+
+        self.drunken_elf2 = NPC("Clarista Starfall", ["Timeless? I think you've had too much elven wine, friend. "
+                                                      "You've got tomorrow morning catching up with you.",
+                                                      "Speaking of company, did you guys see the human bard trying to "
+                                                      "serenade the barmaid? Hilarious!",
+                                                      "You challenged a dwarf? "
+                                                      "That's like challenging a mountain to a staring contest. "
+                                                      "You're brave, or maybe just tipsy.",
+                                                      "I'm in! To Gnomorin and the quest for another round!"], "", "",
+                                ["Raising an eyebrow"])
+
+        self.drunken_elf3 = NPC("Thandor Dawnwhisper",
+                                ["Present, future, who cares? I'm just here for the company and the questionable "
+                                 "decisions!",
+                                 "Yeah, he sounded like a cat being strangled by a bagpipe. "
+                                 "No offense to cats or bagpipes.",
+                                 "I tried to teach a gnome some elven dance moves. "
+                                 "Now he's convinced he's an honorary elf. Keeps "
+                                 "calling himself 'Gnomorin.'", "To questionable decisions and unforgettable nights!"],
+                                "", "", ["Joining the conversation", "laughing"])
+
+        self.drunken_elves = [self.drunken_elf1, self.drunken_elf2, self.drunken_elf3]
 
         # Boolean Variables set for no double interaction between any npcs
         self.__blacksmith_interacted = False
@@ -89,12 +124,8 @@ class Level3(Location):
                 else:
                     print("You already visted the market")
             elif action == "2":
-                self.current_location = "Crown and Chalice Inn"
-                print(f"You decide to head to the {self.current_location} "
-                      f"hoping to find the clues to continue your quest.\n"
-                      f"As you open the tavern door you see that's it filled with life as the melody playing"
-                      f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
-                      f"stomping their feet in unison")
+                self.current_location = self.sublocation[1]
+                Level3.tavern(self)
             elif action == "3":
                 self.current_location = "Haven's Harbor"
                 print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
@@ -161,7 +192,7 @@ class Level3(Location):
                                 print(f"New balance: {self.coins}")
                                 print(self.blacksmith.say_dialogue(f"The sword suits you traveler, this "
                                                                    f"will help you for sure"))
-                                self.user.add_item(self.blacksmith._items)
+                                self.user.add_item(self.blacksmith.items)
                             else:
                                 print(self.blacksmith.say_dialogue("You don't have enough coins for the sword."))
                                 # IF YOUR SCORE IS GOOD, SHE WILL GIVE IT FOR A DISCOUNT OR FREE
@@ -208,7 +239,7 @@ class Level3(Location):
                                                                          f"yours now wanderer it might help in the "
                                                                          f"extreme weather conditions ahead of your "
                                                                          f"journey."))
-                                self.user.add_item(self.textile_merchant._items)
+                                self.user.add_item(self.textile_merchant.items)
                             else:
                                 print(self.textile_merchant.say_dialogue("You do not have another coins for the fur "
                                                                          "coat,\nadventurer perhaps maybe you can find "
@@ -260,8 +291,8 @@ class Level3(Location):
                         print("Let's decipher what she said:\n")
                         cipher_decryption_game()
                         Level3.add_clue(self, "The Legendary Witch Slayer will save us all message")
-                        print(f"You pick up some {self.potion_mixer._items} and decide to keep it.")
-                        self.user.add_item(self.potion_mixer._items)
+                        print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
+                        self.user.add_item(self.potion_mixer.items)
                         self.__potion_mixer_interacted = True
                     else:
                         print(f"{self.potion_mixer.name} is gone")
@@ -287,6 +318,27 @@ class Level3(Location):
             print(f"You already interacted with {self.street_performer.name}")
 
         level3.market_square()
+
+    def tavern(self):
+        print(f"You decide to head to the {self.current_location} "
+              f"hoping to find the clues to continue your quest.\n"
+              f"As you open the tavern door you see that's it filled with life as the melody playing"
+              f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
+              f"stomping their feet in unison")
+
+        while self.current_location == "Crown and Chalice Inn":
+            action = input("\nWhat will you do?,\n"
+                           "1) Interact with the drunken elves\n"
+                           "2) Head to the bar\n"
+                           "3) Leave the tavern\n")
+
+            if action == "1":
+                Level3.interact_with_elves(self)
+
+    def interact_with_elves(self):
+        for elf in self.drunken_elves:
+            print(elf.interact())
+            print(elf.perform_action(elf.actions))
 
 
 if __name__ == "__main__":

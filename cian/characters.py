@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 
 
 class Character(ABC):
-    def __init__(self, name, dialogue, clue, item):
+    def __init__(self, name, dialogue, clue, item, action):
         self.name = name
         self._dialogue = dialogue
         self._interacted = False
         self.clues = clue
         self._items = item
+        self.actions = action
 
     def __str__(self):
         return f"{self.__class__.__name__}: {self.name}"
@@ -39,9 +40,9 @@ class Character(ABC):
 
         return interaction
 
-    def items(self):
-        pass
-        # add item to player from NPC
+    # def items(self):
+    # pass
+    # add item to player from NPC
 
     def clue(self):
         pass
@@ -50,6 +51,10 @@ class Character(ABC):
     @property
     def dialogue(self):
         return self._dialogue
+
+    @property
+    def items(self):
+        return self._items
 
 
 # This class has not changed in this lab
