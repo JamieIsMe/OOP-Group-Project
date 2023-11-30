@@ -1,7 +1,6 @@
 import random
 import math
 import time
-from denis.Player import Player
 
 
 class User:
@@ -43,40 +42,41 @@ class User:
 
 class RedCloakEnemy:
     def __init__(self):
-        self.name = "red cloak figure"
+        self.name = "Red Cloaked Enemy"
         self.health = 80
 
 
-class CultElder:
+class CultMember:
     def __init__(self):
-        self.name = "cult elder"
+        self.name = "cult member"
         self.health = 200
 
 
 def fight(user, enemy):
-    print(f"A mysterious figure in a {enemy.name} appears!")
+    print(f"The {enemy.name} readys himself!")
     time.sleep(1)
     print("Prepare for battle!")
 
     while user.health > 0 and enemy.health > 0:
         print(f"\n{user.name}'s Health: {user.health} | "
-              f"Red Cloak's Health: {enemy.health}\n")
+              f"{enemy.name}'s Health: {enemy.health}\n")
         action = input("What will you do? (1. Attack, 2. Special Ability, "
                        "3. Attempt to flee): ")
 
         if action == "1":
             user_damage = user.attack()
             enemy.health -= user_damage
-            print(f"You attack the Red Cloak and deal {user_damage} damage!")
+            print(f"You attack the {enemy.name} and deal {user_damage} "
+                  f"damage!")
 
             if user.dodge():
-                print("The Red Cloak attacks, but you dodge the incoming "
+                print(f"The {enemy.name} attacks, but you dodge the incoming "
                       "attack!")
             else:
                 if enemy.health >= 0:
                     enemy_damage = random.randint(5, 15)
                     user.health -= enemy_damage
-                    print(f"The Red Cloak counterattacks and deals "
+                    print(f"The {enemy.name} counterattacks and deals "
                           f"{enemy_damage} damage to you!")
                 else:
                     print("You have defeated the enemy")
@@ -89,13 +89,13 @@ def fight(user, enemy):
                       f"ability.")
 
             if user.dodge():
-                print("The Red Cloak attacks, but you dodge the incoming "
+                print(f"The {enemy.name} attacks, but you dodge the incoming "
                       "attack!")
             else:
                 if enemy.health >= 0:
                     enemy_damage = random.randint(5, 15)
                     user.health -= enemy_damage
-                    print(f"The Red Cloak counterattacks and deals "
+                    print(f"The {enemy.name} counterattacks and deals "
                           f"{enemy_damage} damage to you!")
                 else:
                     print("You have defeated the enemy")
@@ -106,19 +106,29 @@ def fight(user, enemy):
                 print("You managed to flee successfully!")
                 return False
             else:
-                print("You failed to flee. The Red Cloak catches up to you!")
+                print(f"You failed to flee. The {enemy.name} catches up to "
+                      "you!")
 
         else:
             print("Invalid choice. Try again.")
 
         time.sleep(1)
 
-    if user.health <= 0:
-        print("You were defeated by the Red Cloak. Game over.")
+    if user.health <= 0 and enemy.name == "Red Cloaked Enemy":
+        print(f"You were defeated by the {enemy.name}. Game over.")
+        return None
+
+    elif user.health <= 0 and enemy.name == "cult member":
+        print(f"You were defeated by the {enemy.name}. Game over.")
+        return None
+
+    elif enemy.name == "cult member":
+        print("")  # whatever the cult member gives you
+
     else:
-        print("You defeated the Red Cloak! You gain a dagger and 25 coins.")
-        Player.add_item("Prize Dagger")
-        user.coins += 25
+        print(f"You defeated the {enemy.name}! You gain a dagger and 25 "
+              f"coins.")
+        return "Prized Dagger"
 
 
 if __name__ == "__main__":
