@@ -69,4 +69,4 @@ class ColoredSlabPuzzle:
 
 # Only run the puzzle if this script is executed directly
 if __name__ == "__main__":
-    puzzle = ColoredSlabPuzzle()
+    puzzle = ColoredSlabPuzzle("Clues")
