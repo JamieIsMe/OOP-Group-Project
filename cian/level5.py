@@ -9,22 +9,25 @@ class Camp(Location):
         super().__init__("camp",
                          ["outer_camp", "main_camp", "hut_1", "big_hut", "side_main_camp"],
                          ["Goblin trio", "Dice Goblin", "Goblin Elder"],
-                         [],
-                         [""])
+                         [])
         self.current_location = "outer_camp"
         self.visited_sublocations = []
         self.score = score
         self.coins = coins
         self.goblin_trio = NPC("Goblin trio",
-                               ["\nYou here voices in unison say:\n'What do you want'?\n",
-                                "You here a high pitched voice from the other side\n\n'Nobody is home'!\n",
-                                "First Goblin: 'We heard the elder talk about that\nSecond Goblin: 'We dont know nothing'\n"
-                               "Third Goblin: 'The elder should be in the big hut'\n"],
-                               ["Goblin elder is in the big hut"],
-                               "")
+                               ["\nYou here voices in unison say:\n\"What do you want\"?\n",
+                                "You here a high pitched voice from the other side\n\n\"Nobody is home\"!\n",
+                                "First Goblin: \"We heard the elder talk about that\nSecond Goblin: \"We dont know nothing\"\n"
+                               "Third Goblin: \"The elder should be in the big hut\"\n",
+                                "\n\"You are not getting we have the door barred\"!The voices on the other side shout\n"],
+                               ["Goblin elder is in the big hut",],
+                               "",
+                               ["\nThe door opens slightly and you see 3 Goblins peer through the crack nervously\n",
+                                "The Goblin trio open the door further and you see 3 identical goblins."
+                                "The only difference is their eye colour\n"])
 
         self.dice_goblin = NPC("Dicy",
-                               ["\nShady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy\n",
+                               ["\nShady Goblin: Welcome friend!\nIf im not mistaken you\"re new around here.\nThe names Dicy\n",
                                 "\nRecon you fancy a game of dice friend?\n",
                                 "\nHow about the ol' rock paper scissors then?\n",
                                 "\nHow about another round?\n",
@@ -33,7 +36,30 @@ class Camp(Location):
                                 "\nNow dont go spreading this info around\n",
                                 "\n\n"],
                                ["Dicy's clue"],
-                               "")
+                               "",
+                               ["He says as he tips his hat"],)
+
+        self.posh_goblin = NPC("Reginald Thornsworth the Refined",
+                               ["\nShady Goblin: Welcome friend!\nIf im not mistaken you're new around here.\nThe names Dicy\n",
+                                "\nRecon you fancy a game of dice friend?\n",
+                                "\nHow about the ol' rock paper scissors then?\n",
+                                "\nHow about another round?\n",
+                                "\nWell friend you seem mighty well off "
+                                "how abouts i give you some information as a fellow benefactor of life\n",
+                                "\nNow dont go spreading this info around\n",
+                                "\n\n"],
+                               [],
+                               "",
+                               [],)
+
+        self.rough_goblin = NPC("Grizzle \"Knuckles\" O'Connor",
+                                ["Oi, wagwan? You new 'round 'ere or somethin'? This hut's off-limits, ya get me?"
+                                "We're keeping it 100, guardin' for the elder and all that. No funny business, ya feel?"],
+                               [],
+                               "",
+                               ["His speech is laced with even more street slang, and there's a casual confidence"
+                                " in his demeanor that suggests he's not one to be messed with. Despite the laid-back"
+                                " approach",],)
         self.max_coins = 100
 
     def outer_camp(self):
@@ -87,8 +113,8 @@ class Camp(Location):
                 interacting = True
             elif choice == "2":
                 print("You try to open the door by force with little success")
-                print(self.goblin_trio.say_dialogue(":'You are not getting we have the door barred'!"
-                                                    "The voices on the other side shout\n"))
+                print(self.goblin_trio._dialogue[3])
+
                 interacting = True
             elif choice == "3":
                 self.main_camp()
@@ -98,14 +124,13 @@ class Camp(Location):
                                "2) Try to open the door\n3) Leave and go further into the town\n")
 
                 if choice == "1":
-                    print("The door opens slightly and you see 3 Goblins peer through the crack nervously\n")
+                    print(self.goblin_trio._actions[0])
                     print(self.goblin_trio._dialogue[0])
 
                     choice = input("How do you respond?\n1) 'I just wanted to see if you have any information on"
                                    "some missing people'\n2)'Wrong hut sorry'. Leave and go further into the town\n")
                     if choice == "1":
-                        print("The Goblin trio open the door further and you see 3 identical goblins."
-                              "The only difference is their eye colour\n")
+                        print(self.goblin_trio._actions[1])
                         print(self.goblin_trio._dialogue[2])
                         self.add_clue(self.goblin_trio.clues[0])
                         self.review_clues()
@@ -126,10 +151,8 @@ class Camp(Location):
 
                 elif choice == "2":
                     print("You try to open the door by force with little success")
-                    print(self.goblin_trio.say_dialogue(":'You are not getting we have the door barred'!"
-                                                        "The voices on the other side shout\n"))
+                    print(self.goblin_trio._dialogue[3])
                 elif choice == "3":
-                    print("You go back to the centre of the room")
                     interacting = False
                     self.main_camp()
 
@@ -159,15 +182,28 @@ class Camp(Location):
             self.outer_camp()
 
     def big_hut(self):
-        print("\nno\n")
-        self.main_camp()
+        self.current_location = "big_hut"
+        if self.current_location not in self.visited_sublocations:
+            print("You walk over to the large hut in the center"
+            "From a distance, you see the curious pair of goblin guards stationed outside a large hut."
+            "One, a pint-sized figure, catches your eye with stolen finery and an air of aristocratic pride."
+            "His hooked nose supports a tiny monocle."
+            "On the flip side, another goblin, rough and untamed, captures your attention. Clad in patchwork leather,"
+            "he wields a rusty blade with a menacing air. His body is adorned with crude tattoos depicting goblin mischief,"
+            "forming a stark contrast to his posh companion.\n")
+
+            print(self.rough_goblin._dialogue[0])
+            print(self.rough_goblin._actions[0])
+            self.visited("side_main_camp")
+
+
 
     def side_main_camp(self, coins=100):
         self.current_location = "side_main_camp"
         if self.current_location not in self.visited_sublocations:
             print("You walk over to the Shady Goblin\n")
             print(self.dice_goblin._dialogue[0])
-            print("He says as he tips his hat")
+            print(self.dice_goblin._actions[0])
             self.visited("side_main_camp")
 
         if coins == self.max_coins:

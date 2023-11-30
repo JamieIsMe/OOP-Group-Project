@@ -11,11 +11,23 @@ class Cave(Location):
         self.current_location = "entrance"
         self.location_states = [False] * 3
         self.user = Player("Jamie")
-        # TEMP SCORE VARIABLE UNTIL PLAYER CLASS FINISHED
-        self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get through that door", "", "")
+        self.cell_man = NPC("Man In Cell", "If you open my cell, I will help you get "
+                                           "through that door", "", "", "")
         self.cult_leader = NPC("Cult Leader", ["So you have finally arrived." , "We will revive the witch slayer so "
-                                                                               "that she may save us all"], "", "")
-
+                                                                               "that "
+                                                                                "she may save us all"], "", "","")
+        self.cult_member = NPC("Cult Member", ["Aha! we have done it!\nWe have "
+                                               "resurrected her!", "Oh Legendary "
+                                                                   "Witch Slayer, "
+                                                                   "save us all!"], "",
+                               "","")
+        self.witch_slayer = NPC("The Witch Slayer",["The Legendary Witch Slayer has "
+                                                    "returned, and those who sought to "
+                                                    "extinguish my flame shall now "
+                                                    "face the inferno of my rekindled "
+                                                    "wrath.", "I have no use for "
+                                                              "you anymore"],"","",
+                                ["beheads the cult members", "beheads you"])
     def entrance(self):
         self.current_location = self.sublocation[0]
         if self.current_location not in self.visited_sublocations:
@@ -61,7 +73,7 @@ class Cave(Location):
                         self.walkway()
                 elif action == "2":
                     if " - 5 people, The 2nd and 4th are kneeling down" not in self.user.clues:
-                        self.user.add_clue(" - 5 people, The 2nd and 4th are kneeling down")
+                        self.add_clue(" - 5 people, The 2nd and 4th are kneeling down")
                     print("Looking closer at the drawing, you see 5 people in robes surrounding a statue. The second "
                           "and fourth are kneeling down")
             print()
@@ -87,7 +99,7 @@ class Cave(Location):
                     print("You return to the cell to see that the man has disappeared but he left a note on the "
                           "floor\nYou pick it up and see that its says 5481")
                     if " - Note that says 5481" not in self.user.clues:
-                        self.user.add_clue(" - Note that says 5481")
+                        self.add_clue(" - Note that says 5481")
                 else:
                     print("You return back to the person in the cell")
                 while Talking:
@@ -221,8 +233,6 @@ class Cave(Location):
         print("You burst through the door and are met face to face with 5 cult members surrounding a corpse")
         print(self.cult_leader.say_dialogue(self.cult_leader.dialogue[0]))
         while self.current_location == "deep_cursed_hallway":
-            print("\nWhat will you do?\n1) Ask what their plan is\n2) Attempt to stop them\n3) Let them preform their "
-                  "plan")
             talking = True
             while talking:
                 action = input("\nWhat will you do?\n1) Ask what their plan is\n2) Attempt to stop them\n3) Let them "
@@ -230,9 +240,30 @@ class Cave(Location):
                 if action == "1":
                     print(self.cult_leader.say_dialogue(self.cult_leader.dialogue[1]))
                 elif action == "2":
-                    pass
+                    print("You pull your magic crossbow out of your pocket and fire it "
+                          "towards the cultists\nIt launches 5 bolts at them and it "
+                          "hits each one, killing them\nYou explore the rest of the "
+                          "cave and find all 6 of the missing people\n\nHurray!\n\nYou "
+                          "have saved the people and are now known throught the realm "
+                          "hero")
                 elif action == "3":
                     print("\nYou decided to let the cultists preform their plan")
+                    print("The cultists each pull a lever in front of them and begin "
+                          "chanting.\nA stream of dark power spews out from the "
+                          "ceiling, flooding into the corpse\n")
+                    time.sleep(2)
+                    print("The room begins shaking and the corpse rises.\n")
+                    print(self.cult_member.say_dialogue(self.cult_member.dialogue[0]))
+                    time.sleep(2)
+                    print(self.witch_slayer.say_dialogue(self.witch_slayer.dialogue[0]))
+                    time.sleep(2)
+                    print(self.cult_member.say_dialogue(self.cult_member.dialogue[1]))
+                    time.sleep(2)
+                    print(self.witch_slayer.say_dialogue(self.witch_slayer.dialogue[1]))
+                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[0]))
+                    time.sleep(2)
+                    print(self.witch_slayer.perform_action(self.witch_slayer.actions[1]))
+
 
     def ran_away(self):
         # Finish this ending
