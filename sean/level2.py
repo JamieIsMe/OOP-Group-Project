@@ -6,7 +6,7 @@ from sean.dice_game import roll_dice
 from sean.colour_puzzle import ColoredSlabPuzzle
 
 
-# change dark alley to
+# update dialogue for npcs e.g line 94
 
 
 class Level2(Location):
@@ -21,7 +21,7 @@ class Level2(Location):
         self.player = player
         self.score = score
         self.city_guard = NPC("City Guard",
-                              ["City Guard: Halt! What business do "
+                              ["Halt! What business do "
                                "you have here stranger?",
                                "City Guard: Kidnapping you say? Haven't "
                                "heard anything about that. Although I did "
@@ -91,7 +91,7 @@ class Level2(Location):
                 break  # Exit the loop once the player enters the city
 
     def guard_interaction(self):
-        print(self.city_guard._dialogue[0])
+        print(self.city_guard.say_dialogue(self.city_guard._dialogue[0]))
 
         while not self.__guard_interacted:
             interaction = int(input("1) Ask about the kidnapping\n"
