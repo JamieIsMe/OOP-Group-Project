@@ -117,14 +117,13 @@ def fight(user, enemy):
     if user.health <= 0 and enemy.name == "Red Cloaked Enemy":
         print(f"You were defeated by the {enemy.name}. Game over.")
         return None
-
     elif user.health <= 0 and enemy.name == "cult member":
         print(f"You were defeated by the {enemy.name}. Game over.")
         return None
-
     elif enemy.name == "cult member":
-        print("")  # whatever the cult member gives you
-
+        print(f"You defeated the {enemy.name}! "
+              f"You gain a map that shows the location of the (CULT NAME) home base and 200 coins")
+        return "Map to cult homebase"
     else:
         print(f"You defeated the {enemy.name}! You gain a dagger and 25 "
               f"coins.")

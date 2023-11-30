@@ -53,6 +53,10 @@ class Character(ABC):
     def actions(self):
         return self.actions
 
+    @actions.setter
+    def actions(self, value):
+        self._actions = value
+
 
 class NPC(Character):
 

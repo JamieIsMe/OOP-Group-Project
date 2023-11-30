@@ -421,7 +421,11 @@ class Level3(Location):
 
             user = User(self.user.name)
             cult_member = CultMember()
-            fight(user, cult_member)
+            final_fight = fight(user, cult_member)
+
+            if final_fight:
+                self.user.add_item(final_fight)
+                self.user.show_inventory()
 
 
 if __name__ == "__main__":
