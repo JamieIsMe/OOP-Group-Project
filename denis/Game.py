@@ -29,7 +29,6 @@ class Game:
 
         #add lv 4 back
 
-
     def level_picker(self):
         # Looping through each level until all levels are completed
         while self.next_level < len(self.levels):
