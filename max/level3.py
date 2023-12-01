@@ -10,8 +10,6 @@ This level will mess with the player/Red Herring.
 This is set in the middle of the town in which the player will need to solve riddles by npcs.
 The clues collected throughout the level will lead to a plot twist in our player's quest.
 The player can react with the merchants and can buy items that can enhance gameplay.
-The player collects points based on key actions they committed.
-Potential secret achievement? (Discuss it with the boys for that one.)
 
 Date: 25/11/2023
 """
@@ -39,24 +37,25 @@ class Level3(Location):
         self.side_quest_enabled = False
 
         self.blacksmith = NPC("Astrid Steelheart",
-                              "Welcome to the Iron-heart Forge. What brings you here today adventurer? "
-                              "\nNew armor, maybe new tools or a legendary sword for you?",
-                              "Seen some cloaked folks gone to the potion mixer for some potions.", "Sword", "")
+                              ["Welcome to the Iron-heart Forge. What brings you here today adventurer? "
+                               "\nNew armor, maybe new tools or a legendary sword for you?"],
+                              "Seen some cloaked folks gone to the potion mixer for some potions.", "Sword",
+                              "")
 
         self.textile_merchant = NPC("Elara Looming",
-                                    "Dear patrons, welcome to the world of wonder!\n"
-                                    "Step into the world of Velvet Haven Textiles, where every thread tells a story "
-                                    "and every fabric whispers its unique story.", "Paper with the cult logo",
+                                    ["Dear patrons, welcome to the world of wonder!\n"
+                                     "Step into the world of Velvet Haven Textiles, where every thread tells a story "
+                                     "and every fabric whispers its unique story."], "Paper with the cult logo",
                                     "Fur coat", "")
 
         self.potion_mixer = NPC("Gwyneth Gerald",
-                                f"Ah, hello, adventurer! Enter the mystical embrace of Gwyneth's sorcery.\n"
-                                f"There, the air is filled with the enchanting essence of unknown possibilities.",
+                                ["Ah, hello, adventurer! Enter the mystical embrace of Gwyneth's sorcery.\n"
+                                 "There, the air is filled with the enchanting essence of unknown possibilities."],
                                 "Deciphered Message", "Spellbook", "")
 
         self.street_performer = NPC("The juggler",
-                                    "Yeah, saw someone briefly, but they vanished into the crowd. Might "
-                                    "be nothing", "Cloaked figure near fountain", " ", "")
+                                    ["Yeah, saw someone briefly, but they vanished into the crowd. Might "
+                                     "be nothing"], "Cloaked figure near fountain", " ", "")
 
         self.drunken_elf1 = NPC("Aricen Emberheart",
                                 ["You know what's the best part about being an elf? We're like, "
@@ -90,6 +89,9 @@ class Level3(Location):
         self.__textile_merchant_interacted = False
         self.__potion_mixer_interacted = False
         self.__street_performer_interacted = False
+        self.__drunken_elves_interacted = False
+        self.__tavern_keeper_interacted = False
+        self.__craftsman_interacted = False
 
         print(f"{self.user.name} steps afoot to the town center of (Town name) lively {self.current_location}"
               f" square after (Ending of level 2),\n"
@@ -127,34 +129,38 @@ class Level3(Location):
                 Level3.port(self)
 
     def market_square(self):
-        character = int(input("\nWho do you want to interact with:\n"
-                              "1) Blacksmith\n"
-                              "2) Textile Merchant\n"
-                              "3) Potion Mixer\n"
-                              "4) See the street performers\n"
-                              "5) Leave the market square.\n"))
-
-        match character:
-            case 1:
-                print("\n")
-                Level3.interact_with_blacksmith(self)
-            case 2:
-                print("\n")
-                Level3.interact_with_textile_merchant(self)
-            case 3:
-                print("\n")
-                Level3.interact_with_potion_mixer(self)
-            case 4:
-                print("\n")
-                Level3.interact_with_street_performers(self)
-            case 5:
-                Level3.market(self)
-            case _:
-                print("Invalid choice")
+        while True:
+            try:
+                character = int(input("\nWho do you want to interact with:\n"
+                                      "1) Blacksmith\n"
+                                      "2) Textile Merchant\n"
+                                      "3) Potion Mixer\n"
+                                      "4) See the street performers\n"
+                                      "5) Leave the market square.\n"))
+                match character:
+                    case 1:
+                        print("\n")
+                        Level3.interact_with_blacksmith(self)
+                    case 2:
+                        print("\n")
+                        Level3.interact_with_textile_merchant(self)
+                    case 3:
+                        print("\n")
+                        Level3.interact_with_potion_mixer(self)
+                    case 4:
+                        print("\n")
+                        Level3.interact_with_street_performers(self)
+                    case 5:
+                        Level3.market(self)
+                        break
+                    case _:
+                        print("Invalid choice")
+            except ValueError as ve:
+                print(f"{ve} invalid input it must be a number")
 
     def interact_with_blacksmith(self):
         if not self.__blacksmith_interacted:
-            print(self.blacksmith.interact())  # BLACKSMITH SPEAKS VOICE-LINE
+            print(self.blacksmith.say_dialogue(self.blacksmith.dialogue[0]))  # BLACKSMITH SPEAKS VOICE-LINE
 
             while not self.__blacksmith_interacted:
                 interaction = int(input(f"1.) Question {self.blacksmith.name} about the cult\n"
@@ -205,7 +211,7 @@ class Level3(Location):
     def interact_with_textile_merchant(self):
         if "Fluffernutter the Chicken" not in self.user.inventory and not self.side_quest_enabled:
             if not self.__textile_merchant_interacted:
-                print(self.textile_merchant.interact())
+                print(self.textile_merchant.say_dialogue(self.textile_merchant.dialogue[0]))
 
                 while not self.__textile_merchant_interacted:
                     interaction = int(input(f"1.) Ask about the newest trends in the shop\n"
@@ -245,7 +251,7 @@ class Level3(Location):
 
                                     action = input("Do want to take part in the side quest?\n"
                                                    "Yes: Y\n"
-                                                   "No: N")
+                                                   "No: N\n")
 
                                     if action.lower() == "y" or action.capitalize() == "Y":
                                         print(self.textile_merchant.say_dialogue(
@@ -286,8 +292,8 @@ class Level3(Location):
                             "Waves nervously as I leave the stores maybe its just \n"
                             "something in his mind"))
                         self.__textile_merchant_interacted = True
-                else:
-                    print(f"You already interacted with {self.textile_merchant.name}")
+            else:
+                print(f"You already interacted with {self.textile_merchant.name}")
         else:
             print(self.textile_merchant.say_dialogue("Thanks a bunch for rescuing my wayward chicken. "
                                                      "To show my appreciation, here's a sturdy armor for you – "
@@ -303,7 +309,7 @@ class Level3(Location):
 
     def interact_with_potion_mixer(self):
         if not self.__potion_mixer_interacted:
-            print(self.potion_mixer.interact())
+            print(self.potion_mixer.say_dialogue(self.potion_mixer.dialogue[0]))
 
             while not self.__potion_mixer_interacted:
                 interaction = int(input(f"1.) Ask about the ingredient\n"
@@ -345,7 +351,7 @@ class Level3(Location):
             print(self.street_performer.interact())
             Level3.add_clue(self, "Cloaked figure near fountain")
             print(f"As {self.user.name} thanked them, they couldn't stop wondering if this coincidental sighting"
-                  "was a deliberate distraction.")
+                  " was a deliberate distraction.")
             self.__street_performer_interacted = True
         else:
             print(f"You already interacted with {self.street_performer.name}")
@@ -360,26 +366,28 @@ class Level3(Location):
               f"stomping their feet in unison")
 
         while self.current_location == "Crown and Chalice Inn":
-            action = int(input("\nWhat will you do?,\n"
-                               "1) Interact with the drunken elves\n"
-                               "2) Head to the bar\n"
-                               "3) Leave the tavern\n"))
-
-            match action:
-                case 1:
-                    Level3.interact_with_elves(self)
-                case 2:
-                    Level3.bar(self)
-                case 3:
-                    Level3.visited(self, self.current_location)
-                    self.current_location = self.sublocation[0]
-                    Level3.market(self)
-                case _:
-                    print("Invalid option")
+            while True:
+                try:
+                    action = int(input("\nWhat will you do?,\n"
+                                       "1) Interact with the drunken elves\n"
+                                       "2) Head to the bar\n"
+                                       "3) Leave the tavern\n"))
+                    match action:
+                        case 1:
+                            Level3.interact_with_elves(self)
+                        case 2:
+                            Level3.bar(self)
+                        case 3:
+                            self.current_location = self.sublocation[0]
+                            Level3.market(self)
+                        case _:
+                            print("Invalid option")
+                except ValueError as ve:
+                    print(f"{ve} input should be a number")
 
     def interact_with_elves(self):
         for elf in self.drunken_elves:
-            print(elf.interact())
+            print(elf.say_dialogue(elf.dialogue))
             print(elf.perform_action(elf.actions))
 
         while self.current_location == self.sublocation[1]:
@@ -468,19 +476,33 @@ class Level3(Location):
 
         if "Cult at the port" not in self.clues:
             while self.current_location == self.sublocation[2]:
-                action = int(input("\nWhat will you do?,\n"
-                                   "1) Interact with the Craftsman\n"
-                                   "2) Leave Haven's Port\n"))
-                match action:
-                    case 1:
-                        self.interact_with_craftsman()
-                    case 2:
-                        self.current_location = self.sublocation[0]
-                        Level3.market(self)
-                    case _:
-                        print("Invalid option")
+                try:
+                    action = int(input("\nWhat will you do?,\n"
+                                       "1) Interact with the Craftsman\n"
+                                       "2) Leave Haven's Port\n"))
+                    match action:
+                        case 1:
+                            self.interact_with_craftsman()
+                        case 2:
+                            self.current_location = self.sublocation[0]
+                            Level3.market(self)
+                        case _:
+                            print("Invalid option")
+                except ValueError as ve:
+                    print(f"{ve} input needs to be a integer")
         else:
-            print("Cult at port")
+            print(
+                "Beneath the moonlit port, a clandestine cult engaged in an ominous ritual.\n"
+                f"{self.user.name} confronted them, demanding answers.\n"
+                "Interfering with our sacred gathering, detective? the cult leader hissed.\n"
+                "Undeterred, the detective stood firm.\n"
+                "Laughter echoed as the cult chanted, conjuring an eerie ambiance.\n"
+                "Tension peaked, and a cult member lunged at the detective.\n"
+                "A brief but intense struggle ensued. The detective, skilled and resourceful, "
+                "managed to subdue the assailant.\n"
+                "As backup sirens approached, the defeated cult member vanished into the shadows.\n"
+                "The detective, now more determined, unravels the dark secrets concealed within the port,"
+                " knowing that this encounter was just the beginning of a greater mystery.\n")
 
             user = User(self.user.name)
             cult_member = CultMember()
