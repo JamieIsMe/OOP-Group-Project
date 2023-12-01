@@ -218,8 +218,6 @@ class Level3(Location):
             interaction = int(input(f"1.) Question {self.blacksmith.name} about the cult\n"
                                     f"2.) Ask about forging a sword\n"
                                     f"3.) Leave the blacksmith\n"))
-            # Checks if the user has found the clue already
-            # Else tell the user that you have the clue already
             if interaction == 1:
                 if "Blacksmith's observation on the potion mixer" not in self.clues:
                     print(f"{self.player.name}: Have you heard about the (Cult name) around abducting people "
@@ -229,7 +227,7 @@ class Level3(Location):
                                                        f"the potion mixer as of recently."))
                     Level3.add_clue(self, "Blacksmith's observation on the potion mixer")
                 else:
-                    print("Don't ask questions twice")
+                    print("Don't ask the questions twice")
             elif interaction == 2:
                 if self.blacksmith.items not in self.player.inventory:
                     print(self.blacksmith.say_dialogue("Ohh you interested in crafting an fine piece metal then"
@@ -343,11 +341,14 @@ class Level3(Location):
                     else:
                         print(self.textile_merchant.say_dialogue("You have a fur coat already adventurer!"))
                 elif interaction == 2:
-                    print(self.textile_merchant.say_dialogue("Oh yes those people, one of the members a few days \n"
-                                                             "ago tried to influence me to join the cult and left me"
-                                                             " this.\n"))
-                    print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
-                    Level3.add_clue(self, self.textile_merchant.clues)
+                    if "Paper with the cult logo" not in self.clues:
+                        print(self.textile_merchant.say_dialogue("Oh yes those people, one of the members a few days \n"
+                                                                 "ago tried to influence me to join the cult and left me"
+                                                                 " this.\n"))
+                        print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
+                        Level3.add_clue(self, self.textile_merchant.clues)
+                    else:
+                        print("Don't ask the questions twice")
                 elif interaction == 3:
                     print(self.textile_merchant.perform_action(
                         "Waves nervously as I leave the stores maybe its just \n"
@@ -394,7 +395,7 @@ class Level3(Location):
                                                            "encrypted message as she runs away\n"))
                     print("Let's decipher what she said:\n")
                     cipher_decryption_game()
-                    Level3.add_clue(self, "The Legendary Witch Slayer will save us all message")
+                    self.player.add_main_clue(self, "The Legendary Witch Slayer will save us all message")
                     print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
                     self.player.add_item(self.potion_mixer.items)
                     self.__potion_mixer_interacted = True
@@ -570,9 +571,9 @@ class Level3(Location):
         or leave the port.
         If the clue is present, it describes a confrontation with a clandestine cult engaged in an ominous
         ritual.
+
         The player confronts the cult, leading to a fight scenario.
-        If the player succeeds, they receive a reward,
-        and the method proceeds to the ending of the level.
+        If the player succeeds, they receive a reward, and the method proceeds to the ending of the level.
         """
         print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
               "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
@@ -624,6 +625,7 @@ class Level3(Location):
                 self.player.add_item(final_fight)
                 self.player.show_inventory()
                 Level3.ending()
+            Level3.market(self)
 
     def interact_with_craftsman(self):
         """
@@ -704,14 +706,19 @@ class Level3(Location):
         As the player ventures through enchanted landscapes, the air thickens with mystery, setting the stage for a
         perilous journey into the heart of darkness.
         """
-        print(
-            f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
-            f"Undeterred, {self.player.name} follows the mystical trail, uncovering the cult's hidden home base. "
-            "As they venture through enchanted landscapes, "
-            "the air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
+        print("The subdued cult member, in possession of a cryptic map, also clutched a mysterious "
+              "red cloth held by a cult member.\n"
+              "The map revealed a path through a mushroom forest and a goblin camp.\n"
+              "Undeterred, the detective follows the mystical trail, unfolding the cult's hidden home base.\n"
+              "As they venture through enchanted landscapes, the red cloth becomes a key, "
+              "guiding them through the twists and turns.\n"
+              "The air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
+
+        self.player.add_main_clue(self, "A cryptic map")
+        self.player.add_main_clue(self, "Red Cloth")
 
 
 if __name__ == "__main__":
     player = Player("")
-    level3 = Level3(player)
+    level3 = Level3(player)  # Provide a name for the player
     level3.market()
