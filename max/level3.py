@@ -29,14 +29,24 @@ class Level3(Location):
     """
 
     def __init__(self, player):
+        """
+           Initializes a Level3 instance with the specified player.
+
+           Args:
+           - player: An instance of the Player class representing the player in the game
+        """
+
+        # Call the constructor of the superclass (Location) with initial values
         super().__init__("Town Center", ["Market", "Crown and Chalice Inn", "Haven's Port"],
                          ["Textile Merchant", "BlackSmith", "Potion Mixer", "Street Performers",
                           "Tavern keeper"], [])
 
+        # Initialize player, current_location, and side_quest_enabled attributes
         self.player = player
         self.current_location = self.sublocation[0]
         self.side_quest_enabled = False
 
+        # Initialize NPCs with specific attributes
         self.blacksmith = NPC("Astrid Steelheart",
                               ["Welcome to the Iron-heart Forge. What brings you here today adventurer? "
                                "\nNew armor, maybe new tools or a legendary sword for you?"],
@@ -72,6 +82,7 @@ class Level3(Location):
                                 ["Present, future, who cares? I'm just here for the company and the questionable "
                                  "decisions!"], "", "", ["joining the conversation"])
 
+        # Create a list containing instances of the NPC class representing drunken elves in the tavern
         self.drunken_elves = [self.drunken_elf1, self.drunken_elf2, self.drunken_elf3]
 
         self.tavern_keeper = NPC("Finnegan McCathy", ["Ceád míle fáilte to all ye weary wanderer!."],
@@ -85,7 +96,7 @@ class Level3(Location):
                               "in the heart of crafted wonders?"], "", "Feathernutter",
                              ["Protecting Feathernutter", "Humming a rhythm", "Playing an instrument"])
 
-        # Boolean Variables set for no double interaction between any npcs
+        # Boolean variables set to False to track interactions with NPCs
         self.__blacksmith_interacted = False
         self.__textile_merchant_interacted = False
         self.__potion_mixer_interacted = False
@@ -95,6 +106,10 @@ class Level3(Location):
         self.__craftsman_interacted = False
 
     def level_start(self):
+        """
+            Initiates the start of Level 3, providing a descriptive narrative of the town center
+            and invoking the 'market' method to proceed with the gameplay.
+        """
         print(f"You steps afoot to the town center of (Town name) lively {self.current_location}"
               f" square after (Ending of level 2),\n"
               f"where colourful stalls filled with treasure, the savory wonderful scent of roasting meats, "
@@ -103,12 +118,21 @@ class Level3(Location):
         self.market()
 
     def market(self):
+        """
+            Manages the gameplay interactions within the Market location.
+
+            The method presents a loop where the player can choose actions such as exploring the market,
+            going to the tavern, or heading to the port.
+            Depending on the chosen action, it updates the
+            current location and invokes corresponding methods to progress the gameplay.
+        """
         while self.current_location == "Market":
             action = input("\nWhat will you do?,\n"
                            "1) Take a look around the market\n"
                            "2) Go to the tavern\n"
                            "3) Go to the Port\n")
             if action == "1":
+                # Player decides to explore the market
                 print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
                       "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
                 print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
@@ -122,13 +146,23 @@ class Level3(Location):
                       "people.")
                 Level3.market_square(self)
             elif action == "2":
+                # Player decides to go to the tavern
                 self.current_location = self.sublocation[1]
                 Level3.tavern(self)
             elif action == "3":
+                # The Player decides to go to the port
                 self.current_location = self.sublocation[2]
                 Level3.port(self)
 
     def market_square(self):
+        """
+           Manages interactions within the Market Square, allowing the player to choose NPCs to interact with.
+
+           The method presents a menu where the player can choose to interact with different characters in the market,
+           such as the blacksmith, textile merchant, potion mixer, street performers,
+           or leave the market square.
+           It handles user input validation and prevents double interactions with the same NPC.
+        """
         while True:
             try:
                 character = int(input("\nWho do you want to interact with:\n"
@@ -171,6 +205,13 @@ class Level3(Location):
                 print(f"{ve} invalid input it must be a number")
 
     def interact_with_blacksmith(self):
+        """
+            Facilitates the player's interaction with the blacksmith NPC.
+
+            The method initiates a conversation with the blacksmith, providing dialogue options.
+            It allows the player to inquire about the cult, ask about forging a sword, or leave the blacksmith.
+            Depending on the chosen interaction, the method updates the player's inventory, coins, and clues.
+        """
         print(self.blacksmith.say_dialogue(self.blacksmith.dialogue[0]))  # BLACKSMITH SPEAKS VOICE-LINE
 
         while not self.__blacksmith_interacted:
@@ -180,12 +221,15 @@ class Level3(Location):
             # Checks if the user has found the clue already
             # Else tell the user that you have the clue already
             if interaction == 1:
-                print(f"{self.player.name}: Have you heard about the (Cult name) around abducting people "
-                      "recently.")
-                print(self.blacksmith.say_dialogue("Yeah the market have been talking about the news."))
-                print(self.blacksmith.say_dialogue("One of the merchants reported that they have went to "
-                                                   f"the potion mixer as of recently."))
-                Level3.add_clue(self, "Blacksmith's observation on the potion mixer")
+                if "Blacksmith's observation on the potion mixer" not in self.clues:
+                    print(f"{self.player.name}: Have you heard about the (Cult name) around abducting people "
+                          "recently.")
+                    print(self.blacksmith.say_dialogue("Yeah the market have been talking about the news."))
+                    print(self.blacksmith.say_dialogue("One of the merchants reported that they have went to "
+                                                       f"the potion mixer as of recently."))
+                    Level3.add_clue(self, "Blacksmith's observation on the potion mixer")
+                else:
+                    print("Don't ask questions twice")
             elif interaction == 2:
                 if self.blacksmith.items not in self.player.inventory:
                     print(self.blacksmith.say_dialogue("Ohh you interested in crafting an fine piece metal then"
@@ -218,6 +262,14 @@ class Level3(Location):
                 print("Invalid option")
 
     def interact_with_textile_merchant(self):
+        """
+            Facilitates the player's interaction with the textile merchant NPC.
+
+            The method initiates a conversation with the textile merchant, providing dialogue options.
+            It allows the player to inquire about the newest trends, ask questions, or leave the textile merchant.
+            Depending on the chosen interaction, the method updates the player's inventory, coins, and clues,
+            and may trigger a side quest involving finding the missing chicken Fluffernutter.
+        """
         if "Fluffernutter the Chicken" not in self.player.inventory and not self.side_quest_enabled:
             print(self.textile_merchant.say_dialogue(self.textile_merchant.dialogue[0]))
 
@@ -315,6 +367,13 @@ class Level3(Location):
             level3.market_square()
 
     def interact_with_potion_mixer(self):
+        """
+            Facilitates the player's interaction with the potion mixer NPC.
+
+            The method initiates a conversation with the potion mixer, providing dialogue options.
+            It allows the player to ask about ingredients, ask questions, or leave the potion mixer.
+            Depending on the chosen interaction, the method updates the player's inventory, coins, and clues.
+        """
         print(self.potion_mixer.say_dialogue(self.potion_mixer.dialogue[0]))
 
         while not self.__potion_mixer_interacted:
@@ -345,9 +404,17 @@ class Level3(Location):
                 print(self.potion_mixer.perform_action("Glares at you as you walk away from her"))
                 self.__potion_mixer_interacted = True
 
-        Level3.market_square(self)
+        level3.market_square()
 
     def interact_with_street_performers(self):
+        """
+            Facilitates the player's interaction with the street performers NPC.
+
+            The method narrates the player's approach to the street performers, gathering information from the audience
+            about a cloaked figure near the fountain during the performance.
+            It adds a relevant clue to the player's inventory.
+            The player expresses gratitude, contemplating whether the sighting was a deliberate distraction.
+        """
         print(f"As {self.player.name} approaches the spectacular street performers, drawn by their routine.\n"
               f"You began hearing the audience about a cloaked figure during the performance near the fountain of "
               f"the market square.\nAnything you noticed?")
@@ -360,6 +427,12 @@ class Level3(Location):
         level3.market_square()
 
     def tavern(self):
+        """
+            Manages the player's activities within the Crown and Chalice Inn.
+
+            The method allows the player to interact with the drunken elves, visit the bar, or leave the tavern.
+            It handles user input, invoking specific methods based on the chosen action.
+        """
         print(f"You decide to head to the {self.current_location} "
               f"hoping to find the clues to continue your quest.\n"
               f"As you open the tavern door you see that's it filled with life as the melody playing"
@@ -392,6 +465,13 @@ class Level3(Location):
                 print(f"{ve} input should be a number")
 
     def interact_with_elves(self):
+        """
+        Facilitates the player's interaction with the drunken elves in the Crown and Chalice Inn.
+
+        The method initiates a conversation with the elves, providing options to inquire about the tavern's history,
+        engage in a riddle game, or leave the elves alone.
+        It manages the flow of dialogue and updates the player's clues.
+        """
         for elf in self.drunken_elves:
             print(elf.say_dialogue(elf.dialogue))
             print(elf.perform_action(elf.actions))
@@ -455,6 +535,16 @@ class Level3(Location):
                 print("Invalid option")
 
     def bar(self):
+        """
+        Manages the player's interaction with the tavern keeper in the Crown and Chalice Inn.
+
+        The method checks if the player has acquired the elves' observation about the tavern keeper before initiating
+        a conversation.
+        It provides context to the player based on the obtained clue and guides them through the dialogue.
+        The tavern keeper reveals information about the (CULT NAME) terrorizing Eldenhaven and warns the player about
+        the cult's activities at the port.
+        The method updates the player's clues accordingly.
+        """
         if "Elves' observation on the tavern keeper" not in self.clues:
             print(f"{self.player.name}: I feel like there's something I need to know before I do this")
         else:
@@ -472,6 +562,18 @@ class Level3(Location):
             self.__tavern_keeper_interacted = True
 
     def port(self):
+        """
+        Manages the player's interaction with Haven's Port, a medieval harbor with marine legends and lively commerce.
+
+        The method provides an atmospheric description of the port, introducing ships, merchants, and defenders.
+        If the clue "Cult at the port" is not in the player's clues, it allows the player to interact with the craftsman
+        or leave the port.
+        If the clue is present, it describes a confrontation with a clandestine cult engaged in an ominous
+        ritual.
+        The player confronts the cult, leading to a fight scenario.
+        If the player succeeds, they receive a reward,
+        and the method proceeds to the ending of the level.
+        """
         print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
               "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
               "items.\n")
@@ -521,9 +623,28 @@ class Level3(Location):
             if final_fight:
                 self.player.add_item(final_fight)
                 self.player.show_inventory()
-                Level3.ending(self)
+                Level3.ending()
 
     def interact_with_craftsman(self):
+        """
+        Manages the player's interaction with the craftsman near the port.
+
+        If the side quest is enabled, the player encounters a burly craftsman holding Fluffernutter the Chicken.
+        The craftsman demands a toll of 35 coins for Fluffernutter's freedom.
+        The player can choose to pay or decline.
+        If paid, the craftsman releases Fluffernutter, and the player receives the chicken back.
+        If declined,
+        Fluffernutter
+        remains with the craftsman until the toll is paid.
+        The method updates the player's inventory and coins accordingly.
+
+        If the side quest is not enabled, the player experiences a vibrant workshop with a skilled craftsman working on
+        metal and wood.
+        The craftsman shares dialogue reflecting pride, heritage, and the rich traditions of their
+        African roots.
+
+        After the interaction, the craftsman's status is marked as interacted.
+        """
         if self.side_quest_enabled:
             print("As you approach Fluffernutter near the port, you notice a burly craftsman holding the chicken in "
                   "his hands, a mischievous glint in his eyes.")
@@ -575,6 +696,14 @@ class Level3(Location):
         self.__craftsman_interacted = True
 
     def ending(self):
+        """
+        Presents the conclusion of the level, providing details on the subdued cult member's cryptic map.
+        The map reveals a path through a mushroom forest and a goblin camp,
+        guiding the player to the cult's hidden home
+        base.
+        As the player ventures through enchanted landscapes, the air thickens with mystery, setting the stage for a
+        perilous journey into the heart of darkness.
+        """
         print(
             f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
             f"Undeterred, {self.player.name} follows the mystical trail, uncovering the cult's hidden home base. "
