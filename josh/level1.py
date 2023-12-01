@@ -41,20 +41,20 @@ class Level1(Location):
 
         self.knight = NPC("Sir Smith",
                           "It was a horrible sight,"
-                          " I remember each and every one of them",
-                          "near the City Gates",
+                          " I remember each and every one of them","near the City "
+                                                                   "Gates","",
                           "")
 
         self.scribe = NPC("Cedric the Scribe",
-                          "I've been doing some spring cleaning, sir!",
-                          "hooded figures dwelling near the City",
-                          "Forbidden Manuscript")
+                          "I've been doing some spring cleaning, sir!","hooded figures dwelling near the City",
+                          "Forbidden Manuscript",
+                          "")
 
         self.druid = NPC("David the Druid",
                          f"Ive been expecting you {player.name},"
                          f" We have a bit of a situation",
                          "",
-                         "Chaos Sword")
+                         "Chaos Sword","")
 
         self.library1 = Challenges()
         self.druidgame = DruidGame()
