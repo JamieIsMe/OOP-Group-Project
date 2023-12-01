@@ -15,6 +15,7 @@ class Camp(Location):
         self.current_location = "outer_camp"
         self.visited_sublocations = []
         self.coins = coins
+        self.player = player
         self.goblin_trio = NPC("Goblin trio",
                                ["\nYou here voices in unison say:\n\"What do you want\"?\n",
                                 "You here a high pitched voice from the other side\n\n\"Nobody is home\"!\n",
@@ -363,7 +364,7 @@ class Camp(Location):
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[4])) # why give item dialogue
             self.add_clue(self.dice_goblin.clues[0]) # adds clue to location clues
             print(self.review_clues(), "\n") # displays clues so far
-            # self.add_item("1 gold doubloon") # adds item to player
+            player.add_item("1 gold doubloon") # adds item to player
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[5])) # don't tell anyone else dialogue
 
         print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[1])) # play dice minigame dialogue
@@ -414,6 +415,7 @@ class Camp(Location):
             # print("You rember that this is the same cloth that the cultistes wear\n")
             # print("You think to yourself why would this be here on a heros grave?\n")
             # self.add_main_clue("The Legendary Witch Slayer might not be what they seem to be in the legends")
+            player.add_item("Red scrap of cloth")
             # else;
             # prit("You reconise this cloth but you cant quite remember where")
             self.grave()
@@ -455,5 +457,7 @@ class Camp(Location):
 
 
 if __name__ == "__main__":
+    player = Player("Player Name")
     camp = Camp(0)
     camp.outer_camp()
+
