@@ -1,10 +1,10 @@
 from Player import Player
-from Levels import Level1
-from Levels import Level2
-from Levels import Level3
+from josh.level1 import Level1
+from sean.level2 import Level2
+from max.level3 import Level3
 from Levels import Level4
-from Levels import Level5
-from Levels import Level6
+from cian.level5 import Level5
+from jamie.level6 import Level6
 
 class Game:
     def __init__(self):

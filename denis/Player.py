@@ -5,7 +5,7 @@ class Player:
         self.inventory = []  # List to store player's items
         self.main_clues = []  # List to store main clues collected by the player
         self.level_clues = []  # List to store level-specific clues
-        self.coins = 0  # Initialize player's coin count
+        self.coins = 10  # Initialize player's coin count
         print(f"Welcome {name}!\n")  # Greeting message to the player
 
     # Method to display all items in the player's inventory

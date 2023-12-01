@@ -2,9 +2,14 @@
 import random
 
 
-def Rock_Paper_Scissors_Game():
+def Rock_Paper_Scissors_Game(player):
 
-    bet = input("How many coins would you like to bet\n")
+    bet = int(input(f"You have {player.coins} \nmany coins would you like to bet:\n"))
+
+    while bet > player.coins:
+        bet = int(input(f"You only have {player.coins} \nmany coins would you like to bet:\n"))
+
+    player.coins = player.coins-bet
 
     choice = input("1) Rock\n2) Paper\n3) Scissors\n")
     player_choice = ""
@@ -61,8 +66,10 @@ def Rock_Paper_Scissors_Game():
         else:
             print("Rock smashes scissors! You lose.")
             bet = 0
-    return bet
-    Rock_Paper_Scissors_Game()
+
+    player.coins = player.coins + bet
+    return
+
 
 
 if __name__ == "__main__":

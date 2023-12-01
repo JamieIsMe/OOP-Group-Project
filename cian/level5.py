@@ -4,8 +4,9 @@ from cian.Dice_minigame import dice_game
 from cian.RPS_minigame import Rock_Paper_Scissors_Game
 from denis.Player import Player
 
+import time
 
-class Camp(Location):
+class Level5(Location):
     def __init__(self, coins):
         super().__init__("camp",
                          ["outer_camp", "main_camp", "hut_1", "hut_1_inside", "big_hut_outside", "big_hut",
@@ -109,6 +110,7 @@ class Camp(Location):
                   "Ramshackle huts, constructed from salvaged materials, form a chaotic maze in the shadows. "
                   "Flickering bonfires illuminate the primitive dwellings. "
                   "You spot 3 shadows dart into the nearest hut.\n")
+            time.sleep(5)
         else:
             print("You walk back out of the camp and look back at it, Not much has changed\n")
 
@@ -352,7 +354,7 @@ class Camp(Location):
 
         self.main_camp()
 
-    def side_main_camp(self, coins=100): # used to interact with dice goblin and mini games can give set coins to start
+    def side_main_camp(self,): # used to interact with dice goblin and mini games can give set coins to start
         self.current_location = "side_main_camp"
         if self.current_location not in self.visited_sublocations:
             print("You walk over to the Shady Goblin\n")
@@ -360,7 +362,7 @@ class Camp(Location):
             print(self.dice_goblin.actions[0]) # Tips hat action no name
             self.visited("side_main_camp")
 
-        if coins == self.max_coins: # if you have alot of coins he gives you a bit of info and an item
+        if player.coins == self.max_coins: # if you have alot of coins he gives you a bit of info and an item
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[4])) # why give item dialogue
             self.add_clue(self.dice_goblin.clues[0]) # adds clue to location clues
             print(self.review_clues(), "\n") # displays clues so far
@@ -373,13 +375,13 @@ class Camp(Location):
             choice = input("1) Yes\n"
                            "2) No\n")
             if choice == "1": # Yes
-                dice_game() # plays dice minigame
+                dice_game(player) # plays dice minigame
             elif choice == "2": # No
                 print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[2])) # play R.P.S. minigame dialogue
                 choice = input("1) Yes\n"
                                "2) No\n")
                 if choice == "1": # Yes
-                    Rock_Paper_Scissors_Game() # plays R.P.S. minigame
+                    Rock_Paper_Scissors_Game(player) # plays R.P.S. minigame
                     play_minigame = True
                 elif choice == "2":  # No
                     self.main_camp()
@@ -388,7 +390,7 @@ class Camp(Location):
             choice = input("1) Yes\n"
                            "2) No\n")
             if choice == "1": # Yes
-                dice_game()
+                dice_game(player)
             elif choice == "2": # No
                 print("You decline and return to the center of camp")
                 break
@@ -458,6 +460,6 @@ class Camp(Location):
 
 if __name__ == "__main__":
     player = Player("Player Name")
-    camp = Camp(0)
+    camp = Level5(0)
     camp.outer_camp()
 
