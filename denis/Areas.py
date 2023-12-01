@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Character import NPC
+from cian.characters import NPC
 import time 
 import random 
 
@@ -84,8 +84,9 @@ class WhisperingGrove(Area):
         self.item_pickups = ["Silver Key"]   
         self.item_pickup = [False]                      
         self.next_item = 0  
-        self.old_man = NPC("Old Man",None,"Seek the paper where still waters mirror the forest's canopy," 
-        "hidden not in plain sight but where shadows mingle with the earth's whispers.\n",None)
+        self.old_man = NPC("Old Man",None,"Seek the paper where still waters mirror the forest's canopy",
+        "hidden not in plain sight but where shadows mingle with the earth's "
+                                          "whispers.\n",None)
         self.old_man_dialog = ["Ah, traveler! I am in dire need of assistance.",
         "I've lost an ancient paper," 
         "one of great importance to me and the secrets of this forest",
@@ -145,8 +146,8 @@ class WhisperingGrove(Area):
                     if self.seen_clue:
                         print("You have already seen this clue!\n")
                     else:
-                        self.player.add_level_clue(self.old_man.show_clue())
-                        print(self.old_man.show_clue())
+                        self.player.add_level_clue(self.old_man.clue())
+                        print(self.old_man.clue())
                         self.seen_clue = 1
                 if hand_item == 'h':
                     if self.check_item("Ancient Paper"):
@@ -194,7 +195,7 @@ class CanopyWalkway(Area):
         self.items = ["Luminous Plank","Glowing Stone"]
         self.shroomy_dundee = NPC("Shroomy Dundee",None,"In the heart of the Thicket where shadows play," 
         "seek the moonlit stone that paves the way. It'll guide you true when the path seems lost, just follow"
-        "its glow, no matter the cost.",None)
+        "its glow, no matter the cost.",None, None)
         self.shroomy_dundee_dialog = ["G'day, mate!","Name's Shroomy Dundee, the funniest fungi in all the" 
         "Mushroom Forest! Fancy a go at a rhyme?,"
         "Give it your best shot, and don't worry about bein' right or wrong. I'm all about the laughs here!"]
@@ -244,8 +245,8 @@ class CanopyWalkway(Area):
                         if self.seen_clue:
                             print("You have already seen this clue!\n")
                         else:
-                            print(self.shroomy_dundee.show_clue())
-                            self.player.add_level_clue(self.shroomy_dundee.show_clue())
+                            print(self.shroomy_dundee.clue())
+                            self.player.add_level_clue(self.shroomy_dundee.clue())
                             self.seen_clue = 1
                         
                     if choice == 'r':
@@ -321,7 +322,7 @@ class EchoingCaverns(Area):
         self.key_pickup = 0
         self.glowing_pickup = 0
         self.chromatic_trio = NPC("Chromatic Trio",None,"A secret cult, hidden from plain sight," 
-        " worships the ancient Spectrum Stone.",None)
+        " worships the ancient Spectrum Stone.",None,None)
         self.chromatic_trio_dialog = ["Greetings, traveler! I am Ruby Red, the brightest flame in these caverns!",
         " And I am Beryl Blue, as deep and mysterious as the midnight sea!","Emerald Green's the name," 
         " fresh and lively as a new leaf in spring!","We are the Chromatic Trio," 
