@@ -35,7 +35,7 @@ def riddle_game():
         else:
             print(f"Incorrect guess try again")
             attempts += 1
-            print("Hint:", hint)
+            print("Hint: ", hint)
 
 
 if __name__ == "__main__":

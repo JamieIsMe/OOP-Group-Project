@@ -36,6 +36,7 @@ class Level3(Location):
         self.user = Player("Max")
         self.current_location = self.sublocation[0]
         self.coins = coins  # Coins collected throughout the game to aid the player in future quests
+        self.side_quest_enabled = False
 
         self.blacksmith = NPC("Astrid Steelheart",
                               "Welcome to the Iron-heart Forge. What brings you here today adventurer? "
@@ -76,7 +77,13 @@ class Level3(Location):
         self.tavern_keeper = NPC("Finnegan McCathy", ["Ceád míle fáilte to all ye weary wanderer!."],
                                  "Cult heading to the port", "", "Leaned me on me glaring to my soul")
 
-        self.cult_elder = NPC("Cult Elder", " ", "", "Map leading the player", "")
+        self.cult_member = NPC("Cult Member", " ", "", "Map leading the player", "")
+
+        self.craftsman = NPC("Malik Thompson",
+                             ["Greetings, friend! What brings you to my humble abode?",
+                              "Are you in need of a piece that tells a story or seeking the magic that can be found "
+                              "in the heart of crafted wonders?"], "", "Feathernutter",
+                             ["Protecting Feather Cluck", "Humming a rhythm", "Playing an instrument"])
 
         # Boolean Variables set for no double interaction between any npcs
         self.__blacksmith_interacted = False
@@ -116,7 +123,7 @@ class Level3(Location):
                 self.current_location = self.sublocation[1]
                 Level3.tavern(self)
             elif action == "3":
-                self.current_location = "Haven's Harbor"
+                self.current_location = self.sublocation[2]
                 Level3.port(self)
 
     def market_square(self):
@@ -141,7 +148,6 @@ class Level3(Location):
                 print("\n")
                 Level3.interact_with_street_performers(self)
             case 5:
-                Level3.visited(self, self.current_location)
                 Level3.market(self)
             case _:
                 print("Invalid choice")
@@ -197,61 +203,102 @@ class Level3(Location):
         level3.market_square()
 
     def interact_with_textile_merchant(self):
-        if not self.__textile_merchant_interacted:
-            print(self.textile_merchant.interact())
+        if "Fluffernutter the Chicken" not in self.user.inventory and not self.side_quest_enabled:
+            if not self.__textile_merchant_interacted:
+                print(self.textile_merchant.interact())
 
-            while not self.__textile_merchant_interacted:
-                interaction = int(input(f"1.) Ask about the newest trends in the shop\n"
-                                        f"2.) Question {self.textile_merchant.name}\n"
-                                        f"3.) Leave the textile merchant\n"))
-                # Checks if the user has found the clue already
-                # Else tell the user that you have the clue already
-                if interaction == 1:
-                    if self.textile_merchant.items not in self.user.inventory:
-                        print(self.textile_merchant.say_dialogue(
-                            "Discover our collection of popular trends in intricate embroidery, sumptuous velvet, "
-                            "and natural, earthy tones.\nYou can also expect shimmering metallic threads, breathable "
-                            "linens, and gorgeous brocade fabrics, each fabric unique in its own way.\nIt tells a story"
-                            " of elegance."))
+                while not self.__textile_merchant_interacted:
+                    interaction = int(input(f"1.) Ask about the newest trends in the shop\n"
+                                            f"2.) Question {self.textile_merchant.name}\n"
+                                            f"3.) Leave the textile merchant\n"))
+                    # Checks if the user has found the clue already
+                    # Else tell the user that you have the clue already
+                    if interaction == 1:
+                        if self.textile_merchant.items not in self.user.inventory:
+                            print(self.textile_merchant.say_dialogue(
+                                "Discover our collection of popular trends in intricate embroidery, sumptuous velvet, "
+                                "and natural, earthy tones.\nYou can also expect shimmering metallic threads, breathable "
+                                "linens, and gorgeous brocade fabrics, each fabric unique in its own way.\nIt tells a story"
+                                " of elegance."))
 
-                        action = input("You take a gander around the shop and seek upon a fur coat for 25 coins.\n"
-                                       "Do you wish to purchase it?\n"
-                                       "Yes: Y\n"
-                                       "No : N\n")
+                            action = input("You take a gander around the shop and seek upon a fur coat for 100 coins.\n"
+                                           "Do you wish to purchase it?\n"
+                                           "Yes: Y\n"
+                                           "No : N\n")
 
-                        if action.lower() == "y":
-                            if self.coins >= 25:
-                                print(self.textile_merchant.say_dialogue(f"I see the fur coat interests you, this is "
-                                                                         f"yours now wanderer it might help in the "
-                                                                         f"extreme weather conditions ahead of your "
-                                                                         f"journey."))
-                                self.user.add_item(self.textile_merchant.items)
+                            if action.lower() == "y":
+                                if self.coins >= 100:
+                                    print(
+                                        self.textile_merchant.say_dialogue(f"I see the fur coat interests you, this is "
+                                                                           f"yours now wanderer it might help in the "
+                                                                           f"extreme weather conditions ahead of your "
+                                                                           f"journey."))
+                                    self.user.add_item(self.textile_merchant.items)
+                                else:
+                                    print(
+                                        self.textile_merchant.say_dialogue("You do not have another coins for the fur "
+                                                                           "coat,\nadventurer perhaps maybe you can find "
+                                                                           "my missing cherished chicken Fluffernutter, "
+                                                                           "and my heart aches without its presence.\n"
+                                                                           "I may provide a extra reward onto of this as "
+                                                                           "well."))  # SIDE QUEST FOR THE LEVEL
+
+                                    action = input("Do want to take part in the side quest?\n"
+                                                   "Yes: Y\n"
+                                                   "No: N")
+
+                                    if action.lower() == "y" or action.capitalize() == "Y":
+                                        print(self.textile_merchant.say_dialogue(
+                                            "Oh, thank the stars! You're a true lifesaver "
+                                            "for agreeing to help me with my little "
+                                            "feathered friend.\n"
+                                            "My prized chicken, Fluffernutter, has gone "
+                                            "missing, and I've been in a complete tizzy."))
+                                        print(f"{self.user.name}: No worries! I'm happy to help."
+                                              f"\nWhere should I start looking?")
+                                        print(self.textile_merchant.say_dialogue("Thank you for taking on the "
+                                                                                 "quest!\nFluffernutter was last seen at "
+                                                                                 "the port.\nPlease take this feed to "
+                                                                                 "lure them back.\nI'll reward you "
+                                                                                 "generously once you bring my chicken "
+                                                                                 "home safely. Good luck, and may your "
+                                                                                 "journey be swift!"))
+                                        print(
+                                            f"{self.user.name}: I'll find Fluffernutter and bring them back, don't worry!")
+                                        print("We leave the shop knowing we have a side quest to do!")
+                                        self.side_quest_enabled = True
+                                        self.__textile_merchant_interacted = True
+                                        Level3.market(self)
+                            elif action.lower() == "n":
+                                pass
                             else:
-                                print(self.textile_merchant.say_dialogue("You do not have another coins for the fur "
-                                                                         "coat,\nadventurer perhaps maybe you can find "
-                                                                         "my missing cherished chicken Feather cluck, "
-                                                                         "and my heart aches without its presence.\n"
-                                                                         "I may provide a extra reward onto of this as "
-                                                                         "well."))  # SIDE QUEST FOR THE LEVEL
-                        elif action.lower() == "n":
-                            pass
+                                print("Invalid option")
                         else:
-                            print("Invalid option")
-                    else:
-                        print(self.textile_merchant.say_dialogue("You have a fur coat already adventurer!"))
-                elif interaction == 2:
-                    print(self.textile_merchant.say_dialogue("Oh yes those people, one of the members a few days \n"
-                                                             "ago tried to influence me to join the cult and left me"
-                                                             " this.\n"))
-                    print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
-                    Level3.add_clue(self, self.textile_merchant.clues)
-                elif interaction == 3:
-                    print(self.textile_merchant.perform_action("Waves nervously as I leave the stores maybe its just \n"
-                                                               "his chicken is missing"))
-                    self.__textile_merchant_interacted = True
+                            print(self.textile_merchant.say_dialogue("You have a fur coat already adventurer!"))
+                    elif interaction == 2:
+                        print(self.textile_merchant.say_dialogue("Oh yes those people, one of the members a few days \n"
+                                                                 "ago tried to influence me to join the cult and left me"
+                                                                 " this.\n"))
+                        print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
+                        Level3.add_clue(self, self.textile_merchant.clues)
+                    elif interaction == 3:
+                        print(self.textile_merchant.perform_action(
+                            "Waves nervously as I leave the stores maybe its just \n"
+                            "something in his mind"))
+                        self.__textile_merchant_interacted = True
+                else:
+                    print(f"You already interacted with {self.textile_merchant.name}")
         else:
-            print(f"You already interacted with {self.textile_merchant.name}")
-
+            print(self.textile_merchant.say_dialogue("Thanks a bunch for rescuing my wayward chicken. "
+                                                     "To show my appreciation, here's a sturdy armor for you – "
+                                                     "and a pouch with 75 coins.\n"
+                                                     "Never expected a chicken chase to turn into such an adventure!\n"
+                                                     "If you ever need more help or encounter more feathered mischief, "
+                                                     "you know where to find me.\nSafe travels!"))
+            self.user.remove_item("Fluffernutter the Chicken")
+            self.user.add_item("Armor")
+            self.coins = self.coins + 75
+            self.side_quest_enabled = False
         level3.market_square()
 
     def interact_with_potion_mixer(self):
@@ -412,10 +459,26 @@ class Level3(Location):
     def port(self):
         print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
               "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
-              "items.")
+              "items.\n")
+
+        print("Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town and its "
+              "taverns.\n")
+
+        print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
 
         if "Cult at the port" not in self.clues:
-            print("Coming soon")
+            while self.current_location == self.sublocation[2]:
+                action = int(input("\nWhat will you do?,\n"
+                                   "1) Interact with the Craftsman\n"
+                                   "2) Leave Haven's Port\n"))
+                match action:
+                    case 1:
+                        self.interact_with_craftsman()
+                    case 2:
+                        self.current_location = self.sublocation[0]
+                        Level3.market(self)
+                    case _:
+                        print("Invalid option")
         else:
             print("Cult at port")
 
@@ -427,7 +490,56 @@ class Level3(Location):
                 self.user.add_item(final_fight)
                 self.user.show_inventory()
 
+    def interact_with_craftsman(self):
+        if self.side_quest_enabled:
+            print("As you approach Fluffernutter near the port, you notice a burly craftsman holding the chicken in "
+                  "his hands, a mischievous glint in his eyes.")
+
+            print("Well, well, what have we here? Seems like you're looking for this feathery friend. If you want "
+                  "your precious chicken back, you'll have to pay a toll of 35 coins.\nFluffernutter's freedom comes "
+                  "at a price, my friend")
+
+            action = input("Fluffernutter squawks as if in agreement. What's your response?\n"
+                           "Yes: Y\n"
+                           "No: N\n")
+
+            if action.lower() == "y" or action.capitalize() == "Y":
+                if self.coins >= 35:
+                    print(f"{self.user.name} reach into their pouch and count out the required 35 coins."
+                          f"\nWith a reluctant sigh,they hand the coins over to the craftsman, who smirks triumphantly.")
+                    print(self.craftsman.say_dialogue("Smart choice, my friend. Fluffernutter is free to go."))
+                    print(self.craftsman.perform_action("the craftsman releases the chicken, who scurries back to the "
+                                                        "player."))
+                    self.user.add_item("Fluffernutter the Chicken")
+                    self.coins = self.coins - 35
+                    print("Coins: ", self.coins)
+                    self.__textile_merchant_interacted = False
+                    print(f"I can bring him back now to {self.textile_merchant.name}")
+                else:
+                    print(self.craftsman.say_dialogue("Well, well. Seems like you're a bit short on funds. I can't "
+                                                      "just release Fluffernutter for free, you know.\n You've got one "
+                                                      "options: scrounge up the coins. Otherwise, your feathery "
+                                                      "friend stays in my grasp."))
+            elif action.lower() == "n" or action.capitalize() == "N":
+                print(self.craftsman.say_dialogue("Stubborn, aren't you? Well, if you won't pay.\nFluffernutter stays "
+                                                  "with me until you pay up."))
+            else:
+                print("Invalid Input")
+        else:
+            print(
+                "As you approach the vibrant workshop, the rhythmic sound of metal hitting metal and the sweet scent of"
+                " exotic woods will greet you.\n"
+                "The artist, a sturdy figure with warm earth-toned skin and decorated with colorful fabrics, "
+                "looks up from his work as you enter.")
+
+            print(self.craftsman.say_dialogue(self.craftsman.dialogue[0]))
+            print(self.craftsman.say_dialogue(self.craftsman.dialogue[1]))
+
+            print("Their eyes are filled with wisdom and a deep understanding of the craft, reflecting the pride and "
+                  "heritage attached to each piece.\nIt is clear that this artist's work not only reflects his know-how"
+                  "but also carries with it the rich traditions and stories of his African roots.")
+
 
 if __name__ == "__main__":
-    level3 = Level3(100)
+    level3 = Level3(150)
     level3.market()

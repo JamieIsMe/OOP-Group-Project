@@ -20,5 +20,8 @@ class Player:
     def add_item(self, item):
         self.inventory.append(item)
 
+    def remove_item(self, item):
+        self.inventory.remove(item)
+
     def add_clue(self, clue):
         self.clues.append(clue)
