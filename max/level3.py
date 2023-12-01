@@ -13,6 +13,7 @@ The player can react with the merchants and can buy items that can enhance gamep
 
 Date: 25/11/2023
 """
+# Import the necessary dependencies, Location, Player, and NPC classes
 from denis.Player import Player
 from sean.locationClass import Location
 from sean.fight import fight, User, CultMember
@@ -23,7 +24,8 @@ from max.riddle import riddle_game
 
 class Level3(Location):
     """
-    This class is the main function of our level three class
+        This class represents the third level of the game and inherits from the Location class.
+        It includes specific locations and NPCs for the level.
     """
 
     def __init__(self, player):
@@ -81,7 +83,7 @@ class Level3(Location):
                              ["Greetings, friend! What brings you to my humble abode?",
                               "Are you in need of a piece that tells a story or seeking the magic that can be found "
                               "in the heart of crafted wonders?"], "", "Feathernutter",
-                             ["Protecting Feather Cluck", "Humming a rhythm", "Playing an instrument"])
+                             ["Protecting Feathernutter", "Humming a rhythm", "Playing an instrument"])
 
         # Boolean Variables set for no double interaction between any npcs
         self.__blacksmith_interacted = False
@@ -92,8 +94,6 @@ class Level3(Location):
         self.__tavern_keeper_interacted = False
         self.__craftsman_interacted = False
 
-
-
     def level_start(self):
         print(f"You steps afoot to the town center of (Town name) lively {self.current_location}"
               f" square after (Ending of level 2),\n"
@@ -101,6 +101,7 @@ class Level3(Location):
               f"\nwith mesmerising street performances happening at the minute with camaraderie underneath the cold "
               f"snowy night.")
         self.market()
+
     def market(self):
         while self.current_location == "Market":
             action = input("\nWhat will you do?,\n"
@@ -108,21 +109,18 @@ class Level3(Location):
                            "2) Go to the tavern\n"
                            "3) Go to the Port\n")
             if action == "1":
-                if self.current_location not in self.visited_sublocations:
-                    print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
-                          "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
-                    print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
-                          "manufactured weapons.\n")
-                    print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
-                          "long-lasting woollens.\n")
-                    print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
-                          "ready to bewitch anyone.\n")
-                    print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
-                          "add a dynamic element to this marketplace through their skills entertaining a crowd of "
-                          "people.")
-                    Level3.market_square(self)
-                else:
-                    print("You already visted the market")
+                print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
+                      "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
+                print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
+                      "manufactured weapons.\n")
+                print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
+                      "long-lasting woollens.\n")
+                print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
+                      "ready to bewitch anyone.\n")
+                print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
+                      "add a dynamic element to this marketplace through their skills entertaining a crowd of "
+                      "people.")
+                Level3.market_square(self)
             elif action == "2":
                 self.current_location = self.sublocation[1]
                 Level3.tavern(self)
@@ -197,11 +195,11 @@ class Level3(Location):
                                    "Yes: Y\n"
                                    "No: N\n")
                     if action.lower() == "y":
-                        if self.coins >= 100:
+                        if self.player.coins >= 100:
                             print(self.blacksmith.say_dialogue("Here's your new sword wanderer, you must name "
                                                                f"your sword for your future battle."))
-                            self.coins = self.coins - 100
-                            print(f"New balance: {self.coins}")
+                            self.player.coins = self.player.coins - 100
+                            print(f"New balance: {self.player.coins}")
                             print(self.blacksmith.say_dialogue(f"The sword suits you traveler, this "
                                                                f"will help you for sure"))
                             self.player.add_item(self.blacksmith.items)
@@ -243,7 +241,7 @@ class Level3(Location):
                                        "No : N\n")
 
                         if action.lower() == "y":
-                            if self.coins >= 100:
+                            if self.player.coins >= 100:
                                 print(
                                     self.textile_merchant.say_dialogue(f"I see the fur coat interests you, this is "
                                                                        f"yours now wanderer it might help in the "
@@ -312,7 +310,7 @@ class Level3(Location):
                                                      "you know where to find me.\nSafe travels!"))
             self.player.remove_item("Fluffernutter the Chicken")
             self.player.add_item("Armor")
-            self.coins = self.coins + 75
+            self.player.name = self.player.name + 75
             self.side_quest_enabled = False
             level3.market_square()
 
@@ -539,15 +537,15 @@ class Level3(Location):
                            "No: N\n")
 
             if action.lower() == "y" or action.capitalize() == "Y":
-                if self.coins >= 35:
+                if self.player.coins >= 35:
                     print(f"{self.player.name} reach into their pouch and count out the required 35 coins."
                           f"\nWith a reluctant sigh,they hand the coins over to the craftsman, who smirks triumphantly.")
                     print(self.craftsman.say_dialogue("Smart choice, my friend. Fluffernutter is free to go."))
                     print(self.craftsman.perform_action("the craftsman releases the chicken, who scurries back to the "
                                                         "player."))
                     self.player.add_item("Fluffernutter the Chicken")
-                    self.coins = self.coins - 35
-                    print("Coins: ", self.coins)
+                    self.player.name = self.player.name - 35
+                    print("Coins: ", self.player.name)
                     self.__textile_merchant_interacted = False
                     print(f"I can bring him back now to {self.textile_merchant.name}")
                 else:
@@ -577,13 +575,14 @@ class Level3(Location):
         self.__craftsman_interacted = True
 
     def ending(self):
-        print(f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
-              f"Undeterred, {self.player.name} follows the mystical trail, uncovering the cult's hidden home base. "
-              "As they venture through enchanted landscapes, "
-              "the air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
+        print(
+            f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
+            f"Undeterred, {self.player.name} follows the mystical trail, uncovering the cult's hidden home base. "
+            "As they venture through enchanted landscapes, "
+            "the air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
 
 
 if __name__ == "__main__":
     player = Player("")
-    level3 = Level3("")
+    level3 = Level3(player)
     level3.market()
