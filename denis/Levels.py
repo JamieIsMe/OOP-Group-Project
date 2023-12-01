@@ -51,7 +51,6 @@ class Level4(Level):
             print("---Type anything to continue---\n")
             continue_game = input()
             if self.game_flag == self.game_end_number:
-                print("Game Ends")
                 break
             print("-------------------------------------------------------")
             for index,location in enumerate(self.locations):
