@@ -218,6 +218,9 @@ class Level2(Location):
                             if prize:
                                 player.add_item(prize)
                                 player.show_inventory()
+                                print("You gained 25 coins from "
+                                      "beating him.")
+                                player.coins += 25
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
                             print(f"{player.name}:\n Let's play then\n")
@@ -226,6 +229,9 @@ class Level2(Location):
                             if prize:
                                 player.add_item(prize)
                                 player.show_inventory()
+                                print("You gained 25 coins from "
+                                      "beating him.")
+                                player.coins += 25
                             self.__cloak_figure_fin = True
                     else:
                         print(self.red_cloak_man.say_dialogue
@@ -237,6 +243,9 @@ class Level2(Location):
                         if prize:
                             player.add_item(prize)
                             player.show_inventory()
+                            print("You gained 25 coins from "
+                                  "beating him.")
+                            player.coins += 25
                         self.__cloak_figure_fin = True
 
                 elif not self.__deal_made and not self.__cloak_figure_interact:
@@ -296,6 +305,9 @@ class Level2(Location):
                             if prize:
                                 player.add_item(prize)
                                 player.show_inventory()
+                                print("You gained 25 coins from "
+                                      "beating him.")
+                                player.coins += 25
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
                             print(f"{player.name}:\n Let's play then.\n")
@@ -304,6 +316,9 @@ class Level2(Location):
                             if prize:
                                 player.add_item(prize)
                                 player.show_inventory()
+                                print("You gained 25 coins from "
+                                      "beating him.")
+                                player.coins += 25
                             self.__cloak_figure_fin = True
                     else:
                         print(f"{player.name}:\n Let's play then.\n")
@@ -312,6 +327,9 @@ class Level2(Location):
                         if prize:
                             player.add_item(prize)
                             player.show_inventory()
+                            print("You gained 25 coins from "
+                                  "beating him.")
+                            player.coins += 25
                         self.__cloak_figure_fin = True
                 else:
                     print("You dont want to cause any trouble so you stay "
@@ -421,12 +439,15 @@ class Level2(Location):
                         print(self.barbarian.say_dialogue
                               (self.barbarian.dialogue[8]), "\n")
                         time.sleep(2)
-                        print("They all reply in unison: No!")
+                        print("They all reply in unison: No!\n")
                         time.sleep(1)
-                        if self.player.coins >= 25:
+                        if self.player.coins >= 20:
+                            print(f"You have {player.coins} coins.\n")
                             distraction = input("Do you wish to give the "
                                                 "barbarians some coin(20) to "
-                                                "create the distraction?")
+                                                "create the distraction?\n"
+                                                "1) Yes\n"
+                                                "2) No")
                             if distraction == "1":
                                 print(f"{player.name}:\n Fine, I do really "
                                       f"need to get in there.\n")
@@ -444,7 +465,7 @@ class Level2(Location):
                                 time.sleep(2)
                                 self.__guard_interacted = True
                                 self.current_location = self.sublocation[5]
-                                self.player.coins -= 25
+                                self.player.coins -= 20
                             elif distraction == "2":
                                 print(f"{player.name}:\n Forget it then. "
                                       f"I'll find my own way in.\n")

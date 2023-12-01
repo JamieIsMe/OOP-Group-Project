@@ -122,7 +122,8 @@ def fight(user, enemy):
         return None
     elif enemy.name == "cult member":
         print(f"You defeated the {enemy.name}! "
-              f"You gain a map that shows the location of the (CULT NAME) home base and 200 coins")
+              f"You gain a map that shows the location of the (CULT NAME) "
+              f"home base and 200 coins")
         return "Map to cult homebase"
     else:
         print(f"You defeated the {enemy.name}! You gain a dagger and 25 "
