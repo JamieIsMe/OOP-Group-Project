@@ -74,6 +74,7 @@ class Level1(Location):
             if player_input.lower() == "q":
                 print("Till another time, adventurer!")
                 self.__running = False
+                exit()
             elif player_input.lower() == "s":
                 print("Ready your weapons, gather your resolve and "
                       "step into the unknown!")
