@@ -1,12 +1,35 @@
+"""
+Author: Denis Bajgora
+Date:1/12/23
+Course: TU857-2
+Program Name: Player.py
+
+Program Description:
+
+The 'Player' class in this game represents the user's character, equipped with
+features for inventory management and clue collection. It initializes with a
+player's name and a starting coin count. The class allows players to add or
+remove items from their inventory and collect two types of clues: main clues
+and level-specific clues. Additionally, it includes methods to display the
+contents of the player's inventory and the clues collected. This class is
+essential for managing the player's progress and interactions within the game.
+"""
+
 class Player:
     # Constructor method to initialize a new player with a name
     def __init__(self, name):
-        self.name = name  # Player's name
-        self.inventory = []  # List to store player's items
-        self.main_clues = []  # List to store main clues collected by the player
-        self.level_clues = []  # List to store level-specific clues
-        self.coins = 10  # Initialize player's coin count
-        print(f"Welcome {name}!\n")  # Greeting message to the player
+        # Player's name
+        self.name = name
+        # List to store player's items
+        self.inventory = []
+        # List to store main clues collected by the player
+        self.main_clues = []
+        # List to store level-specific clues
+        self.level_clues = []
+        # Initialize player's coin count
+        self.coins = 10
+        # Greeting message to the player
+        print(f"Welcome {name}!\n")
 
     # Method to display all items in the player's inventory
     def show_inventory(self):
@@ -32,9 +55,6 @@ class Player:
 
     def remove_item(self, item):
         self.inventory.remove(item)
-
-    def add_clue(self, clue):
-        self.clues.append(clue)
 
     # Method to add a main clue to the player's collection
     def add_main_clue(self, main_clue):
