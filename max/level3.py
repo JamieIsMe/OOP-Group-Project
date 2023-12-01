@@ -400,7 +400,6 @@ class Level3(Location):
             interaction = int(input(f"1.) Ask about the tavern's history\n"
                                     f"2.) Question the elves\n"
                                     f"3.) Leave the elves alone\n"))
-
             if interaction == 1:
                 print(
                     self.drunken_elf1.say_dialogue("Established in 1685, The Crown and Chalice Inn in Eldenhaven is a "
@@ -522,6 +521,7 @@ class Level3(Location):
             if final_fight:
                 self.user.add_item(final_fight)
                 self.user.show_inventory()
+                Level3.ending()
 
     def interact_with_craftsman(self):
         if self.side_quest_enabled:
@@ -573,6 +573,12 @@ class Level3(Location):
                   "but also carries with it the rich traditions and stories of his African roots.")
 
         self.__craftsman_interacted = True
+
+    def ending(self):
+        print(f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
+              f"Undeterred, {self.user.name} follows the mystical trail, uncovering the cult's hidden home base. "
+              "As they venture through enchanted landscapes, "
+              "the air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
 
 
 if __name__ == "__main__":
