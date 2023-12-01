@@ -20,6 +20,7 @@ from sean.fight import fight, User, CultMember
 from cian.characters import NPC
 from max.minigame import cipher_decryption_game
 from max.riddle import riddle_game
+import time
 
 
 class Level3(Location):
@@ -115,6 +116,8 @@ class Level3(Location):
               f"where colourful stalls filled with treasure, the savory wonderful scent of roasting meats, "
               f"\nwith mesmerising street performances happening at the minute with camaraderie underneath the cold "
               f"snowy night.")
+
+        time.sleep(2)
         self.market()
 
     def market(self):
@@ -135,15 +138,20 @@ class Level3(Location):
                 # Player decides to explore the market
                 print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
                       "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
+                time.sleep(2)
                 print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
                       "manufactured weapons.\n")
+                time.sleep(2)
                 print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
                       "long-lasting woollens.\n")
+                time.sleep(2)
                 print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
                       "ready to bewitch anyone.\n")
+                time.sleep(2)
                 print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
-                      "add a dynamic element to this marketplace through their skills entertaining a crowd of "
+                      " add a dynamic element to this marketplace through their skills entertaining a crowd of "
                       "people.")
+                time.sleep(2)
                 Level3.market_square(self)
             elif action == "2":
                 # Player decides to go to the tavern
@@ -171,6 +179,7 @@ class Level3(Location):
                                       "3) Potion Mixer\n"
                                       "4) See the street performers\n"
                                       "5) Leave the market square.\n"))
+                time.sleep(2)
                 match character:
                     case 1:
                         print("\n")
@@ -213,6 +222,7 @@ class Level3(Location):
             Depending on the chosen interaction, the method updates the player's inventory, coins, and clues.
         """
         print(self.blacksmith.say_dialogue(self.blacksmith.dialogue[0]))  # BLACKSMITH SPEAKS VOICE-LINE
+        time.sleep(2)
 
         while not self.__blacksmith_interacted:
             interaction = int(input(f"1.) Question {self.blacksmith.name} about the cult\n"
@@ -226,6 +236,7 @@ class Level3(Location):
                     print(self.blacksmith.say_dialogue("One of the merchants reported that they have went to "
                                                        f"the potion mixer as of recently."))
                     Level3.add_clue(self, "Blacksmith's observation on the potion mixer")
+                    Level3.review_clues(self)
                 else:
                     print("Don't ask the questions twice")
             elif interaction == 2:
@@ -245,6 +256,7 @@ class Level3(Location):
                             print(self.blacksmith.say_dialogue(f"The sword suits you traveler, this "
                                                                f"will help you for sure"))
                             self.player.add_item(self.blacksmith.items)
+                            self.player.show_inventory(self)
                         else:
                             print(self.blacksmith.say_dialogue("You don't have enough coins for the sword."))
                     elif action.lower() == "n":
@@ -298,6 +310,7 @@ class Level3(Location):
                                                                        f"extreme weather conditions ahead of your "
                                                                        f"journey."))
                                 self.player.add_item(self.textile_merchant.items)
+                                self.player.show_inventory(self)
                             else:
                                 print(
                                     self.textile_merchant.say_dialogue("You do not have another coins for the fur "
@@ -347,6 +360,7 @@ class Level3(Location):
                                                                  " this.\n"))
                         print(f"{self.textile_merchant.name} hands you a {self.textile_merchant.clues}")
                         Level3.add_clue(self, self.textile_merchant.clues)
+                        Level3.review_clues(self)
                     else:
                         print("Don't ask the questions twice")
                 elif interaction == 3:
@@ -363,6 +377,7 @@ class Level3(Location):
                                                      "you know where to find me.\nSafe travels!"))
             self.player.remove_item("Fluffernutter the Chicken")
             self.player.add_item("Armor")
+            self.player.show_inventory(self)
             self.player.name = self.player.name + 75
             self.side_quest_enabled = False
             level3.market_square()
@@ -381,8 +396,6 @@ class Level3(Location):
             interaction = int(input(f"1.) Ask about the ingredient\n"
                                     f"2.) Question {self.potion_mixer.name}\n"
                                     f"3.) Leave the potion mixer\n"))
-            # Checks if the user has found the clue already
-            # Else tell the user that you have the clue already
             if interaction == 1:
                 print(self.potion_mixer.say_dialogue("These ingredients I use here are not the herbs and "
                                                      "powders you find in this realm, these are blessed by the "
@@ -398,6 +411,7 @@ class Level3(Location):
                     self.player.add_main_clue(self, "The Legendary Witch Slayer will save us all message")
                     print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
                     self.player.add_item(self.potion_mixer.items)
+                    self.player.show_inventory(self)
                     self.__potion_mixer_interacted = True
                 else:
                     print(f"{self.potion_mixer.name} is gone")
@@ -421,6 +435,7 @@ class Level3(Location):
               f"the market square.\nAnything you noticed?")
         print(self.street_performer.interact())
         Level3.add_clue(self, "Cloaked figure near fountain")
+        Level3.review_clues(self)
         print(f"As {self.player.name} thanked them, they couldn't stop wondering if this coincidental sighting"
               " was a deliberate distraction.")
         self.__street_performer_interacted = True
@@ -439,6 +454,8 @@ class Level3(Location):
               f"As you open the tavern door you see that's it filled with life as the melody playing"
               f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
               f"stomping their feet in unison")
+
+        time.sleep(2)
 
         while self.current_location == "Crown and Chalice Inn":
             try:
@@ -525,6 +542,7 @@ class Level3(Location):
                                                              "keeper"
                                                              "on booking the venue soon speak with the keeper"))
                         Level3.add_clue(self, "Elves' observation on the tavern keeper")
+                        Level3.review_clues(self)
                     elif action.lower() == "n" or action.capitalize() == "N":
                         pass
                 else:
@@ -560,6 +578,7 @@ class Level3(Location):
                                                   "friend.\nThe cult operates in shadows at the port, "
                                                   "and prying eyes may attract their malevolent gaze."))
             Level3.add_clue(self, "Cult at the port")
+            Level3.review_clues()
             self.__tavern_keeper_interacted = True
 
     def port(self):
@@ -623,7 +642,8 @@ class Level3(Location):
 
             if final_fight:
                 self.player.add_item(final_fight)
-                self.player.show_inventory()
+                self.player.show_inventory(self)
+                self.player.coins = self.player.coins + 200
                 Level3.ending()
             Level3.market(self)
 
@@ -667,6 +687,7 @@ class Level3(Location):
                     print(self.craftsman.perform_action("the craftsman releases the chicken, who scurries back to the "
                                                         "player."))
                     self.player.add_item("Fluffernutter the Chicken")
+                    self.player.show_inventory(self)
                     self.player.name = self.player.name - 35
                     print("Coins: ", self.player.name)
                     self.__textile_merchant_interacted = False
@@ -721,4 +742,5 @@ class Level3(Location):
 if __name__ == "__main__":
     player = Player("")
     level3 = Level3(player)  # Provide a name for the player
+    level3.level_start()
     level3.market()
