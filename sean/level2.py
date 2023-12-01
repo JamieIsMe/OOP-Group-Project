@@ -564,7 +564,7 @@ class Level2(Location):
                     print("You find a pile of coloured slabs and 3 slots that "
                           "they seem to fit into.\n")
                     time.sleep(2)
-                    colored_slab_puzzle = ColoredSlabPuzzle(level2)
+                    colored_slab_puzzle = ColoredSlabPuzzle(Level2)
                     city_pass = colored_slab_puzzle.play_puzzle()
                     if city_pass:
                         self.player.add_item(city_pass)
