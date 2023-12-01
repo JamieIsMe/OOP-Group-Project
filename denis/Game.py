@@ -1,8 +1,8 @@
-from Player import Player
+from denis.Player import Player
 from josh.level1 import Level1
 from sean.level2 import Level2
 from max.level3 import Level3
-from Levels import Level4
+from denis.Levels import Level4
 from cian.level5 import Level5
 from jamie.level6 import Level6
 
@@ -28,7 +28,6 @@ class Game:
         # list
         #         self.levels = [level1, level2, level3, level4 , level5, level6]  # Storing the initialized levels in a list
 
-        # add lv 4 back
 
     def level_picker(self):
         # Looping through each level until all levels are completed
