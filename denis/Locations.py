@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Character import NPC
+from cian.characters import NPC
 import time 
 import random 
 
