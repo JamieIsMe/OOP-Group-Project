@@ -694,6 +694,7 @@ class EchoingCaverns(Area):
                         self.key_pickup = 1
                         if not self.glowing_pickup:
                             self.glowing_stone_scene()
+                            return
                     else:
                         # Narrative if the Silver Key is not available
                         print(
