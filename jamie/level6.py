@@ -4,13 +4,16 @@ from denis.Player import Player
 import time
 
 
-class Cave(Location):
+class Level6(Location):
     def __init__(self):
+        # Uses all initialising features of the Location Class
         super().__init__("cave", ["entrance", "walkway", "cursed_hallway", "deep_cursed_hallway"],
                          ["Man In Cell", "Cult Leader", "Cult Member", "Witch Slayer"],
                          [])
         self.current_location = "entrance"
-        self.location_states = [False] * 3
+        # Stores when key parts of the area have been altered
+        # 1st is for cave-in, 2nd is for the lever puzzle being completed
+        self.location_states = [False] * 2
         self.user = Player("Jamie")
         self.cell_man = NPC("Man In Cell", ["If you open my cell, I will help you get "
                                            "through that door\n","I am a member of the cult, I had doubts about what "
@@ -137,7 +140,7 @@ class Cave(Location):
                                     self.cursed_hallway()
                             elif action == "2":
                                 print("You take a look at your clues: ", end="")
-                                print(self.review_clues())
+                                print(*self.clues)
                             elif action == "3":
                                 print("You move back to the door\n")
                                 keypad = False
@@ -296,7 +299,6 @@ class Cave(Location):
 
 
 if __name__ == "__main__":
-    cave = Cave()
-    #cave.entrance()
-    cave.deep_cursed_hallway()
+    cave = Level6()
+    cave.entrance()
 
