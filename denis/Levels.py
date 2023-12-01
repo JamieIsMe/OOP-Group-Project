@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 import time 
 
-from Areas import LuminousLake
-from Areas import WhisperingGrove
-from Areas import CanopyWalkway
-from Areas import EchoingCaverns
+from denis.Areas import LuminousLake
+from denis.Areas import WhisperingGrove
+from denis.Areas import CanopyWalkway
+from denis.Areas import EchoingCaverns
 
 class Level(ABC):
     def __init__(self,player):

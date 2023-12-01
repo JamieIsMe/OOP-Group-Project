@@ -2,7 +2,7 @@ from Player import Player
 from josh.level1 import Level1
 from sean.level2 import Level2
 from max.level3 import Level3
-#from Levels import Level4
+from Levels import Level4
 from cian.level5 import Level5
 from jamie.level6 import Level6
 
@@ -22,8 +22,8 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level1, level2, level3, level4 , level5, level6]  # Storing the initialized levels in a list
-
+        self.levels = [level3, level4 , level5, level6]  # Storing the initialized levels in a list
+        #         self.levels = [level1, level2, level3, level4 , level5, level6]  # Storing the initialized levels in a list
 
         #add lv 4 back
 

@@ -203,12 +203,12 @@ class Level2(Location):
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[0]), "\n")
                     time.sleep(1)
-                    print(f"{player.name}:\n I'll be needing that dagger\n")
+                    print(f"{self.player.name}:\n I'll be needing that dagger\n")
                     time.sleep(1)
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[1]), "\n")
                     time.sleep(1)
-                    if "Sword" in player.inventory:
+                    if "Sword" in self.player.inventory:
                         print(self.red_cloak_man.say_dialogue
                               (self.red_cloak_man.dialogue[2]), "\n")
                         cloaked_figure_option = input("Do you want to fight "
@@ -217,42 +217,42 @@ class Level2(Location):
                                                       "1) Fight him!"
                                                       "2) Game time!")
                         if cloaked_figure_option == "1":
-                            print(f"{player.name}:\n Give it to me\n")
+                            print(f"{self.player.name}:\n Give it to me\n")
                             time.sleep(1)
-                            user = User(player.name)
+                            user = User(self.player.name)
                             red_cloak = RedCloakEnemy()
                             prize = fight(user, red_cloak)
                             if prize:
-                                player.add_item(prize)
-                                player.show_inventory()
+                                self.player.add_item(prize)
+                                self.player.show_inventory()
                                 print("You gained 25 coins from "
                                       "beating him.")
-                                player.coins += 25
+                                self.player.coins += 25
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
-                            print(f"{player.name}:\n Let's play then\n")
+                            print(f"{self.player.name}:\n Let's play then\n")
                             time.sleep(1)
                             prize = roll_dice()
                             if prize:
-                                player.add_item(prize)
-                                player.show_inventory()
+                                self.player.add_item(prize)
+                                self.player.show_inventory()
                                 print("You gained 25 coins from "
                                       "beating him.")
-                                player.coins += 25
+                                self.player.coins += 25
                             self.__cloak_figure_fin = True
                     else:
                         print(self.red_cloak_man.say_dialogue
                               (self.red_cloak_man.dialogue[2]), "\n")
                         time.sleep(1)
-                        print(f"{player.name}:\n Let's play then\n")
+                        print(f"{self.player.name}:\n Let's play then\n")
                         time.sleep(1)
                         prize = roll_dice()
                         if prize:
-                            player.add_item(prize)
-                            player.show_inventory()
+                            self.player.add_item(prize)
+                            self.player.show_inventory()
                             print("You gained 25 coins from "
                                   "beating him.")
-                            player.coins += 25
+                            self.player.coins += 25
                         self.__cloak_figure_fin = True
 
                 elif not self.__deal_made and not self.__cloak_figure_interact:
@@ -288,55 +288,55 @@ class Level2(Location):
                     time.sleep(1)
                     print("You see the prized dagger in his hand.")
                     time.sleep(1)
-                    print(f"{player.name}:\n I'll be needing that dagger.\n")
+                    print(f"{self.player.name}:\n I'll be needing that dagger.\n")
                     time.sleep(1)
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[5]), "\n")
                     time.sleep(1)
-                    if "Sword" in player.inventory:
+                    if "Sword" in self.player.inventory:
                         cloaked_figure_option = input("Play his little dice "
                                                       "game or rip it from "
                                                       "his cold dead hands?"
                                                       "1) Fight him!"
                                                       "2) Game time!")
                         if cloaked_figure_option == "1":
-                            print(f"{player.name}:\n I'll be taking that "
+                            print(f"{self.player.name}:\n I'll be taking that "
                                   f"dagger.\n")
                             time.sleep(1)
                             print(self.red_cloak_man.say_dialogue
                                   (self.red_cloak_man.dialogue[6]), "\n")
                             time.sleep(1)
-                            user = User(player.name)
+                            user = User(self.player.name)
                             red_cloak = RedCloakEnemy()
                             prize = fight(user, red_cloak)
                             if prize:
-                                player.add_item(prize)
-                                player.show_inventory()
+                                self.player.add_item(prize)
+                                self.player.show_inventory()
                                 print("You gained 25 coins from "
                                       "beating him.")
-                                player.coins += 25
+                                self.player.coins += 25
                             self.__cloak_figure_fin = True
                         elif cloaked_figure_option == "2":
-                            print(f"{player.name}:\n Let's play then.\n")
+                            print(f"{self.player.name}:\n Let's play then.\n")
                             time.sleep(1)
                             prize = roll_dice()
                             if prize:
-                                player.add_item(prize)
-                                player.show_inventory()
+                                self.player.add_item(prize)
+                                self.player.show_inventory()
                                 print("You gained 25 coins from "
                                       "beating him.")
-                                player.coins += 25
+                                self.player.coins += 25
                             self.__cloak_figure_fin = True
                     else:
-                        print(f"{player.name}:\n Let's play then.\n")
+                        print(f"{self.player.name}:\n Let's play then.\n")
                         time.sleep(1)
                         prize = roll_dice()
                         if prize:
-                            player.add_item(prize)
-                            player.show_inventory()
+                            self.player.add_item(prize)
+                            self.player.show_inventory()
                             print("You gained 25 coins from "
                                   "beating him.")
-                            player.coins += 25
+                            self.player.coins += 25
                         self.__cloak_figure_fin = True
                 else:
                     print("You dont want to cause any trouble so you stay "
@@ -382,7 +382,7 @@ class Level2(Location):
                     print(self.barbarian.say_dialogue
                           (self.barbarian.dialogue[0]), "\n")
                     time.sleep(1)
-                    print(f"{player.name}:\n I need a distraction to get into "
+                    print(f"{self.player.name}:\n I need a distraction to get into "
                           f"the city, it's very important.\n")
                     time.sleep(2)
                     print(self.barbarian.say_dialogue
@@ -433,7 +433,7 @@ class Level2(Location):
                           (self.barbarian.dialogue[6]), "\n")
                     time.sleep(1)
                     if "Prized Dagger" in self.player.inventory:
-                        print(f"{player.name}:\n Yes I have, now can you "
+                        print(f"{self.player.name}:\n Yes I have, now can you "
                               f"create a distraction for me?\n")
                         time.sleep(1)
                         print("You give him his oh so special dagger.\n")
@@ -441,7 +441,7 @@ class Level2(Location):
                         print(self.barbarian.say_dialogue
                               (self.barbarian.dialogue[7]), "\n")
                         time.sleep(1)
-                        print(f"{player.name}:\n That wasn't the deal.\n")
+                        print(f"{self.player.name}:\n That wasn't the deal.\n")
                         time.sleep(1)
                         print(self.barbarian.say_dialogue
                               (self.barbarian.dialogue[8]), "\n")
@@ -449,14 +449,14 @@ class Level2(Location):
                         print("They all reply in unison: No!\n")
                         time.sleep(1)
                         if self.player.coins >= 20:
-                            print(f"You have {player.coins} coins.\n")
+                            print(f"You have {self.player.coins} coins.\n")
                             distraction = input("Do you wish to give the "
                                                 "barbarians some coin(20) to "
                                                 "create the distraction?\n"
                                                 "1) Yes\n"
                                                 "2) No")
                             if distraction == "1":
-                                print(f"{player.name}:\n Fine, I do really "
+                                print(f"{self.player.name}:\n Fine, I do really "
                                       f"need to get in there.\n")
                                 time.sleep(1)
                                 print(self.barbarian.say_dialogue
@@ -474,7 +474,7 @@ class Level2(Location):
                                 self.current_location = self.sublocation[5]
                                 self.player.coins -= 20
                             elif distraction == "2":
-                                print(f"{player.name}:\n Forget it then. "
+                                print(f"{self.player.name}:\n Forget it then. "
                                       f"I'll find my own way in.\n")
                                 time.sleep(1)
                                 print(self.barbarian.say_dialogue
@@ -567,8 +567,8 @@ class Level2(Location):
                     colored_slab_puzzle = ColoredSlabPuzzle(level2)
                     city_pass = colored_slab_puzzle.play_puzzle()
                     if city_pass:
-                        player.add_item(city_pass)
-                        player.show_inventory()
+                        self.player.add_item(city_pass)
+                        self.player.show_inventory()
                     self.puzzle_complete = True
                 else:
                     print("You've already completed the puzzle in this "

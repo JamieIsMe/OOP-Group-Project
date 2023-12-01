@@ -65,6 +65,8 @@ class Level1(Location):
         self.challengeAccepted = False
         self.level_running = True
 
+    def level_start(self):
+        self.GameIntro()
 
     def update(self):
         if not self.__game_started:
@@ -144,7 +146,7 @@ class Level1(Location):
                 time.sleep(1)
                 print(f"\n{self.knight.interact()}")
                 time.sleep(2)
-                print(f"{player1.name}: Do you know of where it happened?")
+                print(f"{self.player.name}: Do you know of where it happened?")
                 time.sleep(2)
                 print(
                     self.knight.say_dialogue(
