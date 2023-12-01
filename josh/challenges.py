@@ -6,7 +6,7 @@ class Challenges:
         self.books = {
             "The Mighty Mystery Book": "Solve a Simple Riddle!",
             "The Perplexing Puzzle Book": "Solve a Logical Puzzle",
-            "he Heroic History Book": "Answer a historical trivia question!",
+            "The Heroic History Book": "Answer a historical trivia question!",
 
         }
 
@@ -82,6 +82,7 @@ class Challenges:
         # Implement logic for the history trivia challenge
         print("The Heroic History Book presents you with a historical trivia question. Can you answer it?")
         trivia = "Which Medieval European Kingdom was known for its legendary kings, King Arthur?"
+
         print(f"Your Question is: {trivia}")
 
         print("1. France \n2. Spain \n3. England")
