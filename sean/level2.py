@@ -9,7 +9,7 @@ import time
 
 
 class Level2(Location):
-    def __init__(self, score):
+    def __init__(self, player):
         super().__init__("City",
                          ["Outside City Walls", "Barbarian Group",
                           "Dark Alley", "Back City Walls",
@@ -18,7 +18,6 @@ class Level2(Location):
                          [])
         self.current_location = self.sublocation[0]
         self.player = player
-        self.score = score
         self.city_guard = NPC("City Guard",
                               ["Halt! What business do "
                                "you have here stranger?",
@@ -94,6 +93,10 @@ class Level2(Location):
         self.__cloak_figure_fin = False
         self.__dark_alley_investigated = False
         self.puzzle_complete = False
+
+    def level_start(self):
+        self.outside_city()
+
 
     def outside_city(self):
         self.current_location = self.sublocation[0]

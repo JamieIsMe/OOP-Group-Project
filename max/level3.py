@@ -17,8 +17,8 @@ from denis.Player import Player
 from sean.locationClass import Location
 from sean.fight import fight, User, CultMember
 from cian.characters import NPC
-from minigame import cipher_decryption_game
-from riddle import riddle_game
+from max.minigame import cipher_decryption_game
+from max.riddle import riddle_game
 
 
 class Level3(Location):
@@ -26,14 +26,13 @@ class Level3(Location):
     This class is the main function of our level three class
     """
 
-    def __init__(self, coins):
+    def __init__(self, player):
         super().__init__("Town Center", ["Market", "Crown and Chalice Inn", "Haven's Port"],
                          ["Textile Merchant", "BlackSmith", "Potion Mixer", "Street Performers",
                           "Tavern keeper"], [])
 
-        self.user = Player("Max")
+        self.player = player
         self.current_location = self.sublocation[0]
-        self.coins = coins  # Coins collected throughout the game to aid the player in future quests
         self.side_quest_enabled = False
 
         self.blacksmith = NPC("Astrid Steelheart",
@@ -93,12 +92,15 @@ class Level3(Location):
         self.__tavern_keeper_interacted = False
         self.__craftsman_interacted = False
 
-        print(f"{self.user.name} steps afoot to the town center of (Town name) lively {self.current_location}"
+
+
+    def level_start(self):
+        print(f"You steps afoot to the town center of (Town name) lively {self.current_location}"
               f" square after (Ending of level 2),\n"
               f"where colourful stalls filled with treasure, the savory wonderful scent of roasting meats, "
               f"\nwith mesmerising street performances happening at the minute with camaraderie underneath the cold "
               f"snowy night.")
-
+        self.market()
     def market(self):
         while self.current_location == "Market":
             action = input("\nWhat will you do?,\n"
@@ -180,14 +182,14 @@ class Level3(Location):
             # Checks if the user has found the clue already
             # Else tell the user that you have the clue already
             if interaction == 1:
-                print(f"{self.user.name}: Have you heard about the (Cult name) around abducting people "
+                print(f"{self.player.name}: Have you heard about the (Cult name) around abducting people "
                       "recently.")
                 print(self.blacksmith.say_dialogue("Yeah the market have been talking about the news."))
                 print(self.blacksmith.say_dialogue("One of the merchants reported that they have went to "
                                                    f"the potion mixer as of recently."))
                 Level3.add_clue(self, "Blacksmith's observation on the potion mixer")
             elif interaction == 2:
-                if self.blacksmith.items not in self.user.inventory:
+                if self.blacksmith.items not in self.player.inventory:
                     print(self.blacksmith.say_dialogue("Ohh you interested in crafting an fine piece metal then"
                                                        "you have to pay for it, it'll be 100 coins please."))
                     # An extra option depending on the score of the player
@@ -202,7 +204,7 @@ class Level3(Location):
                             print(f"New balance: {self.coins}")
                             print(self.blacksmith.say_dialogue(f"The sword suits you traveler, this "
                                                                f"will help you for sure"))
-                            self.user.add_item(self.blacksmith.items)
+                            self.player.add_item(self.blacksmith.items)
                         else:
                             print(self.blacksmith.say_dialogue("You don't have enough coins for the sword."))
                     elif action.lower() == "n":
@@ -218,7 +220,7 @@ class Level3(Location):
                 print("Invalid option")
 
     def interact_with_textile_merchant(self):
-        if "Fluffernutter the Chicken" not in self.user.inventory and not self.side_quest_enabled:
+        if "Fluffernutter the Chicken" not in self.player.inventory and not self.side_quest_enabled:
             print(self.textile_merchant.say_dialogue(self.textile_merchant.dialogue[0]))
 
             while not self.__textile_merchant_interacted:
@@ -228,7 +230,7 @@ class Level3(Location):
                 # Checks if the user has found the clue already
                 # Else tell the user that you have the clue already
                 if interaction == 1:
-                    if self.textile_merchant.items not in self.user.inventory:
+                    if self.textile_merchant.items not in self.player.inventory:
                         print(self.textile_merchant.say_dialogue(
                             "Discover our collection of popular trends in intricate embroidery, sumptuous velvet, "
                             "and natural, earthy tones.\nYou can also expect shimmering metallic threads, breathable "
@@ -247,7 +249,7 @@ class Level3(Location):
                                                                        f"yours now wanderer it might help in the "
                                                                        f"extreme weather conditions ahead of your "
                                                                        f"journey."))
-                                self.user.add_item(self.textile_merchant.items)
+                                self.player.add_item(self.textile_merchant.items)
                             else:
                                 print(
                                     self.textile_merchant.say_dialogue("You do not have another coins for the fur "
@@ -268,7 +270,7 @@ class Level3(Location):
                                         "feathered friend.\n"
                                         "My prized chicken, Fluffernutter, has gone "
                                         "missing, and I've been in a complete tizzy."))
-                                    print(f"{self.user.name}: No worries! I'm happy to help."
+                                    print(f"{self.player.name}: No worries! I'm happy to help."
                                           f"\nWhere should I start looking?")
                                     print(self.textile_merchant.say_dialogue("Thank you for taking on the "
                                                                              "quest!\nFluffernutter was last seen at "
@@ -278,7 +280,7 @@ class Level3(Location):
                                                                              "home safely. Good luck, and may your "
                                                                              "journey be swift!"))
                                     print(
-                                        f"{self.user.name}: I'll find Fluffernutter and bring them back, don't worry!")
+                                        f"{self.player.name}: I'll find Fluffernutter and bring them back, don't worry!")
                                     print("We leave the shop knowing we have a side quest to do!")
                                     self.side_quest_enabled = True
                                     self.__textile_merchant_interacted = True
@@ -308,8 +310,8 @@ class Level3(Location):
                                                      "Never expected a chicken chase to turn into such an adventure!\n"
                                                      "If you ever need more help or encounter more feathered mischief, "
                                                      "you know where to find me.\nSafe travels!"))
-            self.user.remove_item("Fluffernutter the Chicken")
-            self.user.add_item("Armor")
+            self.player.remove_item("Fluffernutter the Chicken")
+            self.player.add_item("Armor")
             self.coins = self.coins + 75
             self.side_quest_enabled = False
             level3.market_square()
@@ -329,15 +331,15 @@ class Level3(Location):
                                                      "lord that watches above us.\nIf I reveal too much it might "
                                                      "be the end of this town. \nSomethings are left untouched."))
             elif interaction == 2:
-                if self.potion_mixer.items not in self.user.inventory:
-                    print(f"{self.user.name}: I have some questions for you to answer about the (cult's name)")
+                if self.potion_mixer.items not in self.player.inventory:
+                    print(f"{self.player.name}: I have some questions for you to answer about the (cult's name)")
                     print(self.potion_mixer.perform_action("Looks at me terrifying as she screeches some "
                                                            "encrypted message as she runs away\n"))
                     print("Let's decipher what she said:\n")
                     cipher_decryption_game()
                     Level3.add_clue(self, "The Legendary Witch Slayer will save us all message")
                     print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
-                    self.user.add_item(self.potion_mixer.items)
+                    self.player.add_item(self.potion_mixer.items)
                     self.__potion_mixer_interacted = True
                 else:
                     print(f"{self.potion_mixer.name} is gone")
@@ -348,12 +350,12 @@ class Level3(Location):
         level3.market_square()
 
     def interact_with_street_performers(self):
-        print(f"As {self.user.name} approaches the spectacular street performers, drawn by their routine.\n"
+        print(f"As {self.player.name} approaches the spectacular street performers, drawn by their routine.\n"
               f"You began hearing the audience about a cloaked figure during the performance near the fountain of "
               f"the market square.\nAnything you noticed?")
         print(self.street_performer.interact())
         Level3.add_clue(self, "Cloaked figure near fountain")
-        print(f"As {self.user.name} thanked them, they couldn't stop wondering if this coincidental sighting"
+        print(f"As {self.player.name} thanked them, they couldn't stop wondering if this coincidental sighting"
               " was a deliberate distraction.")
         self.__street_performer_interacted = True
 
@@ -456,12 +458,12 @@ class Level3(Location):
 
     def bar(self):
         if "Elves' observation on the tavern keeper" not in self.clues:
-            print(f"{self.user.name}: I feel like there's something I need to know before I do this")
+            print(f"{self.player.name}: I feel like there's something I need to know before I do this")
         else:
             print("You have the observation from the elves in which you go to the Tavern Keeper")
             print(self.tavern_keeper.say_dialogue(self.tavern_keeper.dialogue[0]), "\u2618\ufe0f")
             print(
-                f"{self.user.name}: I've been hearing around from the locals that the (CULT NAME) is terrorizing this "
+                f"{self.player.name}: I've been hearing around from the locals that the (CULT NAME) is terrorizing this "
                 f"Eldenhaven \nabducting people and committing satanic rituals to them,\nyou seem to know something "
                 f"\U0001F914")
             print(self.tavern_keeper.say_dialogue("Aye, I've heard of the (CULT NAME) terrorizing Eldenhaven.\n"
@@ -503,7 +505,7 @@ class Level3(Location):
         else:
             print(
                 "Beneath the moonlit port, a clandestine cult engaged in an ominous ritual.\n"
-                f"{self.user.name} confronted them, demanding answers.\n"
+                f"{self.player.name} confronted them, demanding answers.\n"
                 "Interfering with our sacred gathering, detective? the cult leader hissed.\n"
                 "Undeterred, the detective stood firm.\n"
                 "Laughter echoed as the cult chanted, conjuring an eerie ambiance.\n"
@@ -519,8 +521,8 @@ class Level3(Location):
             final_fight = fight(user, cult_member)
 
             if final_fight:
-                self.user.add_item(final_fight)
-                self.user.show_inventory()
+                self.player.add_item(final_fight)
+                self.player.show_inventory()
                 Level3.ending()
 
     def interact_with_craftsman(self):
@@ -538,12 +540,12 @@ class Level3(Location):
 
             if action.lower() == "y" or action.capitalize() == "Y":
                 if self.coins >= 35:
-                    print(f"{self.user.name} reach into their pouch and count out the required 35 coins."
+                    print(f"{self.player.name} reach into their pouch and count out the required 35 coins."
                           f"\nWith a reluctant sigh,they hand the coins over to the craftsman, who smirks triumphantly.")
                     print(self.craftsman.say_dialogue("Smart choice, my friend. Fluffernutter is free to go."))
                     print(self.craftsman.perform_action("the craftsman releases the chicken, who scurries back to the "
                                                         "player."))
-                    self.user.add_item("Fluffernutter the Chicken")
+                    self.player.add_item("Fluffernutter the Chicken")
                     self.coins = self.coins - 35
                     print("Coins: ", self.coins)
                     self.__textile_merchant_interacted = False
@@ -576,11 +578,12 @@ class Level3(Location):
 
     def ending(self):
         print(f"The subdued cult member carried a cryptic map, revealing a path through a mushroom forest and a goblin camp. "
-              f"Undeterred, {self.user.name} follows the mystical trail, uncovering the cult's hidden home base. "
+              f"Undeterred, {self.player.name} follows the mystical trail, uncovering the cult's hidden home base. "
               "As they venture through enchanted landscapes, "
               "the air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
 
 
 if __name__ == "__main__":
-    level3 = Level3(150)
+    player = Player("")
+    level3 = Level3("")
     level3.market()

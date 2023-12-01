@@ -5,7 +5,7 @@ import time
 
 
 class Level6(Location):
-    def __init__(self):
+    def __init__(self, user):
         # Uses all initialising features of the Location Class
         super().__init__("cave", ["entrance", "walkway", "cursed_hallway", "deep_cursed_hallway"],
                          ["Man In Cell", "Cult Leader", "Cult Member", "Witch Slayer"],
@@ -14,7 +14,7 @@ class Level6(Location):
         # Stores when key parts of the area have been altered
         # 1st is for cave-in, 2nd is for the lever puzzle being completed
         self.location_states = [False] * 2
-        self.user = Player("Jamie")
+        self.user = user
         self.cell_man = NPC("Man In Cell", ["If you open my cell, I will help you get "
                                            "through that door\n","I am a member of the cult, I had doubts about what "
                                                                  "we were doing so the rest of them locked me in "
@@ -36,6 +36,10 @@ class Level6(Location):
                                                     "wrath.\n", "I have no use for "
                                                               "you anymore\n"],"","",
                                 ["beheads the cult members", "beheads you"])
+
+    def level_start(self):
+        self.entrance()
+
 
     def entrance(self):
         self.current_location = self.sublocation[0]

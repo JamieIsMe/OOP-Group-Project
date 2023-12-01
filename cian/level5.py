@@ -7,7 +7,7 @@ from denis.Player import Player
 import time
 
 class Level5(Location):
-    def __init__(self, coins):
+    def __init__(self, player):
         super().__init__("camp",
                          ["outer_camp", "main_camp", "hut_1", "hut_1_inside", "big_hut_outside", "big_hut",
                           "side_main_camp", "grave"],
@@ -15,7 +15,6 @@ class Level5(Location):
                          [])
         self.current_location = "outer_camp"
         self.visited_sublocations = []
-        self.coins = coins
         self.player = player
         self.goblin_trio = NPC("Goblin trio",
                                ["\nYou here voices in unison say:\n\"What do you want\"?\n",
@@ -101,6 +100,9 @@ class Level5(Location):
                                  "he looks at you with a bit of disappointment\n"], )
         self.max_coins = 100  # coins needed to set of Dicy's bonus dialog
         self.grave_found = False  # has gained info on the graves location
+
+    def level_start(self):
+        self.outer_camp()
 
     def outer_camp(self, ):  # outer camp locaton used as a secondary hub and as an intro
         self.current_location = "outer_camp"

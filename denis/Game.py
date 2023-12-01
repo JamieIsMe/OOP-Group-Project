@@ -2,7 +2,7 @@ from Player import Player
 from josh.level1 import Level1
 from sean.level2 import Level2
 from max.level3 import Level3
-from Levels import Level4
+#from Levels import Level4
 from cian.level5 import Level5
 from jamie.level6 import Level6
 
@@ -22,13 +22,11 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level1, level2, level3, level4, level5, level6]  # Storing the initialized levels in a list
+        self.levels = [level1, level2, level3, level4 , level5, level6]  # Storing the initialized levels in a list
 
-    def game_running(self):
-        # Method to check if the game is still running
-        if self.game_run:
-            return 1
-        return 0
+
+        #add lv 4 back
+
 
     def level_picker(self):
         # Looping through each level until all levels are completed
@@ -42,6 +40,6 @@ class Game:
 game = Game()
 
 # Checking if the game is running
-if game.game_running():
+if game.game_run:
     # If the game is running, start and progress through levels
     game.level_picker()

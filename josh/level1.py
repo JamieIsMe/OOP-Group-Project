@@ -29,7 +29,7 @@ from josh.FinalDuel import Duel
 
 # LEVEL 1 CLASS
 class Level1(Location):
-    def __init__(self, player, score):
+    def __init__(self, player):
         super().__init__("Citadel",
                          ['Hall of Warriors','Grand Library', 'Armory',
                           'Druids Quarter'],
@@ -37,7 +37,6 @@ class Level1(Location):
 
         self.current_location = self.sublocation[0]
         self.player = player
-        self.score = score
 
         self.knight = NPC("Sir Smith",
                           "It was a horrible sight,"
