@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from cian.characters import NPC
+from Character import NPC
 import time 
 import random 
 
@@ -78,14 +78,14 @@ class LuminousLake(Area):
         self.scene_fallen_leaves()
 
 class WhisperingGrove(Area):
-    def __init__(self,player):
+    def __init__(self, player):
         self.player = player 
         self.name = "The Whispering Grove"
         self.item_pickups = ["Silver Key"]   
         self.item_pickup = [False]                      
         self.next_item = 0  
         self.old_man = NPC("Old Man",None,"Seek the paper where still waters mirror the forest's canopy," 
-        "hidden not in plain sight but where shadows mingle with the earth's whispers.\n",None, "")
+        "hidden not in plain sight but where shadows mingle with the earth's whispers.\n",None)
         self.old_man_dialog = ["Ah, traveler! I am in dire need of assistance.",
         "I've lost an ancient paper," 
         "one of great importance to me and the secrets of this forest",
@@ -145,8 +145,8 @@ class WhisperingGrove(Area):
                     if self.seen_clue:
                         print("You have already seen this clue!\n")
                     else:
-                        self.player.add_level_clue(self.old_man.clue())
-                        print(self.old_man.clue())
+                        self.player.add_level_clue(self.old_man.show_clue())
+                        print(self.old_man.show_clue())
                         self.seen_clue = 1
                 if hand_item == 'h':
                     if self.check_item("Ancient Paper"):
@@ -194,7 +194,7 @@ class CanopyWalkway(Area):
         self.items = ["Luminous Plank","Glowing Stone"]
         self.shroomy_dundee = NPC("Shroomy Dundee",None,"In the heart of the Thicket where shadows play," 
         "seek the moonlit stone that paves the way. It'll guide you true when the path seems lost, just follow"
-        "its glow, no matter the cost.",None, "")
+        "its glow, no matter the cost.",None)
         self.shroomy_dundee_dialog = ["G'day, mate!","Name's Shroomy Dundee, the funniest fungi in all the" 
         "Mushroom Forest! Fancy a go at a rhyme?,"
         "Give it your best shot, and don't worry about bein' right or wrong. I'm all about the laughs here!"]
@@ -244,8 +244,8 @@ class CanopyWalkway(Area):
                         if self.seen_clue:
                             print("You have already seen this clue!\n")
                         else:
-                            print(self.shroomy_dundee.clue())
-                            self.player.add_level_clue(self.shroomy_dundee.clue())
+                            print(self.shroomy_dundee.show_clue())
+                            self.player.add_level_clue(self.shroomy_dundee.show_clue())
                             self.seen_clue = 1
                         
                     if choice == 'r':
@@ -321,7 +321,7 @@ class EchoingCaverns(Area):
         self.key_pickup = 0
         self.glowing_pickup = 0
         self.chromatic_trio = NPC("Chromatic Trio",None,"A secret cult, hidden from plain sight," 
-        " worships the ancient Spectrum Stone.",None, "")
+        " worships the ancient Spectrum Stone.",None)
         self.chromatic_trio_dialog = ["Greetings, traveler! I am Ruby Red, the brightest flame in these caverns!",
         " And I am Beryl Blue, as deep and mysterious as the midnight sea!","Emerald Green's the name," 
         " fresh and lively as a new leaf in spring!","We are the Chromatic Trio," 
@@ -336,7 +336,9 @@ class EchoingCaverns(Area):
         self.choose_clue = random.randint(0,len(self.chromatic_trio_clues) - 1)
         self.expected_response = "rgb"
         self.main_clue = "A secret cult, hidden from plain sight, worships the ancient Spectrum Stone."
-        self.game_end = 0
+        self.game_flag = 0
+        self.game_end_number = -1
+
     def check_item(self, key_item):  # Method to check for a specific item in the player's inventory
         for item in (self.player.inventory):  # Iterating through each item in the player's inventory
             if item == key_item:  # Checking if the current item matches the key_item
@@ -357,12 +359,7 @@ class EchoingCaverns(Area):
         print("Curiosity piqued, you find your steps drawn towards the mysterious flame," 
         " wondering what or who might be awaiting you at this solitary fire in the heart of this mysterious camp.\n")
         time.sleep(1)
-        self.game_end = 1
         print("Level 4: Mushroom Forest Complete!")
-        print("---Type anything to continue---\n")
-        continue_game = input()
-        return 1
-        # Will do the functionalty that brings you to level 5 tomorrow!
     def encounter_npc(self):
         for dialog in self.chromatic_trio_dialog:
             print(self.chromatic_trio.say_dialogue(dialog) + '\n')
@@ -389,7 +386,8 @@ class EchoingCaverns(Area):
                 self.player.add_main_clue(self.main_clue)
                 time.sleep(1)
                 self.end_level()
-
+                self.game_flag = self.game_end_number
+                return 
             else:
                 print(self.chromatic_trio_clues[self.choose_clue] + '\n')
                 self.choose_clue = random.randint(0,len(self.chromatic_trio_clues) - 1)
@@ -470,6 +468,5 @@ class EchoingCaverns(Area):
             return 
                 
     def location_scene(self):
-        if self.scene_door():
-            return 1
-
+        self.scene_door()
+        return self.game_flag

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 import time 
 
-from denis.Areas import LuminousLake
-from denis.Areas import WhisperingGrove
-from denis.Areas import CanopyWalkway
-from denis.Areas import EchoingCaverns
+from Areas import LuminousLake
+from Areas import WhisperingGrove
+from Areas import CanopyWalkway
+from Areas import EchoingCaverns
 
 class Level(ABC):
     def __init__(self,player):
@@ -29,6 +29,8 @@ class Level4(Level):
         self.locations = [self.luminous_lake, self.whispering_grove,
         self.canopy_walkway, self.echoing_caverns] 
         self.current_pos = 0
+        self.game_flag = 0
+        self.game_end_number = -1
     def introduction(self):
         print("You find yourself in a luminous glade, the air filled with spores that glimmer" 
         " like tiny stars.\n")
@@ -48,6 +50,9 @@ class Level4(Level):
         while True:
             print("---Type anything to continue---\n")
             continue_game = input()
+            if self.game_flag == self.game_end_number:
+                print("Game Ends")
+                break
             print("-------------------------------------------------------")
             for index,location in enumerate(self.locations):
                 print(f"{index + 1}) Would you like to go to {self.locations[index].name}\n")
@@ -70,5 +75,4 @@ class Level4(Level):
                     print("Invalid Input!")
             for index,location in enumerate(self.locations):
                 if choice == (index + 1):
-                    if self.locations[index].location_scene():
-                        break
+                    self.game_flag = self.locations[index].location_scene()
