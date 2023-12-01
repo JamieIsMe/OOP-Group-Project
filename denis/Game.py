@@ -12,7 +12,7 @@ class Game:
         self.next_level = 0   # Index for the next level to be played
 
         # Prompting the user to enter a name for the player
-        self.player_name = input("Welcome Adventurer!\nEnter a name please: \n")
+        self.player_name = input("Welcome Adventurer!, Enter a name please: ")
         self.player = Player(self.player_name)  # Creating a new Player instance with the entered name
 
         # Initializing all levels.
@@ -22,7 +22,9 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level5, level6]  # Storing the initialized levels in a list
+        self.levels = [level1,level2,level3,level5,level6]  # Storing the initialized
+        # levels in a
+        # list
         #         self.levels = [level1, level2, level3, level4 , level5, level6]  # Storing the initialized levels in a list
 
         #add lv 4 back
