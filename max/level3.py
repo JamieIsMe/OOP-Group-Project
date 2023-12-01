@@ -345,7 +345,7 @@ class Level3(Location):
                 print(self.potion_mixer.perform_action("Glares at you as you walk away from her"))
                 self.__potion_mixer_interacted = True
 
-        level3.market_square()
+        Level3.market_square(self)
 
     def interact_with_street_performers(self):
         print(f"As {self.player.name} approaches the spectacular street performers, drawn by their routine.\n"
@@ -514,14 +514,14 @@ class Level3(Location):
                 "The detective, now more determined, unravels the dark secrets concealed within the port,"
                 " knowing that this encounter was just the beginning of a greater mystery.\n")
 
-            user = User(self.user.name)
+            user = User(self.player.name)
             cult_member = CultMember()
             final_fight = fight(user, cult_member)
 
             if final_fight:
                 self.player.add_item(final_fight)
                 self.player.show_inventory()
-                Level3.ending()
+                Level3.ending(self)
 
     def interact_with_craftsman(self):
         if self.side_quest_enabled:

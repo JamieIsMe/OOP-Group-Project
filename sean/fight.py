@@ -49,7 +49,7 @@ class RedCloakEnemy:
 class CultMember:
     def __init__(self):
         self.name = "cult member"
-        self.health = 200
+        self.health = 100
 
 
 def fight(user, enemy):

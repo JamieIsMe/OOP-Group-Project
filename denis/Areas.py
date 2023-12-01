@@ -145,8 +145,8 @@ class WhisperingGrove(Area):
                     if self.seen_clue:
                         print("You have already seen this clue!\n")
                     else:
-                        self.player.add_level_clue(self.old_man.show_clue())
-                        print(self.old_man.show_clue())
+                        self.player.add_level_clue(self.old_man.clue())
+                        print(self.old_man.clue())
                         self.seen_clue = 1
                 if hand_item == 'h':
                     if self.check_item("Ancient Paper"):
@@ -244,8 +244,8 @@ class CanopyWalkway(Area):
                         if self.seen_clue:
                             print("You have already seen this clue!\n")
                         else:
-                            print(self.shroomy_dundee.show_clue())
-                            self.player.add_level_clue(self.shroomy_dundee.show_clue())
+                            print(self.shroomy_dundee.clue())
+                            self.player.add_level_clue(self.shroomy_dundee.clue())
                             self.seen_clue = 1
                         
                     if choice == 'r':
@@ -336,7 +336,7 @@ class EchoingCaverns(Area):
         self.choose_clue = random.randint(0,len(self.chromatic_trio_clues) - 1)
         self.expected_response = "rgb"
         self.main_clue = "A secret cult, hidden from plain sight, worships the ancient Spectrum Stone."
-
+        self.game_end = 0
     def check_item(self, key_item):  # Method to check for a specific item in the player's inventory
         for item in (self.player.inventory):  # Iterating through each item in the player's inventory
             if item == key_item:  # Checking if the current item matches the key_item
@@ -357,7 +357,11 @@ class EchoingCaverns(Area):
         print("Curiosity piqued, you find your steps drawn towards the mysterious flame," 
         " wondering what or who might be awaiting you at this solitary fire in the heart of this mysterious camp.\n")
         time.sleep(1)
+        self.game_end = 1
         print("Level 4: Mushroom Forest Complete!")
+        print("---Type anything to continue---\n")
+        continue_game = input()
+        return 1
         # Will do the functionalty that brings you to level 5 tomorrow!
     def encounter_npc(self):
         for dialog in self.chromatic_trio_dialog:
@@ -385,7 +389,7 @@ class EchoingCaverns(Area):
                 self.player.add_main_clue(self.main_clue)
                 time.sleep(1)
                 self.end_level()
-                return 
+
             else:
                 print(self.chromatic_trio_clues[self.choose_clue] + '\n')
                 self.choose_clue = random.randint(0,len(self.chromatic_trio_clues) - 1)
@@ -466,4 +470,6 @@ class EchoingCaverns(Area):
             return 
                 
     def location_scene(self):
-        self.scene_door()
+        if self.scene_door():
+            return 1
+

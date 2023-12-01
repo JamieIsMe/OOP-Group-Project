@@ -364,11 +364,11 @@ class Level5(Location):
             print(self.dice_goblin.actions[0]) # Tips hat action no name
             self.visited("side_main_camp")
 
-        if player.coins == self.max_coins: # if you have alot of coins he gives you a bit of info and an item
+        if self.player.coins == self.max_coins: # if you have alot of coins he gives you a bit of info and an item
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[4])) # why give item dialogue
             self.add_clue(self.dice_goblin.clues[0]) # adds clue to location clues
             print(self.review_clues(), "\n") # displays clues so far
-            player.add_item("1 gold doubloon") # adds item to player
+            self.player.add_item("1 gold doubloon") # adds item to player
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[5])) # don't tell anyone else dialogue
 
         print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[1])) # play dice minigame dialogue
@@ -377,13 +377,13 @@ class Level5(Location):
             choice = input("1) Yes\n"
                            "2) No\n")
             if choice == "1": # Yes
-                dice_game(player) # plays dice minigame
+                dice_game(self.player) # plays dice minigame
             elif choice == "2": # No
                 print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[2])) # play R.P.S. minigame dialogue
                 choice = input("1) Yes\n"
                                "2) No\n")
                 if choice == "1": # Yes
-                    Rock_Paper_Scissors_Game(player) # plays R.P.S. minigame
+                    Rock_Paper_Scissors_Game(self.player) # plays R.P.S. minigame
                     play_minigame = True
                 elif choice == "2":  # No
                     self.main_camp()
@@ -392,7 +392,7 @@ class Level5(Location):
             choice = input("1) Yes\n"
                            "2) No\n")
             if choice == "1": # Yes
-                dice_game(player)
+                dice_game(self.player)
             elif choice == "2": # No
                 print("You decline and return to the center of camp")
                 break
@@ -419,7 +419,7 @@ class Level5(Location):
             # print("You rember that this is the same cloth that the cultistes wear\n")
             # print("You think to yourself why would this be here on a heros grave?\n")
             # self.add_main_clue("The Legendary Witch Slayer might not be what they seem to be in the legends")
-            player.add_item("Red scrap of cloth")
+            self.player.add_item("Red scrap of cloth")
             # else;
             # prit("You reconise this cloth but you cant quite remember where")
             self.grave()
@@ -452,7 +452,7 @@ class Level5(Location):
                            "1) Enter the cave\n"
                            "2) Go back to the grave\n")
             if choice == "1": # Enter the cave
-                exit() # end Level
+                pass
             elif choice == "2": # Go back to the grave
                 self.grave()
         elif choice == "4": # return to camp

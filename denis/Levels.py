@@ -70,4 +70,5 @@ class Level4(Level):
                     print("Invalid Input!")
             for index,location in enumerate(self.locations):
                 if choice == (index + 1):
-                    self.locations[index].location_scene()
+                    if self.locations[index].location_scene():
+                        break
