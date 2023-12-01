@@ -27,6 +27,7 @@ class Level2(Location):
                                "oversee some sketchy figures talking nearby",
                                "You already asked me about the "
                                "kidnappings",
+                               "Ah, I see you have a city pass",
                                "You may proceed stranger",
                                "Hold! You can't enter without a "
                                "city pass",
@@ -152,15 +153,18 @@ class Level2(Location):
                     print(self.city_guard.say_dialogue
                           (self.city_guard.dialogue[3]), "\n")
                     time.sleep(1)
+                    print(self.city_guard.say_dialogue
+                          (self.city_guard.dialogue[4]), "\n")
+                    time.sleep(1)
                     self.current_location = self.sublocation[5]
                     self.__guard_interacted = True
                 else:
                     print(self.city_guard.say_dialogue
-                          (self.city_guard.dialogue[4]), "\n")
+                          (self.city_guard.dialogue[5]), "\n")
                     time.sleep(1)
             elif interaction == 3:
                 print(self.city_guard.say_dialogue
-                      (self.city_guard.dialogue[5]))
+                      (self.city_guard.dialogue[6]))
                 time.sleep(1)
                 break
 
