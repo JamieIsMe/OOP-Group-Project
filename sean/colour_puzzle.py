@@ -56,7 +56,7 @@ class ColoredSlabPuzzle:
             elif user_choice == "2":
                 print(self.available_colors)
             elif user_choice == "3":
-                print(self.player.level_clues)
+                print(self.player)
             else:
                 print("Invalid choice. Please choose 1, 2 or 3.")
 
