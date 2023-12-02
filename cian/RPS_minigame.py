@@ -7,8 +7,11 @@ def Rock_Paper_Scissors_Game(player):
     bet = int(input(f"You have {player.coins} \nmany coins would you like to bet:\n"))
 
     while bet > player.coins:
-        bet = int(input(f"You only have {player.coins} \nmany coins would you like to bet:\n"))
-
+        if player.coins > 0:
+            bet = int(input(f"You only have {player.coins} coins \nhow many coins would you like to bet:\n"))
+        else:
+            print("You have 0 coins so you can't play")
+            break
     player.coins = player.coins-bet
 
     choice = input("1) Rock\n2) Paper\n3) Scissors\n")
@@ -37,7 +40,7 @@ def Rock_Paper_Scissors_Game(player):
 
     if player_choice == opponent_choice:
         print(f"Both players selected {opponent_choice}. It's a tie!")
-        Rock_Paper_Scissors_Game()
+        Rock_Paper_Scissors_Game(player)
 
 
     elif player_choice == "Rock":
