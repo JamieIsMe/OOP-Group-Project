@@ -7,6 +7,7 @@ from denis.Player import Player
 import time
 import pygame
 
+
 class Level5(Location):
     def __init__(self, player):
         super().__init__("camp",
@@ -102,13 +103,12 @@ class Level5(Location):
         self.max_coins = 100  # coins needed to set of Dicy's bonus dialog
         self.grave_found = False  # has gained info on the graves location
 
-
     def level_start(self):
         self.outer_camp()
 
     def play(self):
         pygame.mixer.music.load("Kung Fu Panda - Master Oogway Suite (Theme).mp3")
-        pygame.mixer.music.play(loops=0)#
+        pygame.mixer.music.play(loops=0)  #
         print("\nTEST\n")
 
     def outer_camp(self):  # outer camp location used as a secondary hub and as an intro

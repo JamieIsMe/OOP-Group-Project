@@ -42,10 +42,10 @@ class Game:
         self.levels = [level4, level5, level6]  # Storing the initialized
         # levels in a
         # list
-        #self.levels = [level1, level2, level3, level4 , level5, level6]
+        # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
 
-    #Polymorphism
+    # Polymorphism
     def level_picker(self):
         # Looping through each level until all levels are completed
         while self.next_level < len(self.levels):

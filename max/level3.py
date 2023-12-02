@@ -20,7 +20,9 @@ from sean.fight import fight, User, CultMember
 from cian.characters import NPC
 from max.minigame import cipher_decryption_game
 from max.riddle import riddle_game
+
 import time
+import pygame
 
 
 class Level3(Location):
@@ -105,6 +107,9 @@ class Level3(Location):
         self.__drunken_elves_interacted = False
         self.__tavern_keeper_interacted = False
         self.__craftsman_interacted = False
+
+    def play_theme_song(self):
+
 
     def level_start(self):
         """
