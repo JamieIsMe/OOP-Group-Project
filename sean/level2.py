@@ -144,7 +144,7 @@ class Level2(Location):
                     print(self.city_guard.say_dialogue
                           (self.city_guard.dialogue[1]), "\n")
                     time.sleep(1)
-                    self.player.add_level_clue(self.city_guard.clue())
+                    self.add_clue(self.city_guard.clue())
                     self.__guard_asked = True
                 else:
                     print(self.city_guard.say_dialogue
@@ -207,7 +207,7 @@ class Level2(Location):
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[1]), "\n")
                     time.sleep(1)
-                    if "Sword" in self.player.inventory:
+                    if 'Chaos Sword' in self.player.inventory:
                         print(self.red_cloak_man.say_dialogue
                               (self.red_cloak_man.dialogue[2]), "\n")
                         cloaked_figure_option = input("Do you want to fight "
@@ -292,7 +292,7 @@ class Level2(Location):
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[5]), "\n")
                     time.sleep(1)
-                    if "Sword" in self.player.inventory:
+                    if 'Chaos Sword' in self.player.inventory:
                         cloaked_figure_option = input("Play his little dice "
                                                       "game or rip it from "
                                                       "his cold dead hands?"
@@ -403,7 +403,7 @@ class Level2(Location):
                               (self.barbarian.dialogue[4]), "\n")
                         time.sleep(1)
                         self.__deal_made = True
-                        self.player.add_level_clue(self.barbarian.clue())
+                        self.add_clue(self.barbarian.clue())
                     elif deal_option == "2":
                         print("\n")
                         print(self.barbarian.say_dialogue
@@ -519,7 +519,7 @@ class Level2(Location):
                           (self.barbarian.dialogue[14]), "\n")
                     time.sleep(1)
                     self.__deal_made = True
-                    self.player.add_level_clue(self.barbarian.clue())
+                    self.add_clue(self.barbarian.clue())
                 elif deal_option == "2":
                     print("\n")
                     print(self.barbarian.say_dialogue
@@ -550,8 +550,8 @@ class Level2(Location):
                           "away before they caught you.\n")
                     time.sleep(2)
 
-                    self.player.add_level_clue("secret meeting under city")
-                    self.player.add_level_clue("figures in blue, red and yellow robes")
+                    self.add_clue("secret meeting under city")
+                    self.add_clue("figures in blue, red and yellow robes")
                     self.__dark_alley_investigated = True
                 else:
                     print("You don't want to go back there, they might see "

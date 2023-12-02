@@ -102,7 +102,7 @@ def fight(user, enemy):
 
         elif action == "3":
             flee_chance = random.random()
-            if flee_chance < 0.8:
+            if flee_chance < 0.2:
                 print("You managed to flee successfully!")
                 return False
             else:
