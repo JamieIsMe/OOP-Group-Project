@@ -82,10 +82,15 @@ def cipher_decryption_game():
             break
         else:
             print(f"Sorry, your guess is incorrect.\n")
-            hint = hint + original_message[attempts]
-            print(f"Hint: {hint}")
-            print(f"Encrypted Message: {encrypted_message}")
-            attempts += 1
+            if attempts != len(original_message):
+                hint = hint + original_message[attempts]
+                print(f"Hint: {hint}")
+                print(f"Encrypted Message: {encrypted_message}")
+                attempts += 1
+            else:
+                print(f"Sorry, your guess is incorrect.\n")
+                print(f"Hint: {hint}")
+                print(f"Encrypted Message: {encrypted_message}")
 
 
 if __name__ == "__main__":

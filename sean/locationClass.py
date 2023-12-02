@@ -8,6 +8,7 @@ class Location:
 
     def add_clue(self, clue):
         if clue not in self.clues:
+            print("New Clue! - ",clue)
             self.clues.append(clue)
 
     def review_clues(self):

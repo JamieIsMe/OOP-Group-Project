@@ -26,12 +26,11 @@ from josh.challenges import DruidGame, Challenges
 from josh.FinalDuel import Duel
 
 
-
 # LEVEL 1 CLASS
 class Level1(Location):
     def __init__(self, player):
         super().__init__("Citadel",
-                         ['Hall of Warriors','Grand Library', 'Armory',
+                         ['Hall of Warriors', 'Grand Library', 'Armory',
                           'Druids Quarter'],
                          ["Sir Smith", "Scribe"], [])
 
@@ -40,12 +39,12 @@ class Level1(Location):
 
         self.knight = NPC("Sir Smith",
                           "It was a horrible sight,"
-                          " I remember each and every one of them","near the City "
-                                                                   "Gates","",
+                          " I remember each and every one of them", "near the City "
+                                                                    "Gates", "",
                           "")
 
         self.scribe = NPC("Cedric the Scribe",
-                          "I've been doing some spring cleaning, sir!","hooded figures dwelling near the City",
+                          "I've been doing some spring cleaning, sir!", "hooded figures dwelling near the City",
                           "Forbidden Manuscript",
                           "")
 
@@ -53,7 +52,7 @@ class Level1(Location):
                          f"Ive been expecting you {player.name},"
                          f" We have a bit of a situation",
                          "",
-                         "Chaos Sword","")
+                         "Chaos Sword", "")
 
         self.library1 = Challenges()
         self.druidgame = DruidGame()
@@ -85,7 +84,6 @@ class Level1(Location):
                 print("Invalid Input!")
                 self.update()
 
-
     # BEGIN GAME INTRO TITLES
     def GameIntro(self):
         print("===================================")
@@ -109,15 +107,14 @@ class Level1(Location):
 
         print("===================================")
 
-        #END OF GAME INTRO
+        # END OF GAME INTRO
 
     def summary(self):
         print("\n==================== Level 1 Player Summary ====================")
         print(f"Player Name: {self.player.name}")
         print(f"Player Coins: {self.player.coins} coins")
-        #print(f"Player Inventory: {self.player.inventory}")
-        #print(f"Clues: {self.player.show_clues()}")
-
+        # print(f"Player Inventory: {self.player.inventory}")
+        # print(f"Clues: {self.player.show_clues()}")
 
         # ADD LEVELS PROGRESSED (logging)
         print("==================== End of Player Summary ====================\n")
@@ -129,8 +126,8 @@ class Level1(Location):
         print("==================================")
         time.sleep(2)
         print("\nAs you walk down the dimly lit hallway of the citadel, "
-        "the flickering torchlights cast an eerie glow on the frames that"
-        "line the walls")
+              "the flickering torchlights cast an eerie glow on the frames that"
+              "line the walls")
 
         time.sleep(1)
         print(
@@ -197,13 +194,15 @@ class Level1(Location):
         self.player.coins = self.player.coins + 3
         time.sleep(1)
         print(f"You have: {self.player.coins} coins collected\n")
-        print(self.scribe.say_dialogue("Wow, that was impressive, - I may have some information for you to help you on journey\n"))
+        print(self.scribe.say_dialogue(
+            "Wow, that was impressive, - I may have some information for you to help you on journey\n"))
         print(self.scribe.say_dialogue("I don't know much, but I did read of some hooded people dwelling, in the City"))
         self.add_clue(self.scribe.clue())
         print("\n")
         self.interacted_scribe = True
         time.sleep(1)
-        print(self.druid.say_dialogue("I hear the King's Knight has heard you success and would like to speak with you..."))
+        print(self.druid.say_dialogue(
+            "I hear the King's Knight has heard you success and would like to speak with you..."))
         time.sleep(1)
         print(self.druid.say_dialogue("proceed to the Armory, for your final Challenge!"))
         print("Heading to the Armory...")
@@ -220,7 +219,8 @@ class Level1(Location):
         print(self.knight.say_dialogue("Your Final Task, to Prove yourself worthy is to face me!"))
         print(self.knight.say_dialogue("Lets see, how good you really are!"))
         print(self.knight.say_dialogue("\nI challenge you to a duel!"))
-        print(self.knight.say_dialogue("Winner gets the greatest weapon, passed down from generation to generation: 'The Chaos Sword!"))
+        print(self.knight.say_dialogue(
+            "Winner gets the greatest weapon, passed down from generation to generation: 'The Chaos Sword!"))
         self.level_running = self.finalduel.duel()
         if not self.level_running:
 
@@ -237,7 +237,7 @@ class Level1(Location):
             print("Chaos Sword Added to Inventory!")
             self.player.show_inventory()
 
-            print(self.druid.say_dialogue( "You have certainly, exceeded my expectations!"))
+            print(self.druid.say_dialogue("You have certainly, exceeded my expectations!"))
 
             print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
             print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
@@ -248,7 +248,6 @@ class Level1(Location):
         else:
             pass
             # if you have not defeated the knight
-
 
     def DruidQuarter(self):
         self.current_location = self.sublocation[3]
@@ -263,7 +262,8 @@ class Level1(Location):
         time.sleep(1)
         print(f"{self.player.name}: I have heard the stories, truly saddening! - why was I summoned here today?")
         time.sleep(1)
-        print(self.druid.say_dialogue("We need an answer to all of this, why us of all people - THAT is why YOU are here!\n"))
+        print(self.druid.say_dialogue(
+            "We need an answer to all of this, why us of all people - THAT is why YOU are here!\n"))
         time.sleep(1)
 
         print(self.druid.say_dialogue("I have a quest for you, whether you choose to accept it"))
@@ -293,7 +293,8 @@ class Level1(Location):
                 time.sleep(1)
                 print(f"You have: {self.player.coins} coins collected")
                 time.sleep(1)
-                print(f"{self.druid.name}: Great Catches, {self.player.name}! - Let us head to the Grand Library, for your next challenge")
+                print(
+                    f"{self.druid.name}: Great Catches, {self.player.name}! - Let us head to the Grand Library, for your next challenge")
                 print("Walking...\n")
                 time.sleep(4)
                 break
@@ -317,4 +318,3 @@ if __name__ == "__main__":
     # INSTANCE OF GAME INTRO - GAME TITLE & INTRO
     level1.GameIntro()
     # BEGIN SUB LOCATION 1
-

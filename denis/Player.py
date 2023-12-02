@@ -15,6 +15,7 @@ contents of the player's inventory and the clues collected. This class is
 essential for managing the player's progress and interactions within the game.
 """
 
+
 class Player:
     # Constructor method to initialize a new player with a name
     def __init__(self, name):
@@ -51,6 +52,7 @@ class Player:
 
     # Method to add an item to the player's inventory
     def add_item(self, item):
+        print("New item - ", item)
         self.inventory.append(item)
 
     def remove_item(self, item):

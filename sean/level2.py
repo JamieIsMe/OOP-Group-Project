@@ -97,7 +97,6 @@ class Level2(Location):
     def level_start(self):
         self.outside_city()
 
-
     def outside_city(self):
         self.current_location = self.sublocation[0]
         print(f"{self.current_location} - "
