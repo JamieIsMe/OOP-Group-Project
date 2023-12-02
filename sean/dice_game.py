@@ -1,7 +1,4 @@
 import random
-from denis.Player import Player
-
-player = Player("Steve")
 
 
 def roll_dice():

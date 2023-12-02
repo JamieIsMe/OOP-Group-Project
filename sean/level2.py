@@ -144,7 +144,7 @@ class Level2(Location):
                     print(self.city_guard.say_dialogue
                           (self.city_guard.dialogue[1]), "\n")
                     time.sleep(1)
-                    self.add_clue(self.city_guard.clue())
+                    self.player.add_level_clue(self.city_guard.clue())
                     self.__guard_asked = True
                 else:
                     print(self.city_guard.say_dialogue
@@ -403,7 +403,7 @@ class Level2(Location):
                               (self.barbarian.dialogue[4]), "\n")
                         time.sleep(1)
                         self.__deal_made = True
-                        self.add_clue(self.barbarian.clue())
+                        self.player.add_level_clue(self.barbarian.clue())
                     elif deal_option == "2":
                         print("\n")
                         print(self.barbarian.say_dialogue
@@ -519,7 +519,7 @@ class Level2(Location):
                           (self.barbarian.dialogue[14]), "\n")
                     time.sleep(1)
                     self.__deal_made = True
-                    self.add_clue(self.barbarian.clue())
+                    self.player.add_level_clue(self.barbarian.clue())
                 elif deal_option == "2":
                     print("\n")
                     print(self.barbarian.say_dialogue
@@ -550,8 +550,8 @@ class Level2(Location):
                           "away before they caught you.\n")
                     time.sleep(2)
 
-                    self.add_clue("secret meeting under city")
-                    self.add_clue("figures in blue, red and yellow robes")
+                    self.player.add_level_clue("secret meeting under city")
+                    self.player.add_level_clue("figures in blue, red and yellow robes")
                     self.__dark_alley_investigated = True
                 else:
                     print("You don't want to go back there, they might see "
