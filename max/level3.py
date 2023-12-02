@@ -487,7 +487,7 @@ class Level3(Location):
                 time.sleep(2)
                 self.__potion_mixer_interacted = True
 
-        level3.market_square()
+        Level3.market_square()
 
     def interact_with_street_performers(self):
         """
