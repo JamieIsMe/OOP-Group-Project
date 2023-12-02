@@ -314,7 +314,7 @@ if __name__ == "__main__":
     # MAKE PLAYER COINS 0
     player1.coins = 0
     # PASS PLAYER TO LEVEL 1
-    level1 = Level1(player1, 0)
+    level1 = Level1(player1)
     # INSTANCE OF GAME INTRO - GAME TITLE & INTRO
     level1.GameIntro()
     # BEGIN SUB LOCATION 1
