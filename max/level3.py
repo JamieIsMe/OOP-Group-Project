@@ -489,7 +489,8 @@ class Level3(Location):
             elif interaction == 2:
                 if "Blacksmith's observation on the potion mixer" in self.clues:
                     if self.potion_mixer.items not in self.player.inventory:
-                        print(f"{self.player.name}: I have some questions for you to answer about the (cult's name)")
+                        print(f"{self.player.name}: I have some questions for you to answer about the "
+                              f"Shadowbound Covenant")
                         time.sleep(2)
                         print(self.potion_mixer.perform_action("Looks at me terrifying as she screeches some "
                                                                "encrypted message as she runs away\n"))
