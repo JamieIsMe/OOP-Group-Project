@@ -108,8 +108,23 @@ class Level3(Location):
         self.__tavern_keeper_interacted = False
         self.__craftsman_interacted = False
 
-    def play_theme_song(self):
+    @staticmethod
+    def play_theme_song():
+        pygame.mixer.init()
+        pygame.mixer.music.load("main_theme_level3.mp3")
+        pygame.mixer.music.play(loops=10)  #
 
+    @staticmethod
+    def play_tavern_song():
+        pygame.mixer.init()
+        pygame.mixer.music.load("tavern_theme.mp3")
+        pygame.mixer.music.play(loops=10)  #
+
+    @staticmethod
+    def play_boss_theme():
+        pygame.mixer.init()
+        pygame.mixer.music.load("boss_music_theme.mp3")
+        pygame.mixer.music.play(loops=10)  #
 
     def level_start(self):
         """
@@ -134,6 +149,8 @@ class Level3(Location):
             Depending on the chosen action, it updates the
             current location and invokes corresponding methods to progress the gameplay.
         """
+        self.play_theme_song()
+
         while self.current_location == self.sublocation[0]:
             action = input("\nWhat will you do?,\n"
                            "1) Take a look around the market\n"
@@ -162,33 +179,39 @@ class Level3(Location):
                 else:
                     Level3.market_square(self)
             elif action == "2":
-                if self.sublocation[1] not in self.visited_sublocations:
-                    # Player decides to go to the tavern
-                    self.current_location = self.sublocation[1]
-                    print(f"You decide to head to the {self.current_location} "
-                          f"hoping to find the clues to continue your quest.\n"
-                          f"As you open the tavern door you see that's it filled with life as the melody playing"
-                          f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
-                          f"stomping their feet in unison")
-                    Level3.tavern(self)
+                if "The Legendary Witch Slayer will save us all message" in self.player.main_clues:
+                    if self.sublocation[1] not in self.visited_sublocations:
+                        # Player decides to go to the tavern
+                        self.current_location = self.sublocation[1]
+                        print(f"You decide to head to the {self.current_location} "
+                              f"hoping to find the clues to continue your quest.\n"
+                              f"As you open the tavern door you see that's it filled with life as the melody playing"
+                              f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
+                              f"stomping their feet in unison")
+                        Level3.tavern(self)
+                    else:
+                        Level3.tavern(self)
                 else:
-                    Level3.tavern(self)
+                    print("I should look around the market")
             elif action == "3":
-                # The Player decides to go to the port
-                self.current_location = self.sublocation[2]
-                print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
-                      "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
-                      "items.\n")
+                if "The Legendary Witch Slayer will save us all message" in self.player.main_clues:
+                    # The Player decides to go to the port
+                    self.current_location = self.sublocation[2]
+                    print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
+                          "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
+                          "items.\n")
 
-                time.sleep(2)
+                    time.sleep(2)
 
-                print(
-                    "Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town "
-                    "#and its taverns.\n")
-                time.sleep(2)
-                print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
-                time.sleep(2)
-                Level3.port(self)
+                    print(
+                        "Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town "
+                        "and its taverns.\n")
+                    time.sleep(2)
+                    print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
+                    time.sleep(2)
+                    Level3.port(self)
+                else:
+                    print("I should look around the market")
 
     def market_square(self):
         """
@@ -233,8 +256,12 @@ class Level3(Location):
                         else:
                             print(f"You already interacted with {self.street_performer.name}")
                     case 5:
-                        Level3.visited(self, self.current_location)
-                        Level3.market(self)
+                        if "The Legendary Witch Slayer will save us all message" in self.player.main_clues:
+                            Level3.visited(self, self.current_location)
+                            Level3.market(self)
+                        else:
+                            print("Im missing something key here")
+                            Level3.market_square(self)
                         break
                     case _:
                         print("Invalid choice")
@@ -308,6 +335,7 @@ class Level3(Location):
                 print(self.blacksmith.say_dialogue("I wish the best of luck in your future journey."))
                 time.sleep(2)
                 self.__blacksmith_interacted = True
+                self.__potion_mixer_interacted = False
             else:
                 print("Invalid option")
 
@@ -435,7 +463,6 @@ class Level3(Location):
             self.player.show_inventory()
             self.player.name = self.player.name + 75
             self.side_quest_enabled = False
-            level3.market_square()
 
     def interact_with_potion_mixer(self):
         """
@@ -487,7 +514,7 @@ class Level3(Location):
                 time.sleep(2)
                 self.__potion_mixer_interacted = True
 
-        Level3.market_square()
+        Level3.market_square(self)
 
     def interact_with_street_performers(self):
         """
@@ -511,8 +538,6 @@ class Level3(Location):
         time.sleep(2)
         self.__street_performer_interacted = True
 
-        level3.market_square()
-
     def tavern(self):
         """
             Manages the player's activities within the Crown and Chalice Inn.
@@ -520,6 +545,7 @@ class Level3(Location):
             The method allows the player to interact with the drunken elves, visit the bar, or leave the tavern.
             It handles user input, invoking specific methods based on the chosen action.
         """
+        self.play_tavern_song()
         time.sleep(2)
 
         while self.current_location == self.current_location:
@@ -576,14 +602,16 @@ class Level3(Location):
                                                    "' \n nods to the town's noble heritage. With its exposed beams and "
                                                    "faded"
                                                    "tapestries, the inn invites patrons to step into Eldenhaven's rich "
-                                                   "history"))
+                                                   "history\n"))
+                time.sleep(2)
                 print(self.drunken_elf2.say_dialogue("Hey adventurer Why did the ghost refuse to haunt The Crown and "
                                                      "Chalice Inn?\n"))
-
+                time.sleep(2)
                 print(self.drunken_elf3.say_dialogue("Because the spirits were too high, and he couldn't find a "
                                                      "'boo'-th to himself\\n"))
 
                 print("(They clink mugs and burst into laughter, to the bemusement of other tavern patrons.)")
+                time.sleep(2)
             elif interaction == 2:
                 if "Elves' observation on the tavern keeper" not in self.clues:
                     print(self.drunken_elf2.say_dialogue("Hark, ye noble celebrant! Prepare thy wit for a riddle from "
@@ -592,7 +620,7 @@ class Level3(Location):
                                                          "with a"
                                                          "fiery trail? \nEngage thy mind in this medieval mystery and "
                                                          "let"
-                                                         "the revelry continue! "))
+                                                         "the revelry continue!\n"))
                     time.sleep(2)
 
                     print(self.drunken_elf2.perform_action("leaning against my face."))
@@ -614,7 +642,7 @@ class Level3(Location):
                         time.sleep(2)
                         print(self.drunken_elf2.say_dialogue("We heard a cult member's discuss with the tavern "
                                                              "keeper"
-                                                             "on booking the venue soon speak with the keeper"))
+                                                             " on booking the venue soon speak with the keeper"))
                         time.sleep(2)
                         Level3.add_clue(self, "Elves' observation on the tavern keeper")
                         print(Level3.review_clues(self))
@@ -702,20 +730,15 @@ class Level3(Location):
                 except ValueError as ve:
                     print(f"{ve} input needs to be a integer")
         else:
+            self.play_boss_theme()
             print(
                 "Beneath the moonlit port, a clandestine cult engaged in an ominous ritual.\n"
                 f"{self.player.name} confronted them, demanding answers.\n"
                 "Interfering with our sacred gathering, detective? the cult leader hissed.\n"
                 f"Undeterred, {self.player.name} stood firm.\n"
                 "Laughter echoed as the cult chanted, conjuring an eerie ambiance.\n"
-                f"Tension peaked, and a cult member lunged at {self.player.name}.\n"
-                "A brief but intense struggle ensued. The detective, skilled and resourceful, "
-                "managed to subdue the assailant.\n"
-                "As backup sirens approached, the defeated cult member vanished into the shadows.\n"
-                "The detective, now more determined, unravels the dark secrets concealed within the port,"
-                " knowing that this encounter was just the beginning of a greater mystery.\n")
-
-            time.sleep(10)
+                f"Tension peaked, and a cult member lunged at {self.player.name}.\n")
+            time.sleep(5)
 
             user = User(self.player.name)
             cult_member = CultMember()

@@ -39,7 +39,7 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level4, level5, level6]  # Storing the initialized
+        self.levels = [level3, level4, level5, level6]  # Storing the initialized
         # levels in a
         # list
         # self.levels = [level1, level2, level3, level4 , level5, level6]
