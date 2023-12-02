@@ -129,37 +129,60 @@ class Level3(Location):
             Depending on the chosen action, it updates the
             current location and invokes corresponding methods to progress the gameplay.
         """
-        while self.current_location == "Market":
+        while self.current_location == self.sublocation[0]:
             action = input("\nWhat will you do?,\n"
                            "1) Take a look around the market\n"
                            "2) Go to the tavern\n"
                            "3) Go to the Port\n")
             if action == "1":
-                # Player decides to explore the market
-                print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
-                      "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
-                time.sleep(2)
-                print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
-                      "manufactured weapons.\n")
-                time.sleep(2)
-                print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
-                      "long-lasting woollens.\n")
-                time.sleep(2)
-                print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
-                      "ready to bewitch anyone.\n")
-                time.sleep(2)
-                print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
-                      " add a dynamic element to this marketplace through their skills entertaining a crowd of "
-                      "people.\n")
-                time.sleep(2)
-                Level3.market_square(self)
+                if self.sublocation[0] not in self.visited_sublocations:
+                    # Player decides to explore the market
+                    print("\nYou decide to take a look around the market square it lays a symphony of sights, sounds, "
+                          "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
+                    time.sleep(2)
+                    print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
+                          "manufactured weapons.\n")
+                    time.sleep(2)
+                    print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
+                          "long-lasting woollens.\n")
+                    time.sleep(2)
+                    print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
+                          "ready to bewitch anyone.\n")
+                    time.sleep(2)
+                    print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
+                          " add a dynamic element to this marketplace through their skills entertaining a crowd of "
+                          "people.\n")
+                    time.sleep(2)
+                    Level3.market_square(self)
+                else:
+                    Level3.market_square(self)
             elif action == "2":
-                # Player decides to go to the tavern
-                self.current_location = self.sublocation[1]
-                Level3.tavern(self)
+                if self.sublocation[1] not in self.visited_sublocations:
+                    # Player decides to go to the tavern
+                    self.current_location = self.sublocation[1]
+                    print(f"You decide to head to the {self.current_location} "
+                          f"hoping to find the clues to continue your quest.\n"
+                          f"As you open the tavern door you see that's it filled with life as the melody playing"
+                          f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
+                          f"stomping their feet in unison")
+                    Level3.tavern(self)
+                else:
+                    Level3.tavern(self)
             elif action == "3":
                 # The Player decides to go to the port
                 self.current_location = self.sublocation[2]
+                print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
+                      "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
+                      "items.\n")
+
+                time.sleep(2)
+
+                print(
+                    "Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town "
+                    "#and its taverns.\n")
+                time.sleep(2)
+                print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
+                time.sleep(2)
                 Level3.port(self)
 
     def market_square(self):
@@ -205,6 +228,7 @@ class Level3(Location):
                         else:
                             print(f"You already interacted with {self.street_performer.name}")
                     case 5:
+                        Level3.visited(self, self.current_location)
                         Level3.market(self)
                         break
                     case _:
@@ -302,8 +326,6 @@ class Level3(Location):
                 # Else tell the user that you have the clue already
                 if interaction == 1:
                     if self.textile_merchant.items not in self.player.inventory:
-                        time.sleep(2)
-
                         print(self.textile_merchant.say_dialogue(
                             "Discover our collection of popular trends in intricate embroidery, sumptuous velvet, "
                             "and natural, earthy tones.\nYou can also expect shimmering metallic threads, breathable "
@@ -366,6 +388,7 @@ class Level3(Location):
                                     self.side_quest_enabled = True
                                     self.__textile_merchant_interacted = True
                                     self.__craftsman_interacted = False
+                                    Level3.visited(self, self.current_location)
                                     Level3.market(self)
                         elif action.lower() == "n":
                             pass
@@ -442,6 +465,7 @@ class Level3(Location):
                         print("Let's decipher what she said:\n")
                         cipher_decryption_game()
                         self.player.add_main_clue("The Legendary Witch Slayer will save us all message")
+                        self.player.show_main_clues()
                         print(f"You pick up some {self.potion_mixer.items} and decide to keep it.")
                         time.sleep(2)
                         self.player.add_item(self.potion_mixer.items)
@@ -452,6 +476,7 @@ class Level3(Location):
                         time.sleep(2)
                 else:
                     print("There's something I need to know first")
+                    self.__blacksmith_interacted = False
             elif interaction == 3:
                 print(self.potion_mixer.perform_action("Glares at you as you walk away from her"))
                 time.sleep(2)
@@ -490,15 +515,9 @@ class Level3(Location):
             The method allows the player to interact with the drunken elves, visit the bar, or leave the tavern.
             It handles user input, invoking specific methods based on the chosen action.
         """
-        print(f"You decide to head to the {self.current_location} "
-              f"hoping to find the clues to continue your quest.\n"
-              f"As you open the tavern door you see that's it filled with life as the melody playing"
-              f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
-              f"stomping their feet in unison")
-
         time.sleep(2)
 
-        while self.current_location == "Crown and Chalice Inn":
+        while self.current_location == self.current_location:
             try:
                 action = int(input("\nWhat will you do?,\n"
                                    "1) Interact with the drunken elves\n"
@@ -516,6 +535,7 @@ class Level3(Location):
                         else:
                             print("You interacted with the tavern keeper already")
                     case 3:
+                        Level3.visited(self, self.current_location)
                         self.current_location = self.sublocation[0]
                         Level3.market(self)
                     case _:
@@ -536,6 +556,8 @@ class Level3(Location):
             time.sleep(2)
             print(elf.perform_action(elf.actions))
 
+        print("\n")
+
         while self.current_location == self.sublocation[1]:
             interaction = int(input(f"1.) Ask about the tavern's history\n"
                                     f"2.) Question the elves\n"
@@ -551,10 +573,10 @@ class Level3(Location):
                                                    "tapestries, the inn invites patrons to step into Eldenhaven's rich "
                                                    "history"))
                 print(self.drunken_elf2.say_dialogue("Hey adventurer Why did the ghost refuse to haunt The Crown and "
-                                                     "Chalice Inn?"))
+                                                     "Chalice Inn?\n"))
 
                 print(self.drunken_elf3.say_dialogue("Because the spirits were too high, and he couldn't find a "
-                                                     "'boo'-th to himself"))
+                                                     "'boo'-th to himself\\n"))
 
                 print("(They clink mugs and burst into laughter, to the bemusement of other tavern patrons.)")
             elif interaction == 2:
@@ -577,7 +599,7 @@ class Level3(Location):
                     if action.lower() == "y" or action.capitalize() == "Y":
                         time.sleep(2)
                         riddle_game()
-                        print(self.drunken_elf1.say_dialogue("🕯Congrats, Riddle Master! You've cracked the "
+                        print(self.drunken_elf1.say_dialogue("Congrats, Riddle Master! You've cracked the "
                                                              "medieval mysteries like a goofy genius!\n May your "
                                                              "candles always burn bright,\nhorses gallop swift, "
                                                              "and dragons... well,\nstay mythical and mysterious! "
@@ -616,6 +638,7 @@ class Level3(Location):
         """
         if "Elves' observation on the tavern keeper" not in self.clues:
             print(f"{self.player.name}: I feel like there's something I need to know before I do this")
+            self.__drunken_elves_interacted = False
             time.sleep(2)
         else:
             print("You have the observation from the elves in which you go to the Tavern Keeper")
@@ -651,17 +674,6 @@ class Level3(Location):
         The player confronts the cult, leading to a fight scenario.
         If the player succeeds, they receive a reward, and the method proceeds to the ending of the level.
         """
-        print("Welcome to Haven's Harbour, a medieval harbour full of marine legends and lively commerce.\n"
-              "Sturdy ships with aged sails dock next to cobblestone alleys where merchants peddle strange "
-              "items.\n")
-
-        time.sleep(2)
-
-        print("Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town and its "
-              "taverns.\n")
-        time.sleep(2)
-        print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
-        time.sleep(2)
         if "Cult at the port" not in self.clues:
             while self.current_location == self.sublocation[2]:
                 try:
@@ -677,6 +689,7 @@ class Level3(Location):
                                 print("You interacted with the craftsman already")
                                 time.sleep(2)
                         case 2:
+                            Level3.visited(self, self.current_location)
                             self.current_location = self.sublocation[0]
                             Level3.market(self)
                         case _:
@@ -810,8 +823,9 @@ class Level3(Location):
               "guiding them through the twists and turns.\n"
               "The air thickens with mystery, setting the stage for a perilous journey into the heart of darkness.")
 
-        self.player.add_main_clue(self, "A cryptic map")
-        self.player.add_main_clue(self, "Red Cloth")
+        self.player.add_main_clue("A cryptic map")
+        self.player.add_main_clue("Red Cloth")
+        exit()
 
 
 if __name__ == "__main__":
