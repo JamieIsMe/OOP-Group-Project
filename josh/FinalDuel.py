@@ -23,6 +23,7 @@ but you do not receive the item for completing this level
 
 """
 # IMPORTS
+import pygame
 import random
 import time
 
