@@ -44,6 +44,7 @@ class Game:
         level6 = Level6(self.player)
 
         self.levels = [level4, level5, level6]  # Storing the initialized
+        #levels
 
         # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
