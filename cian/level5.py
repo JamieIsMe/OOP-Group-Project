@@ -741,15 +741,14 @@ class Level5(Location):
     def summary(self):
         print("\n==================== Level 5 Player Summary ====================")
         # PLAYER NAME DISPLAY
-        print(f"Player Name: {self.player.name}\n")
+        print(f"Player Name: {self.player.name}")
         # PLAYER FINAL LEVEL COINS
-        print(f"Player Coins: {self.player.coins} coins\n")
+        print(f"Player Coins: {self.player.coins} coins")
         # PLAYER FINAL ITEMS
-        print(f"{self.player.show_inventory()}\n")
-        # PLAYER FINAL LOCATION CLUES
-        print(f"Level info: {self.review_clues()}\n")
-        # PLAYER FINAL MAIN CLUES
-        print(f"{self.player.show_main_clues()}")
+        print(f"{self.player.show_inventory()}")
+        # PLAYER FINAL CLUES
+        print(f"\nClues found in this level: {self.review_clues()}")
+
         print("==================== End of Player Summary ====================\n")
 
 
