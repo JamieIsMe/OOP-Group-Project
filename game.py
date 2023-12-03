@@ -32,10 +32,16 @@ class Game:
 
         # Prompting the user to enter a name for the player
         self.player_name = input("Welcome Adventurer!, Enter a name please: ")
-        self.player = Player(self.player_name)
-        # Creating a new Player instance with the entered name
 
-        # Initializing all levels.
+        # Creating a new Player instance with the entered name
+        self.initialize_player(self.player_name) # initialize the player
+        self.initialize_levels()  # Re-initialize all levels
+
+    def initialize_player(self, player_name):
+        self.player = Player(player_name)
+
+    def initialize_levels(self):
+        # Create new instances of each level
         level1 = Level1(self.player)
         level2 = Level2(self.player)
         level3 = Level3(self.player)
@@ -43,21 +49,35 @@ class Game:
         level5 = Level5(self.player)
         level6 = Level6(self.player)
 
-        self.levels = [level4, level5, level6]  # Storing the initialized
-        #levels
+        # Store the levels in the list
+        self.levels = [level4]  # Storing the initialized
+        # levels
 
         # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
-
     # Polymorphism
     def level_picker(self):
-        # Looping through each level until all levels are completed
-        while self.next_level < len(self.levels):
-            # Starting the next level and then incrementing the level index
-            self.levels[self.next_level].level_start()
-            self.next_level += 1
-        self.game_run = False
-        # Setting the game state to not running after completing all levels.
+        while self.game_run:
+            # Looping through each level until all levels are completed
+            while self.next_level < len(self.levels):
+                # Starting the next level and then incrementing the level index
+                self.levels[self.next_level].level_start()
+                self.next_level += 1
+
+            # Asking the player if they want to replay the game
+            print(f"Congrats {self.player_name}, you have beaten the game!")
+            choice = input(
+                "Would you like to replay the game? 'q' to quit, 'r' to "
+                " replay: ")
+            if choice == 'r':
+                # Resetting the next_level to start from the beginning
+                self.next_level = 0
+                self.initialize_player(self.player_name)  # Re-initialize the
+                # player
+                self.initialize_levels()  # Re-initialize all levels
+            if choice == 'q':
+                # Exiting the game
+                self.game_run = False
 
 
 # Creating an instance of the Game
