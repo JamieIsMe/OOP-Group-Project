@@ -1,3 +1,20 @@
+"""
+Program Name: level2.py
+
+Author: Sen O'Connor
+
+Program Description:
+
+This is the 2nd level in our six-level game, focusing on the player's journey to infiltrate a city.
+The level includes dialogues, choices, and potential deals with the barbarians, impacting the storyline.
+Key elements include a barbarian camp and a dark alley with a secret meeting and a colored slab puzzle.
+Completing the puzzle unlocks crucial items for progressing in the game.
+The player has the option to strike deals, face consequences, and explore alternative paths.
+The program includes classes and methods for managing player actions, interactions, and puzzles.
+
+Date: 03/12/2023
+"""
+
 # Local Module Imports
 from cian.characters import NPC
 from sean.locationClass import Location
