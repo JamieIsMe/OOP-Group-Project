@@ -16,7 +16,8 @@ The course techniques for managing gameplay and introducing the
 
 
 from abc import ABC, abstractmethod
-import time 
+import time
+import pygame
 
 from denis.Areas import LuminousLake
 from denis.Areas import WhisperingGrove
@@ -53,6 +54,12 @@ class Level4(Level):
         self.game_flag = 0  # Flag to track game progress
         self.game_end_number = -1  # Flag value to end the game
 
+    #@staticmethod
+    #def play_main_sound():
+        #pygame.mixer.init()
+        #pygame.mixer.music.load("mushroom forest theme.mp3")
+        #pygame.mixer.music.play(loops=10)
+
     def introduction(self):
         # Introduction narrative for Level 4
         print("You find yourself in a luminous glade, the air filled with "
@@ -76,6 +83,7 @@ class Level4(Level):
 
         while True:
             print("---Type anything to continue---\n")
+            #self.play_main_sound()
             input()
             if self.game_flag == self.game_end_number:
                 break

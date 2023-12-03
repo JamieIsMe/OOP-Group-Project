@@ -2,7 +2,7 @@
 Author: Denis Bajgora
 Date:1/12/23
 Course: TU857-2
-Program Name: Game.py
+Program Name: game.py
 
 Program Description:
 
@@ -43,7 +43,7 @@ class Game:
         level5 = Level5(self.player)
         level6 = Level6(self.player)
 
-        self.levels = [level5, level6]  # Storing the initialized
+        self.levels = [level4, level5, level6]  # Storing the initialized
 
         # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
