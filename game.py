@@ -60,8 +60,7 @@ class Game:
             # Looping through each level until all levels are completed
             while self.next_level < len(self.levels):
                 # Starting the next level and then incrementing the level index
-                # Polymorphism
-                self.levels[self.next_level].level_start()
+                self.levels[self.next_level].level_start() # Polymorphism
                 self.next_level += 1
 
             # Asking the player if they want to replay the game
