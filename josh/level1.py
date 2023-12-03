@@ -17,7 +17,7 @@ the player heads to the City Walls - Seán's Level 2
 Developed by Error 451
 
 """
-# GAME IMPORTS
+#  GAME IMPORTS
 import time
 from cian.characters import NPC
 from sean.locationClass import Location
@@ -26,37 +26,46 @@ from josh.challenges import DruidGame, Challenges
 from josh.FinalDuel import Duel
 
 
-# LEVEL 1 CLASS
+#  LEVEL 1 CLASS
 class Level1(Location):
     def __init__(self, player):
+        # INHERITS FROM DENIS'S PLAYER CLASS
         super().__init__("Citadel",
                          ['Hall of Warriors', 'Grand Library', 'Armory',
                           'Druids Quarter'],
                          ["Sir Smith", "Scribe"], [])
-
+        # LOCATION TRACKER
         self.current_location = self.sublocation[0]
+
+        # PLAYER INSTANTIATION
         self.player = player
 
+        # NPC CLASS 1 : The King's Knight, Sir Smith
         self.knight = NPC("Sir Smith",
                           "It was a horrible sight,"
-                          " I remember each and every one of them", "near the City "
+                          " I remember each and every one of them", "near the City"
                                                                     "Gates", "",
                           "")
-
+        # NPC CLASS 2 : Library Scribe, Cedric
         self.scribe = NPC("Cedric the Scribe",
-                          "I've been doing some spring cleaning, sir!", "hooded figures dwelling near the City",
+                          "I've been doing some spring cleaning, sir!",
+                          "hooded figures dwelling near the City",
                           "Forbidden Manuscript",
                           "")
 
+        # NPC CLASS 3: The Druid, David
         self.druid = NPC("David the Druid",
                          f"Ive been expecting you {player.name},"
                          f" We have a bit of a situation",
                          "",
                          "Chaos Sword", "")
 
+        # LEVEL ELEMENTS INSTANTIATIONS
         self.library1 = Challenges()
         self.druidgame = DruidGame()
         self.finalduel = Duel()
+
+        # LEVEL STATE FLAGS
         self.__game_started = False
         self.interacted_scribe = False
         self.interacted_knight = False
@@ -64,30 +73,53 @@ class Level1(Location):
         self.challengeAccepted = False
         self.level_running = True
 
+    #  START GAME INTRO WHEN LEVEL START
     def level_start(self):
-        self.GameIntro()
+        self.gameintro()
 
+    #  GAME INTRO METHOD
     def update(self):
+        # Check if the game has not started
         if not self.__game_started:
-            player_input = input("Press 'q' to quit or 's' to start: ")
-            if player_input.lower() == "q":
-                print("Till another time, adventurer!")
-                self.__running = False
-                exit()
-            elif player_input.lower() == "s":
-                print("Ready your weapons, gather your resolve and "
-                      "step into the unknown!")
-                self.__game_started = True
-                time.sleep(2)
-                self.HallOfWarriors()
-            else:
-                print("Invalid Input!")
-                self.update()
+            # Set a maximum number of retries for user input
+            max_retries = 3
+            retries = 0
 
-    # BEGIN GAME INTRO TITLES
-    def GameIntro(self):
+            # Loop to repeatedly prompt the user until valid input or maximum retries are reached
+            while retries < max_retries:
+                try:
+                    # Get user input
+                    player_input = input("Press 'q' to quit or 's' to start: ")
+
+                    # Check user input and take appropriate actions
+                    if player_input.lower() == "q":
+                        print("Till another time, adventurer!")
+                        self.__running = False
+                        exit()
+                    elif player_input.lower() == "s":
+                        print("Ready your weapons, gather your resolve and "
+                              "step into the unknown!")
+                        self.__game_started = True
+                        time.sleep(2)
+                        self.hallofwarriors()
+                        break
+                    else:
+                        # Raise a ValueError for invalid input
+                        raise ValueError("Invalid Input! Please enter 'q' or 's'.")
+                except ValueError as e:
+                    # Handle the ValueError exception by printing the error message
+                    print(e)
+                    retries += 1
+            else:
+                # If too many invalid attempts, exit the game
+                print("Too many invalid attempts. Exiting the game.")
+                exit()
+
+    #  BEGIN GAME INTRO TITLES
+    def gameintro(self):
+
+        # #  MAIN GAME TITLES, SUBTITLE, AUTHORS
         print("===================================")
-        print("       The Vanishing Veil        ")
         print("         Cult of Shadows          ")
         print(" an adventure, developed by Error 451")
         print("===================================")
@@ -107,19 +139,27 @@ class Level1(Location):
 
         print("===================================")
 
-        # END OF GAME INTRO
+        #  END OF GAME INTRO
 
+    # DISPLAY PLAYER, LEVEL SUMMARY
     def summary(self):
         print("\n==================== Level 1 Player Summary ====================")
+        # PLAYER NAME DISPLAY
         print(f"Player Name: {self.player.name}")
+        # PLAYER FINAL LEVEL COINS
         print(f"Player Coins: {self.player.coins} coins")
-        # print(f"Player Inventory: {self.player.inventory}")
-        # print(f"Clues: {self.player.show_clues()}")
+        # PLAYER FINAL ITEMS
+        print(f"Player Inventory: {self.player.show_inventory()}")
+        # PLAYER FINAL CLUES
+        print(f"\nClues: {self.player.show_level_clues()}")
 
-        # ADD LEVELS PROGRESSED (logging)
         print("==================== End of Player Summary ====================\n")
 
-    def HallOfWarriors(self):
+        #  ADD REPLAY ELEMENT SECTION!
+
+    # SUBLEVEL 1 METHOD FOR LEVEL 1
+    def hallofwarriors(self):
+        # ASSIGN LOCATION to CURRENT LOCATION
         self.current_location = self.sublocation[0]
         print("==================================")
         print(f"(Location: {self.current_location} - AD 734)")
@@ -137,9 +177,12 @@ class Level1(Location):
 
         time.sleep(1)
         print("As you stare, The King's Knight approaches...")
+        #  LOGIC TO INTERACT WITH KNIGHT
         while True:
-            player_choice = input("\n(Would you like to speak to the knight?) 'y for yes' or 'n' for no : ")
+            player_choice = input("\n(Would you like to speak to the knight?)"
+                                  " 'y for yes' or 'n' for no : ")
 
+            # CHECKING USER INPUT FOR MIXED INPUTS
             if player_choice.lower() == 'y' or player_choice.lower() == 'yes':
                 time.sleep(1)
                 print(f"\n{self.knight.interact()}")
@@ -151,31 +194,44 @@ class Level1(Location):
                         "The battle was near the the city gates!"))
                 time.sleep(3)
                 self.add_clue(self.knight.clue())
+                # KNIGHT INTERACTED: YES?
                 self.interacted_knight = True
                 time.sleep(1)
                 print("(You earned 2 coins for interacting with the knight!)")
+                #  GIVE PLAYER COINS
                 self.player.coins += 2
                 time.sleep(1)
+                #  DISPLAY COINS
                 print(f"(You have: {self.player.coins} coins collected)\n")
                 time.sleep(1)
                 break
 
+            # ELSE CHOICE
             elif player_choice.lower() == 'n' or player_choice.lower() == 'no':
                 print("(You must speak to the knight; he may have some insights...)")
 
+            # ERROR CATCHING
             else:
                 print("(Invalid Option, Try Again!)")
 
+        # SETUP NEXT SUBLEVEL
         print("You walk towards the Druid's Quarters")
+        # MINI LOADING ELEMENT
         print("Walking...")
+        # LOADING DELAY
         time.sleep(3)
-        self.DruidQuarter()
+        # CALL NEXT SUBLEVEL
+        self.druidquarter()
 
-    def GrandLibrary(self):
+    # SUBLEVEL 3 METHOD FOR LEVEL 1
+
+    def grandlibrary(self):
+        # UPDATE LOCATION
         self.current_location = self.sublocation[1]
         print("==================================")
         print(f"Location : {self.current_location}")
         print("===================================\n")
+        #  DIALOGUE
         print("(You approach Cedric, The Library Scribe)\n")
         time.sleep(2)
         print(self.scribe.interact())
@@ -184,72 +240,133 @@ class Level1(Location):
             "Great Work, - I need those scriptures for the next sermon!"))
         time.sleep(1)
         print(self.scribe.say_dialogue(f"They are ready to go sir!,"
-                                       f" Anyways! What brings you and {self.player.name} to the library?"))
+                                       f" Anyways! What brings you and "
+                                       f"{self.player.name} to the library?"))
         time.sleep(1)
         print(self.druid.say_dialogue("A light reading per say, doth no harm!\n"))
         time.sleep(1)
         print(self.druid.say_dialogue(
             f"now {self.player.name}, onto Challenge 2 of your test!\n"))
         self.library1.book_roulette()
+
+        # ADD COINS TO PLAYER INVENTORY
         self.player.coins = self.player.coins + 3
         time.sleep(1)
         print(f"You have: {self.player.coins} coins collected\n")
         print(self.scribe.say_dialogue(
-            "Wow, that was impressive, - I may have some information for you to help you on journey\n"))
-        print(self.scribe.say_dialogue("I don't know much, but I did read of some hooded people dwelling, in the City"))
+            "Wow, that was impressive, - I may have some information "
+            "for you to help you on journey\n"))
+        print(self.scribe.say_dialogue("I don't know much, "
+                                       "but I did read of some hooded people dwelling, "
+                                       "in the City"))
         self.add_clue(self.scribe.clue())
         print("\n")
+
+        #  SCRIBE INTERACTED: YES
         self.interacted_scribe = True
         time.sleep(1)
-        print(self.druid.say_dialogue(
-            "I hear the King's Knight has heard you success and would like to speak with you..."))
-        time.sleep(1)
-        print(self.druid.say_dialogue("proceed to the Armory, for your final Challenge!"))
-        print("Heading to the Armory...")
-        time.sleep(5)
-        self.Armory()
 
-    def Armory(self):
+        #  SET UP FOR SUBLEVEL 3
+        print(self.druid.say_dialogue(
+            "I hear the King's Knight has heard you success and would like to speak "
+            "with you..."))
+        time.sleep(1)
+        print(self.druid.say_dialogue("proceed to the Armory, for your final "
+                                      "Challenge!"))
+        # LOADING ELEMENT
+        print("Heading to the Armory...")
+        # LOADING DELAY - (time to walk from this location to there)
+        time.sleep(5)
+        self.armory()
+
+    # SUBLEVEL 4 for LEVEL 1
+    def armory(self):
+
+        # UPDATE LOCATION
         self.current_location = self.sublocation[2]
         print("==================================")
         print(f"\n(Location: {self.current_location})")
         print("===================================\n")
         time.sleep(1)
+
+        # DIALOGUE
         print(self.knight.say_dialogue("Welcome to the Armory!"))
-        print(self.knight.say_dialogue("Your Final Task, to Prove yourself worthy is to face me!"))
+        print(self.knight.say_dialogue("Your Final Task, to Prove yourself worthy is "
+                                       "to face me!"))
         print(self.knight.say_dialogue("Lets see, how good you really are!"))
         print(self.knight.say_dialogue("\nI challenge you to a duel!"))
         print(self.knight.say_dialogue(
-            "Winner gets the greatest weapon, passed down from generation to generation: 'The Chaos Sword!"))
-        self.level_running = self.finalduel.duel()
-        if not self.level_running:
+            "Winner gets the greatest weapon, passed down from generation to "
+            "generation: 'The Chaos Sword!"))
 
+        # SET UP INSTANCE OF SELF.FINAL DUEL from josh/FINAL DUEL.py
+
+        self.level_running = self.finalduel.duel()
+
+        #  CHECK IF KNIGHT WAS NOT DEFEATED / LEVEL SKIP
+        if not self.level_running:  # if it is false
+
+            # #  if the player loses to the knight
+            print(self.knight.say_dialogue(
+                "Well, Maybe you may not be capable - but i do see heart in you..."))
+            print(self.knight.say_dialogue(
+                "You have a long adventure ahead of you, my friend!"))
+            # player does not recieve intended item!
+            print("Knight Duel - was skipped! - item not granted ")
+
+            #  CLOSING DIALOGUE/SETUP TO LEVEL 2 - Seán
+
+            print(
+                self.druid.say_dialogue("You have certainly, exceeded my expectations!"))
+
+            print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
+            print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
+
+            print(f"{self.player.name}: Let us head to the city!\n")
+
+        #  CHECK IF KNIGHT WAS DEFEATED! - PLAYER CAN GO TO THE NEXT LEVEL!
+        else:
+
+            print("Congrats")
+            # CHANGE INTERACTION LOGIC
             self.interacted_knight = True
             time.sleep(1)
+
+            # ADD COINS FOR COMPLETEING FINAL DUEL
             self.player.coins = self.player.coins + 10
             print("You have been awarded 10 coins!")
+
             time.sleep(1)
             print(f"You have: {self.player.coins} coins collected")
 
-            print(self.knight.say_dialogue("You have certainly, exceeded my expectations!"))
-            print(self.knight.say_dialogue("You have a long adventure ahead of you, my friend!"))
+            #  CLOSING DIALOGUE
+            print(self.knight.say_dialogue(
+                "You have certainly, exceeded my expectations!"))
+            print(self.knight.say_dialogue(
+                "You have a long adventure ahead of you, my friend!"))
+
+            #  GIVES THE PLAYER THE CHAOS SWORD
             self.player.add_item('Chaos Sword')
             print("Chaos Sword Added to Inventory!")
+
+            #  CHECK IF ITS ADDED
             self.player.show_inventory()
 
-            print(self.druid.say_dialogue("You have certainly, exceeded my expectations!"))
+            #  LEVEL CLOSING REMARKS
+            print(
+                self.druid.say_dialogue("You have certainly, exceeded my expectations!"))
 
             print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
             print(self.druid.say_dialogue(f"Best of Luck, {self.player.name}"))
 
             print(f"{self.player.name}: Lets head to the city!\n")
 
+            #  SHOW LEVEL SUMMARY
             self.summary()
-        else:
-            pass
-            # if you have not defeated the knight
 
-    def DruidQuarter(self):
+    # SUB LEVEL 2 METHOD - LEVEL 1
+    def druidquarter(self):
+        # UPDATE LOCATION
         self.current_location = self.sublocation[3]
 
         time.sleep(3)
@@ -257,29 +374,46 @@ class Level1(Location):
         print(f"(Location: {self.current_location})")
         print("==================================\n")
         time.sleep(1)
+
+        #  INITIAL DRUID INTERATION
         print(self.druid.interact())
+        time.sleep(1)
 
+        print(f"{self.player.name}: I have heard the stories, truly saddening! - why "
+              f"was I summoned here today?")
         time.sleep(1)
-        print(f"{self.player.name}: I have heard the stories, truly saddening! - why was I summoned here today?")
-        time.sleep(1)
+
         print(self.druid.say_dialogue(
-            "We need an answer to all of this, why us of all people - THAT is why YOU are here!\n"))
+            "We need an answer to all of this, why us of all people - THAT is why YOU "
+            "are here!\n"))
         time.sleep(1)
 
-        print(self.druid.say_dialogue("I have a quest for you, whether you choose to accept it"))
+        print(self.druid.say_dialogue("I have a quest for you, whether you choose to "
+                                      "accept it"))
         time.sleep(1)
 
+        #  ASK USER TO ACCEPT THE QUEST OF THE ADVENTURE GAME
         while True:
-            player_choice = input("Would you like to accept the quest? -> 'y' for yes or 'n' for no: ")
+            player_choice = input("Would you like to accept the quest? -> 'y' for yes "
+                                  "or 'n' for no: ")
 
             if player_choice.lower() == 'y':
                 time.sleep(1)
-                print(self.druid.say_dialogue(
-                    "The <cultname> have been the main link to our missing people,\nThey are a group of hooded people, hiding within our society"
-                    "\nWe have held our silence for too long and longed for someone to step up!\n"))
+
+                print(self.druid.say_dialogue("The Shadowbound Covenant have been "
+                                              "the main link to "
+                                              "our missing people,"
+                                              "\nThey are a group of hooded people, "
+                                              "hiding within our society"
+                                              "\nWe have held our silence "
+                                              "for too long and longed for someone "
+                                              "to step up!\n"))
+                self.challengeAccepted = True
                 time.sleep(4)
+
                 print(self.druid.say_dialogue(
-                    "But before you begin you must prove to me that you are capable to embark on this quest\n"))
+                    "But before you begin you must prove to me that you are capable "
+                    "to embark on this quest\n"))
                 time.sleep(1)
                 print(self.druid.say_dialogue(
                     "It will test your mental, physical "
@@ -287,34 +421,40 @@ class Level1(Location):
                 time.sleep(2)
                 self.druidgame.catch_ball()
 
+                #  ADDS INITIAL COINS FOR CLEARING LEVEL CHALLENGE 1
                 time.sleep(1)
                 self.player.coins = self.player.coins + 3
-                print("You have been awarded 3 coins!")
+                print("\nYou have been awarded 3 coins!")
                 time.sleep(1)
                 print(f"You have: {self.player.coins} coins collected")
                 time.sleep(1)
                 print(
-                    f"{self.druid.name}: Great Catches, {self.player.name}! - Let us head to the Grand Library, for your next challenge")
-                print("Walking...\n")
+                    f"\n{self.druid.name}: Great Catches, {self.player.name}! - Let us "
+                    f"head to the Grand Library, for your next challenge")
+                print("\nWalking...")
                 time.sleep(4)
                 break
-
+            #  IF USER DOES NOT ACCEPT THE DRUID's QUEST - user is prompted to make the
+            #  correct choice!
             else:
-                print(self.druid.say_dialogue("Maybe I had made a mistake in summoning you..."))
-                print("\n(You must complete the Druid's Activities to continue further in this level!)")
+                print(self.druid.say_dialogue("Maybe I had made a mistake in summoning "
+                                              "you..."))
+                print("\n(You must complete the Druid's Activities "
+                      "to continue further in this level!)")
 
-        self.GrandLibrary()
+        #  CALL SUBLEVEL 3 THE LIBRARY WHEN LEVEL IS COMPLETED
+        self.grandlibrary()
 
 
 if __name__ == "__main__":
-    # PLAYER NAME SELECTION
+    #  PLAYER NAME SELECTION
     player = input("\nEnter a player name to immerse yourself in the story: ")
     player1 = Player(f"{player}")
-    time.sleep(1)  # DELAY
-    # MAKE PLAYER COINS 0
+    time.sleep(1)  # DELAY BETWEEN TEXT
+    #  MAKE PLAYER COINS 0
     player1.coins = 0
-    # PASS PLAYER TO LEVEL 1
+    #  PASS PLAYER TO LEVEL 1
     level1 = Level1(player1)
-    # INSTANCE OF GAME INTRO - GAME TITLE & INTRO
-    level1.GameIntro()
-    # BEGIN SUB LOCATION 1
+    #  INSTANCE OF GAME INTRO - GAME TITLE & INTRO
+    level1.gameintro()
+    #  BEGIN SUB LOCATION 1

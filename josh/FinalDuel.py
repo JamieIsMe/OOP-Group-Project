@@ -63,8 +63,10 @@ class Duel:
                     skip = input("Do you want to skip? (yes/no): ")
                     if skip.lower() == 'yes' or skip.lower() == 'y':
                         print("returning...\n")
-                        time.sleep(2)
+                        return False
+
 
 
             elif self.knight_health <= 0:
                 print("Congratulations! You have defeated the King's Knight!")
+                return True

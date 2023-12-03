@@ -114,13 +114,13 @@ class DruidGame:
             correct_position = random.randint(1, 3)
 
             try:
-                player_choice = int(input("Choose your position (1, 2, or 3): "))
+                player_choice = int(input("\nChoose your position (1, 2, or 3): "))
             except ValueError:
                 print("Invalid input. Please enter a number.")
                 continue
 
             if player_choice == correct_position:
-                print("Congratulations! You caught the Crystal Ball!")
+                print("\nCongratulations! You caught the Crystal Ball!")
                 break
             else:
                 print("Oh no! The Crystal Ball slipped through your fingers.")
