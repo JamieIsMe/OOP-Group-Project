@@ -161,7 +161,7 @@ class Level5(Location):
                       "Ramshackle huts, constructed from salvaged materials, form a chaotic maze in the shadows. "
                       "Flickering bonfires illuminate the primitive dwellings. "
                       "You spot 3 shadows dart into the nearest hut.\n")
-                time.sleep(4)
+                # time.sleep(4)
             else:
                 print("You walk back out of the camp and look back at it, Not much has changed\n")
 
@@ -179,12 +179,12 @@ class Level5(Location):
                         if self.choice == "1":  # Investigate the first Hut
                             print("As you enter the camp you come to the realisation that you cant see any sign of the "
                                   "residents.\n")
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.hut_1()  # sends to location
                         # to main camp
                         elif self.choice == "2":  # Walk deeper into the camp
                             print("You walk past the first hut and deeper into the town\n")
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.main_camp()
                         # stay where they are
                         elif self.choice == "3":  # Keep observing the camp from outside
@@ -205,12 +205,12 @@ class Level5(Location):
                         if self.choice == "1":  # Investigate the first Hut
                             print("As you enter the camp you come to the realisation that you cant see any sign of the "
                                   "residents.")
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.hut_1()
                         # to main camp
                         elif self.choice == "2":  # Walk deeper into the camp
                             print("You walk past the first hut and deeper into the town")
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.main_camp()
                         # stay where they are
                         elif self.choice == "3":  # Keep observing the camp from outside
@@ -221,12 +221,12 @@ class Level5(Location):
             self.current_location = "hut_1"
             if self.current_location not in self.visited_sublocations:  # if not visited before
                 print("You come up to the door of the first hut where you saw the 3 shadows enter\n")
-                time.sleep(1)
+                # time.sleep(1)
             else:  # shows aftermath of first interaction if you return
                 print("\nAs you approach the hut you see that the door is open and nobody is inside. "
                       "The goblin trio has left\n"
                       "\nYou walk deeper into the camp\n")
-                time.sleep(1)
+                # time.sleep(1)
                 self.main_camp()
 
             while self.current_location == "hut_1":
@@ -240,13 +240,13 @@ class Level5(Location):
                     print("-------------------------------------------------------\n")
                     if self.choice == "1":  # Knock on the door
                         print(self.goblin_trio.dialogue[1])  # Nobody is home dialogue with no name
-                        time.sleep(1)
+                        # time.sleep(1)
                         self.visited("hut_1")
 
                     elif self.choice == "2":  # Try to open it
                         print("You try to open the door by force with little success")
                         print(self.goblin_trio.dialogue[3])  # door barred dialogue with no name
-                        time.sleep(1)
+                        # time.sleep(1)
                     elif self.choice == "3":  # Walk deeper into the camp
                         self.main_camp()
 
@@ -262,7 +262,7 @@ class Level5(Location):
                         if self.choice == "1":  # Say that you just want to talk and you mean no harm
                             print(self.goblin_trio.actions[0])  # The door opens slightly action
                             print(self.goblin_trio.dialogue[0])  # What do you want dialogue with name
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.choice = 0  # reset choice variable
                             while self.choice != "1" or "2":  # error check
                                 print("-------------------------------------------------------\n")
@@ -274,7 +274,7 @@ class Level5(Location):
                                 if self.choice == "1":  # 'I just wanted to see if you have any information on some missing people'
                                     print(self.goblin_trio.actions[1])  # door opens more action
                                     print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[2]))  # elder location dialogue
-                                    time.sleep(1)
+                                    # time.sleep(1)
                                     self.add_clue(self.goblin_trio.clues[0])  # adds the location clue "where the elder is"
                                     print(self.review_clues(), "\n")  # displays clues
                                     self.visited("hut_1_inside")  # mark as success for later dialogue
@@ -299,7 +299,7 @@ class Level5(Location):
                         elif self.choice == "2":  # Try to open the door
                             print("You try to open the door by force with little success")
                             print(self.goblin_trio.say_dialogue(self.goblin_trio.dialogue[3]))  # door barred dialogue
-                            time.sleep(1)
+                            # time.sleep(1)
                         elif self.choice == "3":  # Leave and go further into the town
                             interacting = False
                             self.main_camp()
@@ -314,25 +314,28 @@ class Level5(Location):
                       "3. A Goblin in a long trench coat and large hat "
                       "sitting on the ground with a set of dice in front of him.\n")
                 self.visited("main_camp")
-                time.sleep(2)
+                # time.sleep(2)
             self.choice = 0  # reset choice variable
             while self.choice != "1" or "2" or "3" or "4":  # error check
-                print("-------------------------------------------------------\n")
-                self.choice = input("\nWhere will you go?\n"
-                               "1) Back to the First Hut\n"
-                               "2) To the Big Hut\n"
-                               "3) Over to the Suspicious Goblin\n"
-                               "4) Leave Camp\n")
-                print("-------------------------------------------------------\n")
+                if self.game_run:
+                    print("-------------------------------------------------------\n")
+                    self.choice = input("\nWhere will you go?\n"
+                                   "1) Back to the First Hut\n"
+                                   "2) To the Big Hut\n"
+                                   "3) Over to the Suspicious Goblin\n"
+                                   "4) Leave Camp\n")
+                    print("-------------------------------------------------------\n")
 
-                if self.choice == "1":  # Back to the First Hut
-                    self.hut_1()
-                elif self.choice == "2":  # To the Big Hut
-                    self.big_hut_outside()
-                elif self.choice == "3":  # Over to the Suspicious Goblin
-                    self.side_main_camp()
-                elif self.choice == "4":  # Leave Camp
-                    self.outer_camp()
+                    if self.choice == "1":  # Back to the First Hut
+                        self.hut_1()
+                    elif self.choice == "2":  # To the Big Hut
+                        self.big_hut_outside()
+                    elif self.choice == "3":  # Over to the Suspicious Goblin
+                        self.side_main_camp()
+                    elif self.choice == "4":  # Leave Camp
+                        self.outer_camp()
+                else:
+                    break
 
     def big_hut_outside(self):  # used to get into the big hut and is where you interact with the guards
         while self.game_run:
@@ -342,24 +345,24 @@ class Level5(Location):
                       "From a distance, you see the curious pair of goblin guards stationed outside a large hut."
                       "One, a pint-sized figure, catches your eye with stolen finery and an air of aristocratic pride."
                       "His hooked nose supports a tiny monocle.\n")
-                time.sleep(1)
+                # time.sleep(1)
                 print("On the flip side, another goblin, rough and untamed, captures your attention. Clad in patchwork "
                       "leather, he wields a rusty blade with a menacing air. His body is adorned with crude tattoos "
                       "depicting goblin mischief, forming a stark contrast to his posh companion.\n")
-                time.sleep(1)
+                # time.sleep(1)
                 print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[0]))  # new round here dialogue
-                time.sleep(1)
+                # time.sleep(1)
                 input("Where are you from?:\n")  # ask for meaningless input for fun
                 print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[1]))  # cant let you in dialogue
                 print(self.rough_goblin.actions[0])  # description of speech pattern
-                time.sleep(1)
+                # time.sleep(1)
                 print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[0]))  # why need to talk to elder dialogue
                 print(self.posh_goblin.actions[0])  # description of speech pattern
-                time.sleep(1)
+                # time.sleep(1)
                 self.visited("big_hut_outside")
             else:
                 print("The Guards look at you suspiciously:")
-                time.sleep(1)
+                # time.sleep(1)
             if "big_hut" not in self.visited_sublocations:
                 self.choice = 0  # reset choice variable
                 while self.choice != "1" or "2" or "3":  # error check
@@ -382,7 +385,7 @@ class Level5(Location):
                         self.main_camp()
                     elif self.choice == "2":  # Say that you need to talk to the elder
                         print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[1]))  # how can we help dialogue
-                        time.sleep(1)
+                        # time.sleep(1)
                         self.choice = 0  # reset choice variable
                         while self.choice != "1" or "2":  # error check
                             print("-------------------------------------------------------\n")
@@ -394,26 +397,26 @@ class Level5(Location):
                                 print(
                                     "You relay all of the information you have learned so far and emphasis the urgency of your "
                                     "request")
-                                time.sleep(1)
+                                # time.sleep(1)
                                 print("The guards believe your words and step aside to let you in")
-                                time.sleep(1)
+                                # time.sleep(1)
                                 self.big_hut()
                             elif self.choice == "2":  # Insist that you cant tell them and you need to talk to the elder
                                 print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[2]))  # cant let you in dialogue
-                                time.sleep(1)
+                                # time.sleep(1)
                                 print("You return to the center of camp\n")
                                 self.main_camp()
                     elif self.choice == "3":  # Say that you were sent here by the trio of goblins you met earlier
                         print(self.posh_goblin.say_dialogue(self.posh_goblin.dialogue[3]))  # spoken to the trio dialogue
-                        time.sleep(1)
+                        # time.sleep(1)
                         self.add_clue(self.posh_goblin.clues[0])  # add goblin trios names to location clues
                         print(self.review_clues(), "\n")  # displays clues
-                        time.sleep(1)
+                        # time.sleep(1)
                         self.big_hut()
             else:
                 print("Both guards step aside as you approch")
                 print(self.rough_goblin.say_dialogue(self.rough_goblin.dialogue[3]))  # good to see you again dialogue
-                time.sleep(1)
+                # time.sleep(1)
                 self.big_hut()
 
     def big_hut(self, ):  # used to interact with the goblin elder
@@ -426,20 +429,20 @@ class Level5(Location):
                       " trinkets. Mismatched furniture surrounds the fire, and tapestries tell the tribe's stories Despite "
                       "the disorder, there's a communal atmosphere, reflecting the practical and resourceful nature of "
                       "goblin living.\n In the corner of the room working on a fresh tapestry is the goblin elder\n")
-                time.sleep(2)
+                # time.sleep(2)
                 print("The goblin elder, hunched with age, wears a tattered hood and bears tribal markings on a "
                       "weathered face. Sharp, intelligent eyes gleam from under strands of gray hair. "
                       "Adorned in earth-toned garments, the elder carries a staff adorned with feathers and symbols.\n ")
-                time.sleep(1)
+                # time.sleep(1)
             else:
                 print("As you enter\n")
-                time.sleep(1)
+                # time.sleep(1)
             print("Without turning around the Elder addresses you\n")
             print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[0]))  # how can I help dialogue
             print(self.elder_goblin.actions[0])  # sits on chair action
-            time.sleep(1)
+            # time.sleep(1)
             print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[1]))  # Tea?
-            time.sleep(1)
+            # time.sleep(1)
 
             self.choice = 0  # reset choice variable
             while self.choice != "1" or "2":  # error check
@@ -449,13 +452,13 @@ class Level5(Location):
                 print("-------------------------------------------------------\n")
                 if self.choice == "1":  # Yes
                     print(self.elder_goblin.actions[1])  # get tea action
-                    time.sleep(2)
+                    # time.sleep(2)
                     self.player.add_item("Tea?")  # adds item to player
-                    time.sleep(1)
+                    # time.sleep(1)
                     break
                 elif self.choice == "2":  # No
                     print(self.elder_goblin.actions[2])  # disappointment action
-                    time.sleep(1)
+                    # time.sleep(1)
                     break
 
             print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[2]))  # what troubles you dialogue
@@ -472,17 +475,17 @@ class Level5(Location):
 
                     if self.choice == "1":  # Do you know anything about a cult that is kidnapping people?
                         print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[3]))  # not heard anything dialogue
-                        time.sleep(2)
+                        # time.sleep(2)
                     elif self.choice == "2":  # have you heard of The Legendary Witch Slayer
                         print(self.elder_goblin.say_dialogue(self.elder_goblin.dialogue[4]))  # seen grave dialogue
-                        time.sleep(3)
+                        # time.sleep(3)
                         self.add_clue(self.elder_goblin.clues[0])  # add grave location to clues
                         print(self.review_clues(), "\n")  # display clues
                         self.grave_found = True  # mark as location found to open up self.choice in Outer camp
                     elif self.choice == "3":  # Leave the large hut
                         interacting = False  # no longer interacting
                         print("You head back to the center of camp\n")
-                        time.sleep(1)
+                        # time.sleep(1)
                         break
 
             self.main_camp()
@@ -492,24 +495,24 @@ class Level5(Location):
             self.current_location = "side_main_camp"
             if self.current_location not in self.visited_sublocations:
                 print("You walk over to the Shady Goblin\n")
-                time.sleep(1)
+                # time.sleep(1)
                 print(self.dice_goblin.dialogue[0])  # welcome dialogue no name
-                time.sleep(1)
+                # time.sleep(1)
                 print(self.dice_goblin.actions[0])  # Tips hat action no name
-                time.sleep(1)
+                # time.sleep(1)
                 self.visited("side_main_camp")
 
             if self.player.coins == self.max_coins:  # if you have alot of coins he gives you a bit of info and an item
                 print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[4]))  # why give item dialogue
-                time.sleep(1)
+                # time.sleep(1)
                 self.add_clue(self.dice_goblin.clues[0])  # adds clue to location clues
                 print(self.review_clues(), "\n")  # displays clues so far
                 self.player.add_item("1 gold doubloon")  # adds item to player
                 print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[5]))  # don't tell anyone else dialogue
-                time.sleep(1)
+                # time.sleep(1)
 
             print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[1]))  # play dice minigame dialogue
-            time.sleep(1)
+            # time.sleep(1)
             play_dice = False
             play_rps = False
             self.choice = 0  # reset choice variable
@@ -523,7 +526,7 @@ class Level5(Location):
                     play_dice = True
                 elif self.choice == "2":  # No
                     print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[2]))  # play R.P.S. minigame dialogue
-                    time.sleep(1)
+                    # time.sleep(1)
                     self.choice = 0  # reset choice variable
                     while self.choice != "1" or "2":  # error check
                         print("-------------------------------------------------------\n")
@@ -539,7 +542,7 @@ class Level5(Location):
                             break
                 if play_dice == True:
                     print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[3]))  # play again dialogue
-                    time.sleep(1)
+                    # time.sleep(1)
                     self.choice = 0  # reset choice variable
                     while self.choice != "1" or "2":  # error check
                         print("-------------------------------------------------------\n")
@@ -554,7 +557,7 @@ class Level5(Location):
                             self.main_camp()
                 elif play_rps == True:
                     print(self.dice_goblin.say_dialogue(self.dice_goblin.dialogue[3]))  # play again dialogue
-                    time.sleep(1)
+                    # time.sleep(1)
                     self.choice = 0  # reset choice variable
                     while self.choice != "1" or "2":  # error check
                         print("-------------------------------------------------------\n")
@@ -580,7 +583,7 @@ class Level5(Location):
                       "near a mysterious cave entrance—the backdrop to the hero's last epic confrontation. Shadows dance "
                       "as daylight filters through ancient branches, creating an aura of reverence. The air whispers with "
                       "the hero's legacy, ensuring their tale endures in the heart of the enchanted forest.")
-                time.sleep(3)
+                # time.sleep(3)
             self.choice = 0  # reset choice variable
             while self.choice != "1" or "2" or "3" or "4":  # error check
                 print("-------------------------------------------------------\n")
@@ -592,48 +595,48 @@ class Level5(Location):
                 print("-------------------------------------------------------\n")
                 if self.choice == "1":  # Investigate the Grave closer
                     print("As you inspect the grave further you spot a scrap of red cloth stuck to a particularly rough part")
-                    time.sleep(1)
+                    # time.sleep(1)
                     if "The Legendary Witch Slayer will save us all message" in self.player.main_clues:
                         print("You remember that this is the same cloth that the cultists wear\n")
                         print("You think to yourself why would this be here on a heroes grave?\n")
-                        time.sleep(1)
+                        # time.sleep(1)
                         self.player.add_main_clue("The Legendary Witch Slayer might not be what they seem to be in the legends")
                         self.player.add_item("Red scrap of cloth")
                     else:
                         print("You recognise this cloth but you cant quite remember where")
-                        time.sleep(1)
+                        # time.sleep(1)
                     self.grave()
                 elif self.choice == "2":  # Sit by the grave for a whileself.play()
                     self.music_stop()
                     self.grve_play()
                     print("As you decide to sit by the grave of The Legendary Witch Slayer, time takes on a different cadence "
                           "in this tranquil and sacred place. ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("The gentle rustling of leaves overhead creates a soothing melody as sunlight filters through "
                           "the dense canopy, casting dappled patterns on the moss-covered ground.\n ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("The air carries a subtle fragrance of earth and flowers, blending seamlessly with the distant "
                           "murmur of a crystal-clear stream nearby. Small woodland creatures, curious yet unafraid, venture "
                           "closer to investigate the visitor who has entered their realm.\n ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("As minutes turn into moments, the atmosphere becomes more charged with an otherworldly energy. "
                           "Shadows playfully dance around the grave, seemingly animated by the spirits of the forest. "
                           "The engraved symbol on the weathered tombstone glows softly as if reflecting the hero's "
                           "enduring presence.\n ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("In the distance, the mysterious cave entrance stands as a silent gateway to untold secrets, "
                           "occasionally revealing hints of magical whispers and ancient echoes. The great oak tree above "
                           "sways gently in response to a breeze, its leaves creating a gentle, melodic rustle—a natural "
                           "symphony that serenades you in your contemplation.\n ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("As you sit in quiet reflection, a feeling of connection to the hero's legacy permeates the air, "
                           "bridging the gap between the past and the present. Whether it's the subtle shift of sunlight or "
                           "the occasional fluttering of a butterfly, every detail seems to carry a deeper meaning in this "
                           "hallowed grove. ")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("You, immersed in the tranquillity of the moment, may sense a subtle "
                           "reassurance—a reminder that even in stillness, the legends of heroes endure.\n")
-                    time.sleep(2)
+                    # time.sleep(2)
                     self.choice = 0  # reset choice variable
                     while self.choice != "1":  # error check
                         print("-------------------------------------------------------\n")
@@ -649,9 +652,9 @@ class Level5(Location):
                           " It beckons with a mysterious allure, its entrance wide and dark, inviting you to explore its "
                           "depths. The shadows within suggest untold secrets, while a gentle breeze whispers the promise of "
                           "undiscovered mysteries concealed within its confines.\n")
-                    time.sleep(2)
+                    # time.sleep(2)
                     print("As you look closer you notice that there are quite a few fresh footprints in the dirt")
-                    time.sleep(1)
+                    # time.sleep(1)
                     self.choice = 0  # reset choice variable
                     while self.choice != "1" or "2":  # error check
                         print("-------------------------------------------------------\n")
@@ -662,15 +665,18 @@ class Level5(Location):
 
                         if self.choice == "1":  # Enter the cave
                             self.music_stop()
-                            time.sleep(1)
+                            # time.sleep(1)
                             self.game_run =False
-                            return
+                            break
                         elif self.choice == "2":  # Go back to the grave
                             self.grave()
+                    break
                 elif self.choice == "4":  # return to camp
                     print("You leave the grave and return to the center of the camp\n")
-                    time.sleep(1)
+                    # time.sleep(1)
                     self.main_camp()
+                break
+
 
 if __name__ == "__main__":
     player = Player("Player Name")
