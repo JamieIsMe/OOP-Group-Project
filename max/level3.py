@@ -126,6 +126,19 @@ class Level3(Location):
         pygame.mixer.music.load("boss_music_theme.mp3")
         pygame.mixer.music.play(loops=10)  #
 
+    def summary(self):
+        print("\n==================== Level 3 Player Summary ====================")
+        # PLAYER NAME DISPLAY
+        print(f"Player Name: {self.player.name}")
+        # PLAYER FINAL LEVEL COINS
+        print(f"Player Coins: {self.player.coins} coins")
+        # PLAYER FINAL ITEMS
+        print(f"{self.player.show_inventory()}")
+        # PLAYER FINAL CLUES
+        print(f"\nClues found in this level: {self.review_clues()}")
+
+        print("==================== End of Player Summary ====================\n")
+
     def level_start(self):
         """
             Initiates the start of Level 3, providing a descriptive narrative of the town center
@@ -171,9 +184,10 @@ class Level3(Location):
                     print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
                           "ready to bewitch anyone. 🧙‍♀️\n")
                     time.sleep(2)
-                    print("In the centre of the marketplace though not traditional merchants , \nthese street performers"
-                          " add a dynamic element to this marketplace through their skills entertaining a crowd of "
-                          "people. 🤡\n")
+                    print(
+                        "In the centre of the marketplace though not traditional merchants , \nthese street performers"
+                        " add a dynamic element to this marketplace through their skills entertaining a crowd of "
+                        "people. 🤡\n")
                     time.sleep(2)
                     Level3.market_square(self)
                 else:
@@ -596,14 +610,15 @@ class Level3(Location):
                                     f"3.) Leave the elves alone 🚶\n"))
             if interaction == 1:
                 print(
-                    self.drunken_elf1.say_dialogue("Established in 1685, The Crown and Chalice Inn 👑 in Eldenhaven is a "
-                                                   "historic hub, \n once a haven for travelers and now a charming "
-                                                   "space for"
-                                                   "locals and visitors. The inn's name, 'The Crown and Chalice,"
-                                                   "' \n nods to the town's noble heritage. With its exposed beams and "
-                                                   "faded"
-                                                   "tapestries, the inn invites patrons to step into Eldenhaven's rich "
-                                                   "history\n"))
+                    self.drunken_elf1.say_dialogue(
+                        "Established in 1685, The Crown and Chalice Inn 👑 in Eldenhaven is a "
+                        "historic hub, \n once a haven for travelers and now a charming "
+                        "space for"
+                        "locals and visitors. The inn's name, 'The Crown and Chalice,"
+                        "' \n nods to the town's noble heritage. With its exposed beams and "
+                        "faded"
+                        "tapestries, the inn invites patrons to step into Eldenhaven's rich "
+                        "history\n"))
                 time.sleep(2)
                 print(self.drunken_elf2.say_dialogue("Hey adventurer Why did the ghost refuse to haunt The Crown and "
                                                      "Chalice Inn?\n"))
@@ -855,6 +870,7 @@ class Level3(Location):
 
         self.player.add_main_clue("A cryptic map")
         self.player.add_main_clue("Red Cloth")
+        self.summary()
         pygame.mixer.music.stop()
         print("\n")
 
