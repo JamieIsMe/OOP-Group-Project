@@ -664,6 +664,7 @@ class Level5(Location):
                 self.main_camp()
     def end_level(self):
         print("\n\nLevel END\n\n")
+        break
 
 if __name__ == "__main__":
     player = Player("Player Name")
