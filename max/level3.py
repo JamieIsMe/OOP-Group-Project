@@ -222,7 +222,7 @@ class Level3(Location):
            or leave the market square.
            It handles user input validation and prevents double interactions with the same NPC.
         """
-        while True:
+        while self.current_location == self.sublocation[0]:
             try:
                 character = int(input("\nWho do you want to interact with:\n"
                                       "1) Blacksmith\n"
@@ -549,7 +549,7 @@ class Level3(Location):
         self.play_tavern_song()
         time.sleep(2)
 
-        while self.current_location == self.current_location:
+        while self.current_location == self.sublocation[1]:
             try:
                 action = int(input("\nWhat will you do?,\n"
                                    "1) Interact with the drunken elves\n"
@@ -653,7 +653,6 @@ class Level3(Location):
                     print("You solved the riddle already!")
             elif interaction == 3:
                 self.__drunken_elves_interacted = True
-                break
             else:
                 print("Invalid option")
                 time.sleep(2)
@@ -854,7 +853,8 @@ class Level3(Location):
 
         self.player.add_main_clue("A cryptic map")
         self.player.add_main_clue("Red Cloth")
-        exit()
+        pygame.mixer.music.stop()
+        print("\n")
 
 
 if __name__ == "__main__":
