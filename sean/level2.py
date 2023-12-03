@@ -25,6 +25,7 @@ from sean.colour_puzzle import ColoredSlabPuzzle
 
 # Standard Library Imports
 import time
+import pygame
 
 
 class Level2(Location):
@@ -119,13 +120,23 @@ class Level2(Location):
         self.__dark_alley_investigated = False
         self.puzzle_complete = False
 
+        pygame.mixer.init()  # used for sound
+
     def level_start(self):
 
         # Start the level by initiating actions outside the city
         self.outside_city()
 
-    def outside_city(self):
+    @staticmethod
+    def fight_song():
+        pygame.mixer.music.load("Level 2 Fight Song.mp3")
+        pygame.mixer.music.play(loops=0)
 
+    @staticmethod
+    def music_stop():
+        pygame.mixer.music.stop()
+
+    def outside_city(self):
         self.current_location = self.sublocation[0]
 
         # Display initial scene outside the city gates
@@ -259,12 +270,13 @@ class Level2(Location):
                               (self.red_cloak_man.dialogue[2]), "\n")
                         cloaked_figure_option = input("Do you want to fight "
                                                       "him for it or play "
-                                                      "his little game?"
-                                                      "1) Fight him!"
-                                                      "2) Game time!")
+                                                      "his little game?\n"
+                                                      "1) Fight him!\n"
+                                                      "2) Game time!\n")
                         if cloaked_figure_option == "1":
                             print(f"{self.player.name}:\n Give it to me\n")
                             time.sleep(1)
+                            self.fight_song()
                             user = User(self.player.name)
                             red_cloak = RedCloakEnemy()
                             prize = fight(user, red_cloak)
@@ -276,9 +288,11 @@ class Level2(Location):
                                       "beating him.")
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
+                            self.music_stop()  # stops current music
                         elif cloaked_figure_option == "2":
                             print(f"{self.player.name}:\n Let's play then\n")
                             time.sleep(1)
+                            self.fight_song()
                             prize = roll_dice()
                             if prize:
                                 # Player wins and adds an item to inventory
@@ -288,6 +302,7 @@ class Level2(Location):
                                       "beating him.")
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
+                            self.music_stop()
                     else:
                         # Player doesn't have the Chaos Sword, plays the dice game
                         print(self.red_cloak_man.say_dialogue
@@ -295,6 +310,7 @@ class Level2(Location):
                         time.sleep(1)
                         print(f"{self.player.name}:\n Let's play then\n")
                         time.sleep(1)
+                        self.fight_song()
                         prize = roll_dice()
                         if prize:
                             # Player wins and adds an item to inventory
@@ -304,6 +320,7 @@ class Level2(Location):
                                   "beating him.")
                             self.player.coins += 25
                         self.__cloak_figure_fin = True
+                        self.music_stop()
 
                 elif not self.__deal_made and not self.__cloak_figure_interact:
                     # If player has not made the deal and has not seen the red cloaked man before
@@ -349,15 +366,16 @@ class Level2(Location):
                         # Player chooses to fight or play a die game with the cloaked figure
                         cloaked_figure_option = input("Play his little dice "
                                                       "game or rip it from "
-                                                      "his cold dead hands?"
-                                                      "1) Fight him!"
-                                                      "2) Game time!")
+                                                      "his cold dead hands?\n"
+                                                      "1) Fight him!\n"
+                                                      "2) Game time!\n")
                         # Player makes a choice between fighting or playing a game
                         if cloaked_figure_option == "1":
                             # Player chooses to fight
                             print(f"{self.player.name}:\n I'll be taking that "
                                   f"dagger.\n")
                             time.sleep(1)
+                            self.fight_song()
                             print(self.red_cloak_man.say_dialogue
                                   (self.red_cloak_man.dialogue[6]), "\n")
                             time.sleep(1)
@@ -372,10 +390,12 @@ class Level2(Location):
                                       "beating him.")
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
+                            self.music_stop()
                         elif cloaked_figure_option == "2":
                             # Player chooses the dice game
                             print(f"{self.player.name}:\n Let's play then.\n")
                             time.sleep(1)
+                            self.fight_song()
                             prize = roll_dice()
                             if prize:
                                 # Player wins and adds item to inventory
@@ -386,10 +406,12 @@ class Level2(Location):
                                       "beating him.")
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
+                            self.music_stop()
                     else:
                         # If player doesn't have sword in inventory
                         print(f"{self.player.name}:\n Let's play then.\n")
                         time.sleep(1)
+                        self.fight_song()
                         prize = roll_dice()
                         if prize:
                             # Player wins and adds item to inventory
@@ -399,6 +421,7 @@ class Level2(Location):
                                   "beating him.")
                             self.player.coins += 25
                         self.__cloak_figure_fin = True
+                        self.music_stop()
                 else:
                     print("You dont want to cause any trouble so you stay "
                           "away from the cloaked figure.\n")
