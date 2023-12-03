@@ -152,10 +152,10 @@ class Level3(Location):
         self.play_theme_song()
 
         while self.current_location == self.sublocation[0]:
-            action = input("\nWhat will you do?,\n"
-                           "1) Take a look around the market\n"
-                           "2) Go to the tavern\n"
-                           "3) Go to the Port\n")
+            action = input("\nWhat will you do? 🤔,\n"
+                           "1) Take a look around the market 🤑\n"
+                           "2) Go to the tavern 🍻\n"
+                           "3) Go to the Port ⚓\n")
             if action == "1":
                 if self.sublocation[0] not in self.visited_sublocations:
                     # Player decides to explore the market
@@ -163,17 +163,17 @@ class Level3(Location):
                           "and scent before you. You are mesmerised by the selection of medieval marvels.\n")
                     time.sleep(2)
                     print("A muscular blacksmith with a forge, wearing glittering sets of armour and superbly "
-                          "manufactured weapons.\n")
+                          "manufactured weapons. 🦾\n")
                     time.sleep(2)
                     print("A lively stand decked out in finely woven textiles, selling anything from sumptuous silks to"
-                          "long-lasting woollens.\n")
+                          "long-lasting woollens. 👚\n")
                     time.sleep(2)
                     print("On the other side we see a mysterious figure with cauldrons create magical concoctions "
-                          "ready to bewitch anyone.\n")
+                          "ready to bewitch anyone. 🧙‍♀️\n")
                     time.sleep(2)
-                    print("In the centre of the marketplace though not traditional merchants, \nthese street performers"
+                    print("In the centre of the marketplace though not traditional merchants , \nthese street performers"
                           " add a dynamic element to this marketplace through their skills entertaining a crowd of "
-                          "people.\n")
+                          "people. 🤡\n")
                     time.sleep(2)
                     Level3.market_square(self)
                 else:
@@ -184,15 +184,15 @@ class Level3(Location):
                         # Player decides to go to the tavern
                         self.current_location = self.sublocation[1]
                         print(f"You decide to head to the {self.current_location} "
-                              f"hoping to find the clues to continue your quest.\n"
+                              f"hoping to find the clues 🔍 to continue your quest.\n"
                               f"As you open the tavern door you see that's it filled with life as the melody playing"
-                              f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons "
-                              f"stomping their feet in unison")
+                              f"\nLaughter echoed off the wooden wall with such a song of a drinking making the patrons"
+                              f" stomping their feet in unison")
                         Level3.tavern(self)
                     else:
                         Level3.tavern(self)
                 else:
-                    print("I should look around the market")
+                    print("I should look around the market ❌")
             elif action == "3":
                 if "The Legendary Witch Slayer will save us all message" in self.player.main_clues:
                     # The Player decides to go to the port
@@ -205,13 +205,13 @@ class Level3(Location):
 
                     print(
                         "Locals who rely on the sea for their livelihood, bringing in fresh catches to supply the town "
-                        "and its taverns.\n")
+                        "and its taverns. 🎣\n")
                     time.sleep(2)
-                    print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants.\n")
+                    print("Defenders of the port, maintaining order and ensuring the safety of its inhabitants. 💂‍♂️\n")
                     time.sleep(2)
                     Level3.port(self)
                 else:
-                    print("I should look around the market")
+                    print("I should look around the market ❌")
 
     def market_square(self):
         """
@@ -655,7 +655,7 @@ class Level3(Location):
                 self.__drunken_elves_interacted = True
                 Level3.tavern(self)
             else:
-                print("Invalid option")
+                print("Invalid option ❌")
                 time.sleep(2)
 
     def bar(self):
