@@ -26,6 +26,7 @@ def riddle_game():
 
     hint = "I stand tall, wax-clad, a silent sentinel, illuminating the shadows with my flickering dance."
 
+    # Lets the user guess in the riddle game
     while True:
         print("Hint: ", hint)
         guess = input("What you think is the answer?\n")
