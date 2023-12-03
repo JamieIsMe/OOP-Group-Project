@@ -1,3 +1,15 @@
+"""
+Program Name: characters.py
+
+Author: Cian Anderson (C22793219) in Group ERROR 451
+
+Program Description:
+This is the character class that is used by all levels for the NPCs
+it holds Interactions, Clues,  Dialogue and Items.
+It allows for perform_action and say_dialogue.
+Date: 3/12/2023
+"""
+
 from abc import ABC, abstractmethod
 
 
@@ -37,39 +49,39 @@ class Character(ABC):
 
     def interact(self):
         if not self._interacted:
-            interaction = f"{self.name}: {self.dialogue}"
+            interaction = f"{self.name}: {self.dialogue}" # sets interaction
             self._interacted = True
         else:
-            interaction = f"You have already talked to {self.name}"
+            interaction = f"You have already talked to {self.name}" # sets interaction
 
-        return interaction
+        return interaction # returns the interaction set above
 
     def clue(self):
         pass
         # add clue to clue list from NPC
 
     def dialogue(self):
-        return self.dialogue
+        return self.dialogue # returns list of dialogue
 
     def items(self):
-        return self.items
+        return self.items  # returns list of items
 
     @actions.setter
-    def actions(self, value):
+    def actions(self, value):  # list of actions
         self._actions = value
 
 
 class NPC(Character):
 
     def perform_action(self, action):
-        return f"{self.name} {action}."
+        return f"{self.name} {action}." # Gives NPC name and action they did
 
     def say_dialogue(self, dialogue):
-        return f"{self.name}: {dialogue}"
+        return f"{self.name}: {dialogue}" # Gives NPC name and dialogue the said
 
     def interact(self):
         interact = super().interact()
         return interact
 
     def clue(self):
-        return self.clues
+        return self.clues  # returns clue list

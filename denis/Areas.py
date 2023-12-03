@@ -72,7 +72,7 @@ class LuminousLake(Area):
         # Associate the area with a player object
         self.player = player
         # Name of the area
-        self.name = "The Luminous Lake"
+        self.name = "The Luminous Lake 🌊"
         # Items that can be found in this area
         self.item_pickups = ["Luminous Plank", "Ancient Paper"]
         # Flags to track if items have been picked up
@@ -156,7 +156,7 @@ class WhisperingGrove(Area):
         # Associate the area with a player object
         self.player = player
         # Name of the area
-        self.name = "The Whispering Grove"
+        self.name = "The Whispering Grove 🎑"
         # Item that can be found in this area
         self.item_pickups = ["Silver Key"]
         # Flag to track if the item has been picked up
@@ -315,7 +315,7 @@ class CanopyWalkway(Area):
         # Associate the area with a player object
         self.player = player
         # Name of the area
-        self.name = "The Canopy Walkway"
+        self.name = "The Canopy Walkway 🌉🌚"
         # Items that can be found in this area
         self.items = ["Luminous Plank","Glowing Stone"]
         # Initialize an NPC (Non-Player Character) within the area
@@ -498,7 +498,7 @@ class EchoingCaverns(Area):
         # Associate the area with a player object
         self.player = player
         # Name of the area
-        self.name = "The Echoing Caverns"
+        self.name = "The Echoing Caverns 🔮"
         # Item that can be found in this area
         self.item_pickups = ["Glowing Rock"]
         # Flag to track if the item has been picked up

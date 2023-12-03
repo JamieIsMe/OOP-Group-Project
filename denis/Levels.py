@@ -16,7 +16,8 @@ The course techniques for managing gameplay and introducing the
 
 
 from abc import ABC, abstractmethod
-import time 
+import time
+import pygame
 
 from denis.Areas import LuminousLake
 from denis.Areas import WhisperingGrove
@@ -53,8 +54,17 @@ class Level4(Level):
         self.game_flag = 0  # Flag to track game progress
         self.game_end_number = -1  # Flag value to end the game
 
+    @staticmethod
+    def play_main_sound():
+        pygame.mixer.init()
+        pygame.mixer.music.load("Mushroom Forest Theme.mp3")
+        pygame.mixer.music.play(loops=10)
+
     def introduction(self):
         # Introduction narrative for Level 4
+        print("Clutching the mysterious mushroom map, its intricate network" 
+        " of paths and landmarks etched in bioluminescent ink, you navigate"
+        " through the forest's depths.\n")
         print("You find yourself in a luminous glade, the air filled with "
               "spores that glimmer like tiny stars.\n")
         time.sleep(1)
@@ -72,20 +82,22 @@ class Level4(Level):
 
     def level_start(self):
         # Starts Level 4 gameplay
+        self.play_main_sound()
         self.introduction()
 
         while True:
             print("---Type anything to continue---\n")
             input()
             if self.game_flag == self.game_end_number:
+                pygame.mixer.music.stop()
                 break
             print("-------------------------------------------------------")
             # Display location choices
             for index, location in enumerate(self.locations):
                 print(f"{index + 1}) Would you like to go to {location.name}\n")
 
-            print(f"{(len(self.locations) + 1)}) to view your Inventory\n")
-            print(f"{(len(self.locations) + 2)}) to view your Clues\n")
+            print(f"{(len(self.locations) + 1)}) to view your Inventory 👜\n")
+            print(f"{(len(self.locations) + 2)}) to view your Clues 🧩\n")
             print("-------------------------------------------------------")
 
             while True:
