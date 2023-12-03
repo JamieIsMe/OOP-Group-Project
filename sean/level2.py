@@ -447,10 +447,10 @@ class Level2(Location):
                         time.sleep(2)
                         print("They all reply in unison: No!\n")
                         time.sleep(1)
-                        if self.player.coins >= 20:
+                        if self.player.coins >= 30:
                             print(f"You have {self.player.coins} coins.\n")
                             distraction = input("Do you wish to give the "
-                                                "barbarians some coin(20) to "
+                                                "barbarians some coin(30) to "
                                                 "create the distraction?\n"
                                                 "1) Yes\n"
                                                 "2) No")
@@ -471,7 +471,7 @@ class Level2(Location):
                                 time.sleep(2)
                                 self.__guard_interacted = True
                                 self.current_location = self.sublocation[5]
-                                self.player.coins -= 20
+                                self.player.coins -= 30
                             elif distraction == "2":
                                 print(f"{self.player.name}:\n Forget it then. "
                                       f"I'll find my own way in.\n")
