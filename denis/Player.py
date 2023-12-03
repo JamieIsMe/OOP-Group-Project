@@ -46,7 +46,7 @@ class Player:
 
     # Method to display all level-specific clues collected by the player
     def show_level_clues(self):
-        print("Level Clues are:\n")
+        print("Level Clues are:\t")
         for level_clue in self.level_clues:
             print(level_clue + '\n')
 
