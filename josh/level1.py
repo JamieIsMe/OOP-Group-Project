@@ -149,9 +149,9 @@ class Level1(Location):
         # PLAYER FINAL LEVEL COINS
         print(f"Player Coins: {self.player.coins} coins")
         # PLAYER FINAL ITEMS
-        print(f"Player Inventory: {self.player.show_inventory()}")
+        print(f"{self.player.show_inventory()}")
         # PLAYER FINAL CLUES
-        print(f"\nClues: {self.player.show_level_clues()}")
+        print(f"\nClues found in this level: {self.review_clues()}")
 
         print("==================== End of Player Summary ====================\n")
 
@@ -450,11 +450,14 @@ if __name__ == "__main__":
     #  PLAYER NAME SELECTION
     player = input("\nEnter a player name to immerse yourself in the story: ")
     player1 = Player(f"{player}")
+
     time.sleep(1)  # DELAY BETWEEN TEXT
+
     #  MAKE PLAYER COINS 0
     player1.coins = 0
+
     #  PASS PLAYER TO LEVEL 1
     level1 = Level1(player1)
+
     #  INSTANCE OF GAME INTRO - GAME TITLE & INTRO
     level1.gameintro()
-    #  BEGIN SUB LOCATION 1
