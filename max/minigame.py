@@ -85,11 +85,13 @@ def cipher_decryption_game():
             if attempts != len(original_message):
                 hint = hint + original_message[attempts]
                 print(f"Hint: {hint}")
+                print("Time's arrow may point ahead, but wisdom often hides in the echoes of its reverse dance.")
                 print(f"Encrypted Message: {encrypted_message}")
                 attempts += 1
             else:
                 print(f"Sorry, your guess is incorrect.\n")
                 print(f"Hint: {hint}")
+                print("Time's arrow may point ahead, but wisdom often hides in the echoes of its reverse dance.")
                 print(f"Encrypted Message: {encrypted_message}")
 
 
