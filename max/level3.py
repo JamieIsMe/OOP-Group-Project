@@ -653,6 +653,7 @@ class Level3(Location):
                     print("You solved the riddle already!")
             elif interaction == 3:
                 self.__drunken_elves_interacted = True
+                Level3.tavern(self)
             else:
                 print("Invalid option")
                 time.sleep(2)

@@ -28,7 +28,7 @@ class Game:
         self.game_run = True  # Flag to keep track of the game state
         self.next_level = 0  # Index for the next level to be played
 
-        pygame.mixer.init() # used for sound
+        pygame.mixer.init()  # used for sound
 
         # Prompting the user to enter a name for the player
         self.player_name = input("Welcome Adventurer!, Enter a name please: ")
@@ -43,9 +43,9 @@ class Game:
         level5 = Level5(self.player)
         level6 = Level6(self.player)
 
-        self.levels = [level5, level6]  # Storing the initialized
+        self.levels = [level3, level5, level6]  # Storing the initialized
 
-        #self.levels = [level1, level2, level3, level4 , level5, level6]
+        # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
 
     # Polymorphism
