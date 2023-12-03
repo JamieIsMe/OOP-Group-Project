@@ -20,12 +20,15 @@ from max.level3 import Level3
 from denis.Levels import Level4
 from cian.level5 import Level5
 from jamie.level6 import Level6
+import pygame
 
 
 class Game:
     def __init__(self):
         self.game_run = True  # Flag to keep track of the game state
         self.next_level = 0  # Index for the next level to be played
+
+        pygame.mixer.init()  # used for sound
 
         # Prompting the user to enter a name for the player
         self.player_name = input("Welcome Adventurer!, Enter a name please: ")
@@ -39,9 +42,9 @@ class Game:
         level4 = Level4(self.player)
         level5 = Level5(self.player)
         level6 = Level6(self.player)
-        self.levels = [level4, level5, level6]  # Storing the initialized
-        # levels in a
-        # list
+
+        self.levels = [level3, level5, level6]  # Storing the initialized
+
         # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
 
