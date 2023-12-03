@@ -50,8 +50,8 @@ class Game:
         level6 = Level6(self.player)
 
         # Store the levels in the list
-        self.levels = [level4]  # Storing the initialized
-        # levels
+        self.levels = [level1, level2, level3, level4, level5, level6]
+        # Storing the initialized levels
 
         # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
@@ -75,6 +75,7 @@ class Game:
                 # player
                 self.initialize_levels()  # Re-initialize all levels
             if choice == 'q'.lower():
+                print("Till another time, adventurer!\n")
                 # Exiting the game
                 self.game_run = False
 
