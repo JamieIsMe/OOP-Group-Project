@@ -2,6 +2,17 @@ from sean.locationClass import Location
 from cian.characters import NPC
 from denis.Player import Player
 import time
+import pygame
+
+"""
+Author : Jamie Turpin (C22375486) - ERROR 451
+Program Description: OOP - Python Game Assignment ("Game Title")
+Game Ending
+Level 6
+The final level of our groups game
+Its set the a cave where the group of cultists have set up base and have taken the missing people
+The user is able to pick between 3 different endings depending on the actions that they take
+"""
 
 
 class Level6(Location):
@@ -10,39 +21,57 @@ class Level6(Location):
         super().__init__("cave", ["entrance", "walkway", "cursed_hallway", "deep_cursed_hallway"],
                          ["Man In Cell", "Cult Leader", "Cult Member", "Witch Slayer"],
                          [])
+        # Store which location the player is in
         self.current_location = "entrance"
         # Stores when key parts of the area have been altered
         # 1st is for cave-in, 2nd is for the lever puzzle being completed
         self.location_states = [False] * 2
         self.user = user
+        # Belew is all the NPCS in the level
         self.cell_man = NPC("Man In Cell", ["If you open my cell, I will help you get "
-                                           "through that door\n","I am a member of the cult, I had doubts about what "
-                                                                 "we were doing so the rest of them locked me in "
-                                                                 "here\n", "There are levers that you will have to "
-                                                                           "flip, i don't know which ones you have to "
-                                                                           "flip\n"], "", "", "")
-        self.cult_leader = NPC("Cult Leader", ["So you have finally arrived.\n" , "We will revive the witch slayer so "
-                                                                               "that "
-                                                                                "she may save us all\n"], "", "","")
+                                            "through that door\n", "I am a member of the cult, I had doubts about what "
+                                                                   "we were doing so the rest of them locked me in "
+                                                                   "here\n", "There are levers that you will have to "
+                                                                             "flip, i don't know which ones you have to "
+                                                                             "flip\n"], "", "", "")
+        self.cult_leader = NPC("Cult Leader", ["So you have finally arrived.\n", "We will revive the witch slayer so "
+                                                                                 "that "
+                                                                                 "she may save us all\n"], "", "", "")
         self.cult_member = NPC("Cult Member", ["Aha! we have done it!\nWe have "
                                                "resurrected her!\n", "Oh Legendary "
-                                                                   "Witch Slayer, "
-                                                                   "save us all!\n"], "",
-                               "","")
-        self.witch_slayer = NPC("The Witch Slayer",["I, The Legendary Witch... Slayer have "
-                                                    "returned\nThose who sought to "
-                                                    "extinguish my flame shall now "
-                                                    "face the inferno of my rekindled "
-                                                    "wrath.\n", "I have no use for "
-                                                              "you anymore\n"],"","",
+                                                                     "Witch Slayer, "
+                                                                     "save us all!\n"], "",
+                               "", "")
+        self.witch_slayer = NPC("The Legendary Witch... Slayer", ["I, The Legendary Witch... Slayer have "
+                                                                  "returned\nThose who sought to "
+                                                                  "extinguish my flame shall now "
+                                                                  "face the inferno of my rekindled "
+                                                                  "wrath.\n", "I have no use for "
+                                                                              "you anymore\n"], "", "",
                                 ["beheads the cult members", "beheads you"])
 
+    # This Function Starts the level
     def level_start(self):
+        self.play_main_sound()
         self.entrance()
 
+    @staticmethod
+    def play_main_sound():
+        pygame.mixer.init()
+        pygame.mixer.music.load("cave.mp3")
+        pygame.mixer.music.play(loops=10)
 
+    @staticmethod
+    def play_cult_sound():
+        pygame.mixer.init()
+        pygame.mixer.music.load("chant.mp3")
+        pygame.mixer.music.play(loops=10)
+
+    # First main area of the level
     def entrance(self):
+        # Sets the current location
         self.current_location = self.sublocation[0]
+        # Checks if the area has been visited before, and displays suitable text
         if self.current_location not in self.visited_sublocations:
             print("As you cautiously step into the dimly lit cave, two things stand out to you, iron bars with a door"
                   "blocking further access into the cave and drawings on the cave walls")
@@ -50,7 +79,9 @@ class Level6(Location):
         else:
             print("As you enter back in to the cave entrance, you take another look at the iron bars "
                   "with a door and the drawings")
+
         while self.current_location == "entrance":
+            # Checks whether the cavein has happened yet, and displays text base on that
             if not self.location_states[0]:
                 action = input(f"What will you do?\n1) Turn back around\n2) Go to the iron door\n3) Check the walls\n")
                 if action == "1":
@@ -226,6 +257,8 @@ class Level6(Location):
     def deep_cursed_hallway(self):
         self.current_location = self.sublocation[3]
         print("You steel yourself for what's to come and take another step forward")
+        pygame.mixer.music.stop()
+        self.play_cult_sound()
         time.sleep(2)
         print("\nWith each passing step you hear a noise get louder and louder, eventually forming words")
         time.sleep(3)
@@ -305,4 +338,3 @@ class Level6(Location):
 if __name__ == "__main__":
     cave = Level6()
     cave.entrance()
-
