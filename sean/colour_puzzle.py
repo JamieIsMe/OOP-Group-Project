@@ -32,8 +32,10 @@ class ColoredSlabPuzzle:
         while True:
             self.display_slabs_order()
             print("1) Enter your guess\n"
-                  "2) Review clues")
-            user_choice = input("Choose an option (1 or 2): ")
+                  "2) See available colours\n"
+                  "3) Review Clues\n"
+                  "4) Quit\n")
+            user_choice = input("Choose an option (1, 2, 3 or 4): ")
 
             if user_choice == "1":
                 user_input = input(
@@ -53,9 +55,14 @@ class ColoredSlabPuzzle:
                 else:
                     print("Incorrect order. Try again.")
             elif user_choice == "2":
-                print(self.player.clues)
+                print(self.available_colors)
+            elif user_choice == "3":
+                print(self.player)
+            elif user_choice == "4":
+                print("Quitting the puzzle.")
+                return None
             else:
-                print("Invalid choice. Please choose 1 or 2.")
+                print("Invalid choice. Please choose 1, 2 or 3.")
 
         if self.won:
             return "City Pass"

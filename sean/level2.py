@@ -207,7 +207,7 @@ class Level2(Location):
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[1]), "\n")
                     time.sleep(1)
-                    if "Sword" in self.player.inventory:
+                    if 'Chaos Sword' in self.player.inventory:
                         print(self.red_cloak_man.say_dialogue
                               (self.red_cloak_man.dialogue[2]), "\n")
                         cloaked_figure_option = input("Do you want to fight "
@@ -292,7 +292,7 @@ class Level2(Location):
                     print(self.red_cloak_man.say_dialogue
                           (self.red_cloak_man.dialogue[5]), "\n")
                     time.sleep(1)
-                    if "Sword" in self.player.inventory:
+                    if 'Chaos Sword' in self.player.inventory:
                         cloaked_figure_option = input("Play his little dice "
                                                       "game or rip it from "
                                                       "his cold dead hands?"
@@ -563,7 +563,7 @@ class Level2(Location):
                     print("You find a pile of coloured slabs and 3 slots that "
                           "they seem to fit into.\n")
                     time.sleep(2)
-                    colored_slab_puzzle = ColoredSlabPuzzle(Level2)
+                    colored_slab_puzzle = ColoredSlabPuzzle(self.review_clues())
                     city_pass = colored_slab_puzzle.play_puzzle()
                     if city_pass:
                         self.player.add_item(city_pass)
