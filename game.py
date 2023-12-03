@@ -57,7 +57,7 @@ class Game:
             self.levels[self.next_level].level_start()
             self.next_level += 1
         self.game_run = False
-        # Setting the game state to not running after completing all levels
+        # Setting the game state to not running after completing all levels.
 
 
 # Creating an instance of the Game
