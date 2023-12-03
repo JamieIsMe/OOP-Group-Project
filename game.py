@@ -69,13 +69,13 @@ class Game:
             choice = input(
                 "Would you like to replay the game? 'q' to quit, 'r' to "
                 " replay: ")
-            if choice == 'r':
+            if choice == 'r'.lower():
                 # Resetting the next_level to start from the beginning
                 self.next_level = 0
                 self.initialize_player(self.player_name)  # Re-initialize the
                 # player
                 self.initialize_levels()  # Re-initialize all levels
-            if choice == 'q':
+            if choice == 'q'.lower():
                 # Exiting the game
                 self.game_run = False
 
