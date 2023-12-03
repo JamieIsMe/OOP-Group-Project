@@ -54,11 +54,11 @@ class Level4(Level):
         self.game_flag = 0  # Flag to track game progress
         self.game_end_number = -1  # Flag value to end the game
 
-    #@staticmethod
-    #def play_main_sound():
-        #pygame.mixer.init()
-        #pygame.mixer.music.load("mushroom forest theme.mp3")
-        #pygame.mixer.music.play(loops=10)
+    @staticmethod
+    def play_main_sound():
+        pygame.mixer.init()
+        pygame.mixer.music.load("Mushroom Forest Theme.mp3")
+        pygame.mixer.music.play(loops=10)
 
     def introduction(self):
         # Introduction narrative for Level 4
@@ -79,13 +79,14 @@ class Level4(Level):
 
     def level_start(self):
         # Starts Level 4 gameplay
+        self.play_main_sound()
         self.introduction()
 
         while True:
             print("---Type anything to continue---\n")
-            #self.play_main_sound()
             input()
             if self.game_flag == self.game_end_number:
+                pygame.mixer.music.stop()
                 break
             print("-------------------------------------------------------")
             # Display location choices
