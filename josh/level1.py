@@ -19,6 +19,14 @@ Developed by Error 451
 """
 #  GAME IMPORTS
 import time
+
+# REMOVING PYGAME INTRO MESSAGE
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
+#IMPORT PYGAME
+import pygame.mixer
+
 from cian.characters import NPC
 from sean.locationClass import Location
 from denis.Player import Player
@@ -73,9 +81,33 @@ class Level1(Location):
         self.challengeAccepted = False
         self.level_running = True
 
+        pygame.mixer.init()
+
     #  START GAME INTRO WHEN LEVEL START
     def level_start(self):
         self.gameintro()
+
+    ### PYGAME AUDIO METHODS
+    def playsoundIntro(self):
+        pygame.mixer.music.load("Title Theme.wav")
+        pygame.mixer.music.play(loops=0)
+
+    def minigamesound(self):
+        pygame.mixer.music.load("Minigame.wav")
+        pygame.mixer.music.play(loops=0)
+
+    def playsoundduel(self):
+        pygame.mixer.music.load("Battle.wav")
+        pygame.mixer.music.play(loops=0)
+
+    def gameplayaudio(self):
+        pygame.mixer.music.load("gameplay.mp3")
+        pygame.mixer.music.play(loops=1)
+
+    def stopmusics(self):
+        pygame.mixer.music.stop()
+
+    ### PYGAME AUDIO METHODS
 
     #  GAME INTRO METHOD
     def update(self):
@@ -117,7 +149,7 @@ class Level1(Location):
 
     #  BEGIN GAME INTRO TITLES
     def gameintro(self):
-
+        self.playsoundIntro()
         # #  MAIN GAME TITLES, SUBTITLE, AUTHORS
         print("===================================")
         print("         Cult of Shadows          ")
@@ -135,6 +167,7 @@ class Level1(Location):
         time.sleep(1)
         self.update()
 
+
         time.sleep(1)
 
         print("===================================")
@@ -146,19 +179,28 @@ class Level1(Location):
         print("\n==================== Level 1 Player Summary ====================")
         # PLAYER NAME DISPLAY
         print(f"Player Name: {self.player.name}")
+        time.sleep(1)
         # PLAYER FINAL LEVEL COINS
         print(f"Player Coins: {self.player.coins} coins")
+        time.sleep(1)
         # PLAYER FINAL ITEMS
         self.player.show_inventory()
+        time.sleep(1)
         # PLAYER FINAL CLUES
         print(f"\nClues found in this level: {self.review_clues()}")
+        time.sleep(1)
 
         print("==================== End of Player Summary ====================\n")
+        time.sleep(1)
+        self.stopmusics()
 
 
     # SUBLEVEL 1 METHOD FOR LEVEL 1
     def hallofwarriors(self):
         # ASSIGN LOCATION to CURRENT LOCATION
+        self.stopmusics()
+        pygame.mixer.music.set_volume(5)
+        self.gameplayaudio()
         self.current_location = self.sublocation[0]
         print("==================================")
         print(f"(Location: {self.current_location} - AD 734)")
@@ -248,7 +290,11 @@ class Level1(Location):
         time.sleep(1)
         print(self.druid.say_dialogue(
             f"now {self.player.name}, onto Challenge 2 of your test!\n"))
+        self.minigamesound()
         self.library1.book_roulette()
+        self.stopmusics()
+        pygame.mixer.music.set_volume(5)
+        self.gameplayaudio()
 
         # ADD COINS TO PLAYER INVENTORY
         self.player.coins = self.player.coins + 3
@@ -304,8 +350,12 @@ class Level1(Location):
                                        "Sword!"))
 
         # SET UP INSTANCE OF SELF.FINAL DUEL from josh/FINAL DUEL.py
-
+        pygame.mixer.music.set_volume(7.5)
+        self.playsoundduel()
         self.level_running = self.finalduel.duel()
+        self.stopmusics()
+        self.gameplayaudio()
+        time.sleep(1)
 
         #  CHECK IF KNIGHT WAS NOT DEFEATED / LEVEL SKIP
         if not self.level_running:  # if it is false
@@ -368,6 +418,9 @@ class Level1(Location):
             print(f"{self.player.name}: All the clues involve the city...\n")
 
             #  SHOW LEVEL SUMMARY
+            self.stopmusics()
+            self.playsoundIntro()
+            time.sleep(1)
             self.summary()
 
 
@@ -427,7 +480,13 @@ class Level1(Location):
                 print(self.druid.say_dialogue("It will test your mental, physical and "
                                               "quick thinking abilities\n"))
                 time.sleep(2)
+                self.stopmusics()
+                pygame.mixer.music.set_volume(7.5)
+                self.minigamesound()
                 self.druidgame.catch_ball()
+                self.stopmusics()
+                self.gameplayaudio()
+                time.sleep(1)
 
                 #  ADDS INITIAL COINS FOR CLEARING LEVEL CHALLENGE 1
                 time.sleep(1)
@@ -455,6 +514,7 @@ class Level1(Location):
 
 if __name__ == "__main__":
     #  PLAYER NAME SELECTION
+    print("[Adjust your Device Volume - for the best experience]")
     player = input("\nEnter a player name to immerse yourself in the story: ")
     player1 = Player(f"{player}")
 
