@@ -4,11 +4,14 @@ import random
 
 def dice_game(player):
 
-    bet = int(input(f"You have {player.coins} \nmany coins would you like to bet:\n"))
+    bet = int(input(f"You have {player.coins} coins\nhow many coins would you like to bet:\n"))
 
     while bet > player.coins:
-        bet = int(input(f"You only have {player.coins} \nmany coins would you like to bet:\n"))
-
+        if player.coins > 0:
+            bet = int(input(f"You only have {player.coins} coins \nhow many coins would you like to bet:\n"))
+        else:
+            print("You have 0 coins so you can't play")
+            break
     player.coins = player.coins-bet
 
     player_dice1 = random.randint(1, 6)
@@ -38,6 +41,7 @@ def dice_game(player):
         print("\nYou Lost")
         bet = 0
     player.coins = player.coins + bet
+    print(f"\nYou only have {player.coins} coins\n")
     return
 
 
