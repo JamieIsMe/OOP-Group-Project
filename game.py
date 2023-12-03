@@ -49,12 +49,9 @@ class Game:
         level5 = Level5(self.player)
         level6 = Level6(self.player)
 
-        # Store the levels in the list
-        self.levels = [level1, level2, level3, level4, level5, level6]
-        # Storing the initialized levels
-
-        # self.levels = [level1, level2, level3, level4 , level5, level6]
         # Storing the initialized levels in a list
+        self.levels = [level1, level2, level3, level4, level5, level6]
+
     def level_picker(self):
         while self.game_run:
             # Looping through each level until all levels are completed
