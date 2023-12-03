@@ -675,7 +675,7 @@ class Level2(Location):
                 print("Invalid option.\n")
 
     def summary(self):
-        print("\n==================== Level 5 Player Summary ====================")
+        print("\n==================== Level 2 Player Summary ====================")
         # PLAYER NAME DISPLAY
         print(f"Player Name: {self.player.name}")
         # PLAYER FINAL LEVEL COINS
