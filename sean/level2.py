@@ -171,7 +171,8 @@ class Level2(Location):
                 time.sleep(1)
                 print("The hustle and bustle of the city's inhabitants "
                       "surrounds you.")
-                print(self.view_visited_locations())
+                time.sleep(2)
+                self.summary()
                 break  # Exit the loop once the player enters the city
 
     def guard_interaction(self):
@@ -672,6 +673,19 @@ class Level2(Location):
             else:
                 # If the player provides an invalid option
                 print("Invalid option.\n")
+
+    def summary(self):
+        print("\n==================== Level 5 Player Summary ====================")
+        # PLAYER NAME DISPLAY
+        print(f"Player Name: {self.player.name}")
+        # PLAYER FINAL LEVEL COINS
+        print(f"Player Coins: {self.player.coins} coins")
+        # PLAYER FINAL ITEMS
+        print(f"The items in your inventory are: {self.player.show_inventory()}")
+        # PLAYER FINAL CLUES
+        print(f"\nClues found in this level: {self.review_clues()}")
+
+        print("==================== End of Player Summary ====================\n")
 
 
 if __name__ == "__main__":
