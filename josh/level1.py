@@ -155,7 +155,6 @@ class Level1(Location):
 
         print("==================== End of Player Summary ====================\n")
 
-        #  ADD REPLAY ELEMENT SECTION!
 
     # SUBLEVEL 1 METHOD FOR LEVEL 1
     def hallofwarriors(self):
@@ -372,7 +371,7 @@ class Level1(Location):
             self.summary()
 
 
-            # GAME REPLAY MENU
+
 
     # SUB LEVEL 2 METHOD - LEVEL 1
     def druidquarter(self):
