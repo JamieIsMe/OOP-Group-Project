@@ -130,7 +130,12 @@ class Level2(Location):
     @staticmethod
     def fight_song():
         pygame.mixer.music.load("Level 2 Fight Song.mp3")
-        pygame.mixer.music.play(loops=0)
+        pygame.mixer.music.play(loops=-1)
+
+    @staticmethod
+    def wandering_song():
+        pygame.mixer.music.load("KaerMorhen.mp3")
+        pygame.mixer.music.play(loops=-1)
 
     @staticmethod
     def music_stop():
@@ -147,6 +152,8 @@ class Level2(Location):
 
         # Function to pause code run-through
         time.sleep(2)
+
+        self.wandering_song()
 
         while True:
             action = input("\nWhat will you do?\n"
@@ -277,6 +284,7 @@ class Level2(Location):
                         if cloaked_figure_option == "1":
                             print(f"{self.player.name}:\n Give it to me\n")
                             time.sleep(1)
+                            self.music_stop()
                             self.fight_song()
                             user = User(self.player.name)
                             red_cloak = RedCloakEnemy()
@@ -290,9 +298,11 @@ class Level2(Location):
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
                             self.music_stop()  # stops current music
+                            self.wandering_song()
                         elif cloaked_figure_option == "2":
                             print(f"{self.player.name}:\n Let's play then\n")
                             time.sleep(1)
+                            self.music_stop()
                             self.fight_song()
                             prize = roll_dice()
                             if prize:
@@ -304,6 +314,7 @@ class Level2(Location):
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
                             self.music_stop()
+                            self.wandering_song()
                     else:
                         # Player doesn't have the Chaos Sword, plays the dice game
                         print(self.red_cloak_man.say_dialogue
@@ -311,6 +322,7 @@ class Level2(Location):
                         time.sleep(1)
                         print(f"{self.player.name}:\n Let's play then\n")
                         time.sleep(1)
+                        self.music_stop()
                         self.fight_song()
                         prize = roll_dice()
                         if prize:
@@ -322,6 +334,7 @@ class Level2(Location):
                             self.player.coins += 25
                         self.__cloak_figure_fin = True
                         self.music_stop()
+                        self.wandering_song()
 
                 elif not self.__deal_made and not self.__cloak_figure_interact:
                     # If player has not made the deal and has not seen the red cloaked man before
@@ -376,6 +389,7 @@ class Level2(Location):
                             print(f"{self.player.name}:\n I'll be taking that "
                                   f"dagger.\n")
                             time.sleep(1)
+                            self.music_stop()
                             self.fight_song()
                             print(self.red_cloak_man.say_dialogue
                                   (self.red_cloak_man.dialogue[6]), "\n")
@@ -392,10 +406,12 @@ class Level2(Location):
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
                             self.music_stop()
+                            self.wandering_song()
                         elif cloaked_figure_option == "2":
                             # Player chooses the dice game
                             print(f"{self.player.name}:\n Let's play then.\n")
                             time.sleep(1)
+                            self.music_stop()
                             self.fight_song()
                             prize = roll_dice()
                             if prize:
@@ -408,6 +424,7 @@ class Level2(Location):
                                 self.player.coins += 25
                             self.__cloak_figure_fin = True
                             self.music_stop()
+                            self.wandering_song()
                     else:
                         # If player doesn't have sword in inventory
                         print(f"{self.player.name}:\n Let's play then.\n")
@@ -423,6 +440,7 @@ class Level2(Location):
                             self.player.coins += 25
                         self.__cloak_figure_fin = True
                         self.music_stop()
+                        self.wandering_song()
                 else:
                     print("You dont want to cause any trouble so you stay "
                           "away from the cloaked figure.\n")
@@ -680,12 +698,13 @@ class Level2(Location):
         print(f"Player Name: {self.player.name}")
         # PLAYER FINAL LEVEL COINS
         print(f"Player Coins: {self.player.coins} coins")
-        # PLAYER FINAL ITEMS
-        print(f"The items in your inventory are: {self.player.show_inventory()}")
         # PLAYER FINAL CLUES
         print(f"\nClues found in this level: {self.review_clues()}")
+        # PLACES VISITED
+        print(f"You visited: {self.visited_sublocations}")
 
         print("==================== End of Player Summary ====================\n")
+        self.music_stop()
 
 
 if __name__ == "__main__":
